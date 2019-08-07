@@ -1,0 +1,115 @@
+{
+  "pageFootConfig": [
+    [
+      {
+        "text": "Copyright © 2017-2019 ."
+      },
+      {
+        "text": "备案？不存在的"
+      },
+      {
+        "text": "Powered by Nuxt.js & Github",
+        "url": "https://github.com/"
+      }
+    ],
+    [
+      {
+        "text": "孤独的友链："
+      },
+      {
+        "text": "Github",
+        "url": "https://github.com/"
+      },
+      {
+        "text": "nuxtjs",
+        "url": "https://zh.nuxtjs.org"
+      }
+    ]
+  ],
+  "gotoConfig": {
+    "gotoTopText": "↑",
+    "gotoBottomText": "↓",
+    "contents": [
+      {
+        "text": "电报",
+        "url": "https://telegram.org/"
+      }
+    ]
+  },
+  "pageHeadConfig": {
+    "avatarUrl": "https://i.loli.net/2019/07/09/5d2483a93eb0e97951.jpg",
+    "siteName": "名无の窝",
+    "siteUrl": "/"
+  },
+  "siteConfig": {
+    "siteUrl": "https://blog.cellargalaxy.top",
+    "siteName": "名无の窝",
+    "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
+    "description": "名无の窝",
+    "globalCssUrl": "/repository/.config/css/global.css",
+    "globalJsUrl": "/repository/.config/js/global.js"
+  },
+  "articleConfig": {
+    "summaryLength": 5,
+    "pageSize": 10,
+    "dateFormat": "yyyy-MM-dd"
+  },
+  "navbarConfig": {
+    "brandText": "名无の窝",
+    "brandUrl": "/",
+    "navs": [
+      {
+        "text": "文章",
+        "url": "/article/"
+      },
+      {
+        "text": "时间轴",
+        "url": "/timeLine"
+      },
+      {
+        "text": "关于我",
+        "url": "/article/README"
+      },
+      {
+        "text": "开源",
+        "url": "https://github.com/cellargalaxy/blog-vue"
+      }
+    ]
+  },
+  "homeConfig": {
+    "brandHello": "HI,MUMEI!",
+    "brandTexts": [
+      "\uD83D\uDD6F\uD83D\uDD6F\uD83D\uDD6F️ 祈福京阿尼 \uD83D\uDD6F\uD83D\uDD6F\uD83D\uDD6F️"
+    ],
+    "navs": [
+      {
+        "text": "推特",
+        "url": "https://twitter.com/"
+      },
+      {
+        "text": "facebook",
+        "url": "https://facebook.com/"
+      },
+      {
+        "text": "微博",
+        "url": "https://weibo.com/"
+      },
+      {
+        "text": "纸糊",
+        "url": "https://www.zhihu.com/"
+      }
+    ]
+  },
+  "gitConfig": {
+    "extension": ".md",
+    "dateRegular": "/\\d{4}-\\d{2}\\/\\d{2}/"
+  },
+  "errorPageConfig": {
+    "404": {
+      "statusCode": 404,
+      "message": "页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程",
+      "returnText": "回去首页溜达",
+      "returnUrl": "/"
+    }
+  }
+}
