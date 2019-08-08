@@ -9,32 +9,23 @@
       },
       {
         "text": "Powered by Nuxt.js & Github",
-        "url": "https://github.com/"
+        "url": "https://github.com/cellargalaxy/blog-code"
       }
     ],
     [
       {
-        "text": "孤独的友链："
+        "text": "莫得友链："
       },
       {
         "text": "Github",
-        "url": "https://github.com/"
-      },
-      {
-        "text": "nuxtjs",
-        "url": "https://zh.nuxtjs.org"
+        "url": "https://github.com/cellargalaxy/blog-code"
       }
     ]
   ],
   "gotoConfig": {
     "gotoTopText": "↑",
     "gotoBottomText": "↓",
-    "contents": [
-      {
-        "text": "电报",
-        "url": "https://telegram.org/"
-      }
-    ]
+    "contents": []
   },
   "pageHeadConfig": {
     "avatarUrl": "https://i.loli.net/2019/07/09/5d2483a93eb0e97951.jpg",
@@ -42,7 +33,7 @@
     "siteUrl": "/"
   },
   "siteConfig": {
-    "siteUrl": "https://blog.cellargalaxy.top",
+    "siteUrl": "https://code.cellargalaxy.top",
     "siteName": "名无の窝",
     "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
     "description": "名无の窝",
@@ -77,26 +68,15 @@
     ]
   },
   "homeConfig": {
-    "brandHello": "HI,MUMEI!",
+    "brandHello": "日常",
     "brandTexts": [
-      "\uD83D\uDD6F\uD83D\uDD6F\uD83D\uDD6F️ 祈福京阿尼 \uD83D\uDD6F\uD83D\uDD6F\uD83D\uDD6F️"
+      "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
+      "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
     ],
     "navs": [
       {
-        "text": "推特",
-        "url": "https://twitter.com/"
-      },
-      {
-        "text": "facebook",
-        "url": "https://facebook.com/"
-      },
-      {
-        "text": "微博",
-        "url": "https://weibo.com/"
-      },
-      {
-        "text": "纸糊",
-        "url": "https://www.zhihu.com/"
+        "text": "Github",
+        "url": "https://github.com/cellargalaxy"
       }
     ]
   },
