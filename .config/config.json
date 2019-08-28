@@ -82,7 +82,7 @@
   },
   "gitConfig": {
     "extension": ".md",
-    "dateRegular": "/\\d{4}-\\d{2}\\/\\d{2}/"
+    "dateRegular": "/\\d{4}-\\d{2}-\\d{2}/"
   },
   "errorPageConfig": {
     "404": {
