@@ -37,8 +37,8 @@
     "siteName": "名无の窝",
     "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
     "description": "名无の窝",
-    "globalCssUrl": "/repository/.config/css/global.css",
-    "globalJsUrl": "/repository/.config/js/global.js"
+    "globalCssUrl": "/css/global.css",
+    "globalJsUrl": "/js/global.js"
   },
   "articleConfig": {
     "summaryLength": 5,
@@ -51,15 +51,15 @@
     "navs": [
       {
         "text": "文章",
-        "url": "/article/"
+        "url": "/page/1/"
       },
       {
         "text": "时间轴",
-        "url": "/timeLine"
+        "url": "/timeLine/"
       },
       {
         "text": "关于我",
-        "url": "/article/README"
+        "url": "/article/README/"
       },
       {
         "text": "开源",
