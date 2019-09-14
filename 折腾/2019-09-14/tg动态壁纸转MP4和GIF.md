@@ -1,9 +1,9 @@
 # 步骤
 
-1. lottie是一种视频格式，数据会保存为一个json，所以lottie文件是一个json文件，可以在进行(https://svgsprite.com/tools/lottie-player/)[https://svgsprite.com/tools/lottie-player/]播放。
+1. lottie是一种视频格式，数据会保存为一个json，所以lottie文件是一个json文件，可以在进行[https://svgsprite.com/tools/lottie-player/](https://svgsprite.com/tools/lottie-player/)播放。
 2. tg的动态壁纸的后缀为`tgs`，官方介绍`tgs`是lottie格式的gzip压缩。
 3. `tgs`文件在手机的`/storage/emulated/0/Android/data/org.telegram.messenger/cache`里，虽然后缀为`tgs`，但其实已经解压过，直接是个json文件了可以播放了。
-3. 使用(https://github.com/transitive-bullshit/puppeteer-lottie)[https://github.com/transitive-bullshit/puppeteer-lottie]，依赖于`gifski`和`ffmpeg`，可以直接装换为mp4或者gif。但是发现最后一帧会有问题，导致视频会闪一闪。
+3. 使用[https://github.com/transitive-bullshit/puppeteer-lottie](https://github.com/transitive-bullshit/puppeteer-lottie)，依赖于`gifski`和`ffmpeg`，可以直接装换为mp4或者gif。但是发现最后一帧会有问题，导致视频会闪一闪。
 4. 使用puppeteer-lottie对lottie转gif，会在`/tmp`生成一个临时目录，文件夹名字形似一个md5，保存全部帧的png，拷贝出来待用
 5. 使用ffmpeg将png压成mp4
 6. 使用ffmpeg将mp4压成gif
