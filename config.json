@@ -1,0 +1,95 @@
+{
+  "pageFootConfig": [
+    [
+      {
+        "text": "Copyright © 2017-2019 ."
+      },
+      {
+        "text": "备案？不存在的"
+      },
+      {
+        "text": "Powered by Nuxt.js & Github",
+        "url": "https://github.com/cellargalaxy/blog-vue"
+      }
+    ],
+    [
+      {
+        "text": "莫得友链："
+      },
+      {
+        "text": "Github",
+        "url": "https://github.com/cellargalaxy/blog-code"
+      }
+    ]
+  ],
+  "gotoConfig": {
+    "gotoTopText": "↑",
+    "gotoBottomText": "↓",
+    "contents": []
+  },
+  "pageHeadConfig": {
+    "avatarUrl": "https://i.loli.net/2019/07/09/5d2483a93eb0e97951.jpg",
+    "siteName": "名无の窝",
+    "siteUrl": "/"
+  },
+  "siteConfig": {
+    "siteUrl": "https://code.cellargalaxy.top",
+    "siteName": "名无の窝",
+    "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
+    "description": "名无の窝",
+    "globalCssUrl": "/css/global.css",
+    "globalJsUrl": "/js/global.js"
+  },
+  "articleConfig": {
+    "summaryLength": 5,
+    "pageSize": 10,
+    "dateFormat": "yyyy-MM-dd"
+  },
+  "navbarConfig": {
+    "brandText": "名无の窝",
+    "brandUrl": "/",
+    "navs": [
+      {
+        "text": "文章",
+        "url": "/page/1/"
+      },
+      {
+        "text": "时间轴",
+        "url": "/timeLine/"
+      },
+      {
+        "text": "关于我",
+        "url": "/article/README/"
+      },
+      {
+        "text": "开源",
+        "url": "https://github.com/cellargalaxy/blog-vue"
+      }
+    ]
+  },
+  "homeConfig": {
+    "brandHello": "日常",
+    "brandTexts": [
+      "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
+      "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
+    ],
+    "navs": [
+      {
+        "text": "Github",
+        "url": "https://github.com/cellargalaxy"
+      }
+    ]
+  },
+  "gitConfig": {
+    "extension": ".md",
+    "dateRegular": "/\\d{4}-\\d{2}-\\d{2}/"
+  },
+  "errorPageConfig": {
+    "404": {
+      "statusCode": 404,
+      "message": "页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程",
+      "returnText": "回去首页溜达",
+      "returnUrl": "/"
+    }
+  }
+}
