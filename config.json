@@ -1,52 +1,57 @@
 {
-  "pageFootConfig": [
-    [
-      {
-        "text": "Copyright © 2017-2019 ."
-      },
-      {
-        "text": "备案？不存在的"
-      },
-      {
-        "text": "Powered by Nuxt.js & Github",
-        "url": "https://github.com/cellargalaxy/blog-vue"
-      }
-    ],
-    [
-      {
-        "text": "莫得友链："
-      },
-      {
-        "text": "Github",
-        "url": "https://github.com/cellargalaxy/blog-code"
-      }
-    ]
-  ],
-  "gotoConfig": {
-    "gotoTopText": "↑",
-    "gotoBottomText": "↓",
-    "contents": []
-  },
-  "pageHeadConfig": {
-    "avatarUrl": "https://i.loli.net/2019/07/09/5d2483a93eb0e97951.jpg",
-    "siteName": "名无の窝",
-    "siteUrl": "/"
+  "gitConfig": {
+    "extension": ".md",
+    "dateRegular": "/\\d{4}-\\d{2}-\\d{2}/"
   },
   "siteConfig": {
     "siteUrl": "https://code.cellargalaxy.top",
-    "siteName": "名无の窝",
+    "siteName": "主页の名",
     "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
-    "description": "名无の窝",
-    "globalCssUrl": "/css/global.css",
-    "globalJsUrl": "/js/global.js"
+    "description": "主页の名",
+    "staticCssUrl": "/css/static.css",
+    "staticJsUrl": "/js/static.js"
   },
-  "articleConfig": {
-    "summaryLength": 5,
-    "pageSize": 10,
-    "dateFormat": "yyyy-MM-dd"
+  "homeConfig": {
+    "brandInterval": 5000,
+    "brands": [
+      {
+        "imageUrl": "https://i.loli.net/2018/08/21/5b7bb5dd4f0df.png",
+        "title": "日常",
+        "texts": [
+          "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
+          "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
+        ]
+      },
+      {
+        "imageUrl": "https://i.loli.net/2018/04/10/5accdcbcb1738.jpg",
+        "title": "苍之萤",
+        "texts": [
+          "我在这里的时候经常想，以前的人为什么总是留下记录呢？",
+          "因为他们不想让有些事情发生改变。"
+        ]
+      }
+    ],
+    "navs": [
+      {
+        "text": "twitter",
+        "url": "https://twitter.com/"
+      },
+      {
+        "text": "facebook",
+        "url": "https://facebook.com/"
+      },
+      {
+        "text": "微博",
+        "url": "https://weibo.com/"
+      },
+      {
+        "text": "知乎",
+        "url": "https://www.zhihu.com/"
+      }
+    ]
   },
   "navbarConfig": {
-    "brandText": "名无の窝",
+    "brandText": "主页の名",
     "brandUrl": "/",
     "navs": [
       {
@@ -67,23 +72,38 @@
       }
     ]
   },
-  "homeConfig": {
-    "brandHello": "日常",
-    "brandTexts": [
-      "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
-      "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
+  "articleConfig": {
+    "summaryLength": 5,
+    "pageSize": 10,
+    "dateFormat": "yyyy-MM-dd"
+  },
+  "pageFootConfig": [
+    [
+      {
+        "text": "Copyright © 2017-? ."
+      },
+      {
+        "text": "备案？不存在的"
+      },
+      {
+        "text": "Powered by Nuxt.js & Github",
+        "url": "https://github.com/"
+      }
     ],
-    "navs": [
+    [
+      {
+        "text": "友链："
+      },
       {
         "text": "Github",
-        "url": "https://github.com/cellargalaxy"
+        "url": "https://github.com/"
+      },
+      {
+        "text": "Nuxt.js",
+        "url": "https://zh.nuxtjs.org"
       }
     ]
-  },
-  "gitConfig": {
-    "extension": ".md",
-    "dateRegular": "/\\d{4}-\\d{2}-\\d{2}/"
-  },
+  ],
   "errorPageConfig": {
     "404": {
       "statusCode": 404,
