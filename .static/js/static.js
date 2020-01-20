@@ -1,4 +1,4 @@
-window.onload = () => {
+function customizeWindowOnload() {
     addJq(() => {
         addBackstretch(() => $.backstretch('https://i.loli.net/2020/01/20/VXvo2ShyBaPNkdJ.jpg'))
     })
