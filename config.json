@@ -107,7 +107,7 @@
   "errorPageConfig": {
     "404": {
       "statusCode": 404,
-      "message": "页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程",
+      "message": "一个页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程",
       "returnText": "回去首页溜达",
       "returnUrl": "/"
     }
