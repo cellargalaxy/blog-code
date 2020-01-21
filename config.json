@@ -5,17 +5,17 @@
   },
   "siteConfig": {
     "siteUrl": "https://code.cellargalaxy.top",
-    "siteName": "主页の名",
+    "siteName": "无名の窝",
     "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
     "description": "主页の名",
     "staticCssUrl": "/css/static.css",
     "staticJsUrl": "/js/static.js"
   },
   "homeConfig": {
-    "brandInterval": 5000,
+    "brandInterval": 6000,
     "brands": [
       {
-        "imageUrl": "https://i.loli.net/2018/08/21/5b7bb5dd4f0df.png",
+        "imageUrl": "https://i.loli.net/2020/01/21/mMEAnwY5XPC2pFb.jpg",
         "title": "日常",
         "texts": [
           "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
@@ -23,7 +23,7 @@
         ]
       },
       {
-        "imageUrl": "https://i.loli.net/2018/04/10/5accdcbcb1738.jpg",
+        "imageUrl": "https://i.loli.net/2020/01/21/PtnJEWq5U4hAemi.png",
         "title": "苍之萤",
         "texts": [
           "我在这里的时候经常想，以前的人为什么总是留下记录呢？",
@@ -32,26 +32,10 @@
       }
     ],
     "navs": [
-      {
-        "text": "twitter",
-        "url": "https://twitter.com/"
-      },
-      {
-        "text": "facebook",
-        "url": "https://facebook.com/"
-      },
-      {
-        "text": "微博",
-        "url": "https://weibo.com/"
-      },
-      {
-        "text": "知乎",
-        "url": "https://www.zhihu.com/"
-      }
     ]
   },
   "navbarConfig": {
-    "brandText": "主页の名",
+    "brandText": "无名の窝",
     "brandUrl": "/",
     "navs": [
       {
@@ -80,7 +64,7 @@
   "pageFootConfig": [
     [
       {
-        "text": "Copyright © 2017-? ."
+        "text": "Copyright © 2017-2020 ."
       },
       {
         "text": "备案？不存在的"
@@ -88,19 +72,6 @@
       {
         "text": "Powered by Nuxt.js & Github",
         "url": "https://github.com/"
-      }
-    ],
-    [
-      {
-        "text": "友链："
-      },
-      {
-        "text": "Github",
-        "url": "https://github.com/"
-      },
-      {
-        "text": "Nuxt.js",
-        "url": "https://zh.nuxtjs.org"
       }
     ]
   ],
