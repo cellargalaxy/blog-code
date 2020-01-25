@@ -12,7 +12,9 @@
       "duration": 6000,
       "fade": 1000,
       "images": [
-        "https://i.loli.net/2020/01/20/VXvo2ShyBaPNkdJ.jpg"
+        "https://i.loli.net/2020/01/20/VXvo2ShyBaPNkdJ.jpg",
+        "https://i.loli.net/2020/01/25/cofTzDQXitjeVZ6.jpg",
+        "https://i.loli.net/2020/01/25/sfaRJ2lVeM3NDbE.jpg"
       ]
     },
     "staticCssUrl": "/static.css",
@@ -28,20 +30,9 @@
           "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
           "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
         ]
-      },
-      {
-        "imageUrl": "https://i.loli.net/2018/08/21/5b7bbc8ec3633.jpg",
-        "title": "",
-        "texts": []
-      },
-      {
-        "imageUrl": "https://i.loli.net/2020/01/22/8NUcbREq6tlOXz4.png",
-        "title": "",
-        "texts": []
       }
     ],
-    "navs": [
-    ]
+    "navs": []
   },
   "navbarConfig": {
     "brandText": "无名の窝",
