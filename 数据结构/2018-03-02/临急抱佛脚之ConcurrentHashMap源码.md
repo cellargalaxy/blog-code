@@ -4,7 +4,7 @@ HashMap是线程不安全的，在并发下容易导致Entry构成环状结构�
 
 回顾一下HashMap，HashMap的核心数据变量是Entry/Node数组。既然是分段，一个长为100的Entry[]可以例如每十个一段，一共十段。但是为了代码编写方便，有必要对每“十个”Entry进行一下封装。所以，在ConcurrentHashMap里多了一个内部类叫Segment，Segment类的核心数据变量是Entry[]。这个Segment继承了ReentrantLock，方便加锁解锁。因此，ConcurrentHashMap由Segment[]组成，而Segment又由Entry[]组成，存储key-value的依然是Entry，每个桶有四种状态，为空，只有一个Entry，链表和红黑树。而到达Entry过程大致是先进行第一次hash找到对应的那个Segment。操作Segment的数据前按需获取锁。获取锁之后操作Segment，Segment内部基本上就跟HashMap一样了。
 
-![](https://res.infoq.com/articles/ConcurrentHashMap/zh/resources/2.jpg)
+![](/file/blog/code/20180302/res.infoq.com-articles-ConcurrentHashMap-zh-resources-2.jpg.1.jpg)
 
 # ConcurrentHashMap的大致的样子
 

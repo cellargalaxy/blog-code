@@ -89,7 +89,6 @@ create table user (
 
 insert into user values (1, 'name1', 11), (2, 'name2', 22), (3, 'name3', 33);
 ```
-![](http://drive.cellargalaxy.top/201805/14/DeepinScrot-3759.png)
 
 参考文献：
 

@@ -24,7 +24,7 @@ springboot简单的说，是整合了常用的spring系列框架和配置的框�
 * 分布式消息传递
 
 我们来看个图（虽然我都看不懂，但还是要贴上了）
-![](https://img-blog.csdn.net/20180207215150790?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdzA1OTgwNTk4/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![](/file/blog/code/20180519/img-blog.csdn.net-20180207215150790)
 各个组件的工作流程是
 
 1. 请求统一通过API网关（Zuul）来访问内部服务.

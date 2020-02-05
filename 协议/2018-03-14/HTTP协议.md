@@ -18,7 +18,7 @@ TRACE    回显服务器收到的请求，主要用于测试或诊断
 
 # HTTP请求报文
 HTTP请求报文分四个部分组成：请求行，请求头，空行，请求体。
-![](https://upload-images.jianshu.io/upload_images/2964446-fdfb1a8fce8de946.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/466)
+![](/file/blog/code/20180314/upload-images.jianshu.io-upload_images-2964446-fdfb1a8fce8de946.png.1.png)
 ## GET请求方法的请求报文
 ```
 GET /?sex=man&name=Professional HTTP/1.1
