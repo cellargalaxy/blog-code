@@ -13,14 +13,14 @@
 
 # 准备
 必须
-1.[斐讯T1、N1官方系统降级工具.zip](/file/blog/code/20200221/%E6%96%90%E8%AE%AFT1%E3%80%81N1%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%99%8D%E7%BA%A7%E5%B7%A5%E5%85%B7.zip)
-2.[usbit.zip](/file/blog/code/20200221/usbit.zip)
-3.[meson-gxl-s905d-phicomm-n1-xiangsm.7z](/file/blog/code/20200221/meson-gxl-s905d-phicomm-n1-xiangsm.7z)
-4.[Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img.xz](/file/blog/code/20200221/Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img.xz)
-5.[Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_desktop_20190401.img.xz](/file/blog/code/20200221/Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_desktop_20190401.img.xz)
+1. [斐讯T1、N1官方系统降级工具.zip](/file/blog/code/20200221/%E6%96%90%E8%AE%AFT1%E3%80%81N1%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%99%8D%E7%BA%A7%E5%B7%A5%E5%85%B7.zip)
+2. [usbit.zip](/file/blog/code/20200221/usbit.zip)
+3. [meson-gxl-s905d-phicomm-n1-xiangsm.7z](/file/blog/code/20200221/meson-gxl-s905d-phicomm-n1-xiangsm.7z)
+4. [Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img.xz](/file/blog/code/20200221/Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_20190401.img.xz)
+5. [Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_desktop_20190401.img.xz](/file/blog/code/20200221/Armbian_5.77_Aml-s905_Ubuntu_bionic_default_5.0.2_desktop_20190401.img.xz)
 
 可选/备份
-1.[BACKUP-s9xxx-emmc.img.gz，原系统备份](/file/blog/code/20200221/BACKUP-s9xxx-emmc.img.gz)
+1. [BACKUP-s9xxx-emmc.img.gz，原系统备份](/file/blog/code/20200221/BACKUP-s9xxx-emmc.img.gz)
 
 # 降级
 ***先断网，避免降级之后n1又自动升级。我没试过联网状态下操作会咋样，反正大家都这么说，那就保险起见照做呗。***
@@ -236,8 +236,8 @@ sudo sh get-docker.sh --mirror Aliyun
 未完待续
 
 # 现有问题
-1.狗逼谷歌不知道为什么在2019年年底禁止了linux的部分浏览器登录谷歌账号，所以chromium登录不来谷歌。虽然火狐可以登录，但无法同步书签也就废了一半了。
-2.使用docker pull拉的镜像好像很多都无法启动，可能拉的是非arm的编译版本。
+1. 狗逼谷歌不知道为什么在2019年年底禁止了linux的部分浏览器登录谷歌账号，所以chromium登录不来谷歌。虽然火狐可以登录，但无法同步书签也就废了一半了。
+2. 使用docker pull拉的镜像好像很多都无法启动，可能拉的是非arm的编译版本。
 portainer是可以直接pull的，v2ray需要自己写个Dockerfile来构建，才会下载arm版本，filebrowser研究了一轮依然无解。
 希望openwrt没有这样的问题。
 
