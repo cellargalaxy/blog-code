@@ -12,6 +12,9 @@
 
 但是生命不息，折腾不止，心想给n1刷个Armbian桌面版能做个垃圾小pc，再装上docker能做个下载机和垃圾nas，最后再在docker装个openwrt来个旁路由，想想都觉得自己血赚。。。
 
+# 注意
+***下面的操作步骤最好按顺序，不然有可能会莫名其妙的崩掉。已经下面会有几次reboot命令，请不要偷懒，最后才来reboot，否则也可能会莫名其妙的崩掉。***
+
 # 准备
 必须
 1. [斐讯T1、N1官方系统降级工具.zip](/file/blog/code/20200221/%E6%96%90%E8%AE%AFT1%E3%80%81N1%E5%AE%98%E6%96%B9%E7%B3%BB%E7%BB%9F%E9%99%8D%E7%BA%A7%E5%B7%A5%E5%85%B7.zip)
@@ -66,6 +69,8 @@ n1就会重启，要抓紧时间在重启的时候把U盘插到靠近HDMI的USB�
 如无意外机会从U盘里启动成功，最好先备份一下原系统，搞崩了，或者需要刷其他东西能恢复。
 备份完成，在pc里通过scp把备份的镜像复制出来备份（原来Windows也自带scp命令）。
 要恢复原系统，再弄个启动盘，在启动盘里刷原系统即可。
+
+ddbr可以备份的不单止安卓系统，也可以备份和恢复armbian，所以如果弄好了一个自己满意的系统状态，可以ddbr一下备份。以后把系统搞崩了，用个u盘装个***全新的***armbian（因为我发现，直接把自己ddbr下来的进行压到U盘里，虽然能正常启动和使用，但是没有ddbr和nand–sata-install命令）。然后把之前备份好的镜像scp到U盘里恢复。
 ```shell
 #备份输入命令顺序
 ddbr -> b -> y -> y
@@ -135,9 +140,10 @@ deb [ arch=arm64,armhf ] https://mirrors.tuna.tsinghua.edu.cn/debian-security/ s
 #deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security/ stretch/updates main contrib non-free
 #deb [ arch=arm64,armhf ] https://mirrors.tuna.tsinghua.edu.cn/debian/ sid main contrib non-free
 ```
+执行下面`sudo apt-get upgrade`的命令，可能在半途报错说啥啥啥文件/文件夹只读，在这种情况下重启n1再执行就好。或者把这句命令留到最后，执行之前ddbr一下现有系统，反正不更新又不会死。这点最后会再解释。
 ```shell
-apt-get update
-apt-get upgrade
+sudo apt-get update
+sudo apt-get upgrade
 ```
 
 # 设置时区为北京时间
@@ -194,12 +200,9 @@ reboot
 ```
 
 # 安装谷歌拼音输入法
-我安装的比较折腾，执行过很多命令，不知道具体那个才起效，反正都执行吧
 
 安装
 ```shell
-sudo apt install fcitx fcitx-config-gtk im-config fcitx-pinyin fcitx-ui-light fcitx-ui-light zenity
-sudo apt-get install fcitx fcitx-googlepinyin im-config
 sudo apt install fcitx fcitx-tools fcitx-config* fcitx-frontend* fcitx-module* fcitx-ui-* presage
 
 sudo apt install fcitx-pinyin            # 拼音
@@ -211,12 +214,6 @@ sudo apt install fcitx-table-wubi-large  # 五笔
 设置fcitx
 ```shell
 sudo im-config -s fcitx -z default
-im-config
-```
-
-移除多余的组件(仅针对非KDE桌面)
-```shell
-sudo apt remove fcitx-module-kimpanel
 ```
 
 重启
@@ -234,13 +231,107 @@ sudo sh get-docker.sh --mirror Aliyun
 ```
 
 # 安装openwrt做旁路由
-未完待续
+没弄
+
+# 安装火狐浏览器
+```shell
+sudo apt-get install firefox
+sudo apt-get install firefox-locale-zh-hans
+```
+
+# 清理
+```shell
+du -sh /var/cache/apt/archives
+
+sudo apt-get clean
+sudo apt-get autoclean
+sudo apt-get autoremove
+```
+
+# 开机挂载U盘
+```shell
+sudo blkid
+
+sudo vim /etc/fstab
+UUID=B07C12B77C1277F4 /media/user/upan ntfs defaults 0 1
+```
+
+# 一些docker镜像
+```shell
+sudo docker volume create portainer_data
+sudo docker run -d \
+--name portainer \
+--restart=always \
+-p 0.0.0.0:8000:8000 \
+-p 0.0.0.0:9000:9000 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v portainer_data:/data \
+portainer/portainer:latest
+
+sudo docker run -d \
+--name v2ray \
+--restart=always \
+-v /doc/v2ray:/etc/v2ray \
+-p 10808:10808 \
+-p 10809:10809 \
+v2fly/v2fly-core:v4.22.1
+
+sudo docker run -d \
+--name samba \
+--restart=always \
+-p 137:137/udp \
+-p 138:138/udp \
+-p 139:139 \
+-p 445:445 \
+-p 445:445/udp \
+--hostname 'aml' \
+-v /media/user/upan:/share/folder \
+elswork/samba -u "user:password" -s "upan:/share/folder:rw:user"
+
+sudo docker volume create filebrowser_data
+sudo docker run -d \
+--name filebrowser \
+--restart always \
+-e WEB_PORT=9900 \
+-p 0.0.0.0:9900:9900 \
+-v filebrowser_data:/config \
+-v /media/user/upan:/myfiles \
+--mount type=tmpfs,destination=/tmp \
+80x86/filebrowser:latest
+
+git clone https://github.com/Auska/docker-transmission.git
+sudo docker build -t transmission .
+
+sudo docker volume create transmission_data_config
+sudo docker volume create transmission_data_watch
+
+sudo docker run -d \
+--name transmission \
+--restart always \
+-v transmission_data_config:/config \
+-v /media/arm/user/transmission:/downloads \
+-v transmission_data_watch:/watch \
+-p 9091:9091 \
+-p 51413:51413 \
+-p 51413:51413/udp \
+transmission:latest
+```
 
 # 现有问题
 1. 狗逼谷歌不知道为什么在2019年年底禁止了linux的部分浏览器登录谷歌账号，所以chromium登录不来谷歌。虽然火狐可以登录，但无法同步书签也就废了一半了。
-2. 使用docker pull拉的镜像好像很多都无法启动，可能拉的是非arm的编译版本。
-portainer是可以直接pull的，v2ray需要自己写个Dockerfile来构建，才会下载arm版本，filebrowser研究了一轮依然无解。
-希望openwrt没有这样的问题。
+2. ~~使用docker pull拉的镜像好像很多都无法启动，可能拉的是非arm的编译版本。~~
+~~portainer是可以直接pull的，v2ray需要自己写个Dockerfile来构建，才会下载arm版本，filebrowser研究了一轮依然无解。
+希望openwrt没有这样的问题。~~
+3. 有些镜像只编译好了AMD版本，没ARM，有些是可以通过指定版本号来指定ARM的，具体看吧
+4. 我在倒腾的时候，会遇到搞着搞着，armbian原本的那九百多M的swap不见了的情况，有可能是下面两条命令或者之一导致的。没找到恢复的方案
+
+```shell
+# 残余的配置文件
+sudo dpkg --list | grep "^rc" | cut -d " " -f 3 | xargs sudo dpkg --purge
+
+# 删除过时的软件包
+sudo aptitude purge ~o
+```
 
 
 参考文章：
