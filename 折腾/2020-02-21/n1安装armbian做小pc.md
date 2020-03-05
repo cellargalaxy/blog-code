@@ -231,7 +231,58 @@ sudo sh get-docker.sh --mirror Aliyun
 ```
 
 # 安装openwrt做旁路由
-没弄
+首先在armbian里开启一个叫网卡混杂模式，功能应该是让openwrt自己有一个网卡，单独向路由器获取一个ip
+```shell
+sudo ip link set eth0 promisc on
+sudo modprobe pppoe
+```
+然后在docker里创建一个网卡
+```shell
+sudo docker network create -d macvlan --subnet=192.168.123.0/24 --gateway=192.168.123.1 -o parent=eth0 macnet
+```
+之后安装openwrt，有两个版本。一个是`kanshudj/n1-openwrtgateway:r9.10.1`，另一个是`unifreq/openwrt-aarch64:r9.10.24`。unifreq的略大，我只用来科学上网，所以就挑了kanshudj的
+```shell
+sudo docker run -d \
+--name openwrt \
+--restart always \
+--network macnet \
+--privileged \
+kanshudj/n1-openwrtgateway:r9.10.1 /sbin/init
+
+sudo docker run -d \
+--name openwrt \
+--restart always \
+--network macnet \
+--privileged \
+unifreq/openwrt-aarch64:r9.10.24 /sbin/init
+```
+安装完成之后，进入openwrt容器里的命令行环境，修改网卡配置。然后重启openwrt
+```shell
+vi /etc/config/network
+
+config interface 'loopback'
+        option ifname 'lo'
+        option proto 'static'
+        option ipaddr '127.0.0.1'
+        option netmask '255.0.0.0'
+
+config globals 'globals'
+        option ula_prefix 'fd2f:ea21:0e02::/48'
+
+config interface 'lan'
+        option type 'bridge'
+        option ifname 'eth0'
+        option proto 'static'
+        option ipaddr '192.168.123.2' #openwrt的静态ip
+        option netmask '255.255.255.0'
+        option gateway '192.168.123.1' #路由器ip
+        option dns '192.168.123.1' #DNS，按自己喜欢改
+
+config interface 'vpn0'
+        option ifname 'tun0'
+        option proto 'none'
+```
+我好久没用过openwrt了，以至于差点找不到怎么配透明代理。配透明代理在【服务】-【影梭加速 Plus+】-【服务节点】里添加SS/SSR/V2RAY。默认的透明代理端口是`1234`，最可续的是没找到如何自定义配置文件。当上面的【访问Google-访问正常】后，例如在电脑的【控制面板/网络和 Internet/网络连接】里，把网关设置为openwrt的ip，按道理就翻出去了。需要注意一点是，我试过把n1的armbian的网关也设置为openwrt的ip，然后发现就翻不出去了，可能有什么冲突。
 
 # 安装火狐浏览器
 ```shell
@@ -309,12 +360,26 @@ sudo docker run -d \
 --name transmission \
 --restart always \
 -v transmission_data_config:/config \
--v /media/arm/user/transmission:/downloads \
+-v /media/user/upan/transmission:/downloads \
 -v transmission_data_watch:/watch \
 -p 9091:9091 \
 -p 51413:51413 \
 -p 51413:51413/udp \
 transmission:latest
+
+sudo docker volume create qbittorrent_data
+
+sudo docker run -d \
+--name qbittorrent \
+--restart always \
+-e TZ=Asia/Shanghai \
+-e WEBUI_PORT=9092 \
+-p 6881:6881 \
+-p 6881:6881/udp \
+-p 9092:9092 \
+-v qbittorrent_data:/config \
+-v /media/user/upan/qbittorrent:/downloads \
+linuxserver/qbittorrent
 ```
 
 # 现有问题
