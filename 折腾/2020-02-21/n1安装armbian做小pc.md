@@ -290,6 +290,37 @@ sudo apt-get install firefox
 sudo apt-get install firefox-locale-zh-hans
 ```
 
+# Docker日志限制
+一下配置只对新创建的容器生效，现有容器请remove再建
+```shell
+sudo vim /etc/docker/daemon.json
+
+{
+  "log-driver":"json-file",
+  "log-opts": {"max-size":"5m", "max-file":"3"}
+}
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+清理日志脚本
+```shell
+vim clean_docker_log.sh
+
+#!/bin/sh
+echo "======== start clean docker containers logs ========"
+logs=$(find /var/lib/docker/containers/ -name *-json.log)
+for log in $logs
+        do
+                echo "clean logs : $log"
+                cat /dev/null > $log
+        done
+echo "======== end clean docker containers logs ========"
+
+chmod +x clean_docker_log.sh
+sudo ./clean_docker_log.sh
+```
+
 # 清理
 ```shell
 du -sh /var/cache/apt/archives
