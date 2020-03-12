@@ -340,12 +340,21 @@ UUID=B07C12B77C1277F4 /media/user/upan ntfs defaults 0 1
 
 # 一些docker镜像
 ```shell
+sudo docker volume create caddy_data 
+sudo docker run -d \
+--name caddy \
+--restart=always \
+-v /caddy/Caddyfile:/etc/Caddyfile \
+-v caddy_data:/root/.caddy \
+--net=host \
+jessestuart/caddy
+
 sudo docker volume create portainer_data
 sudo docker run -d \
 --name portainer \
 --restart=always \
--p 0.0.0.0:8000:8000 \
--p 0.0.0.0:9000:9000 \
+-p 8000:8000 \
+-p 9000:9000 \
 -v /var/run/docker.sock:/var/run/docker.sock \
 -v portainer_data:/data \
 portainer/portainer:latest
@@ -375,7 +384,7 @@ sudo docker run -d \
 --name filebrowser \
 --restart always \
 -e WEB_PORT=9900 \
--p 0.0.0.0:9900:9900 \
+-p 9900:9900 \
 -v filebrowser_data:/config \
 -v /media/user/upan:/myfiles \
 --mount type=tmpfs,destination=/tmp \
