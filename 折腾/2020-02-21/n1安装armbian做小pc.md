@@ -146,6 +146,25 @@ sudo apt-get update
 sudo apt-get upgrade
 ```
 
+# swap占用过高，但物理内存还有空余
+临时调整
+```shell
+sudo sysctl vm.swappiness=10
+vm.swappiness = 10
+
+cat /proc/sys/vm/swappiness
+10
+```
+
+永久调整
+```shell
+sudo vim /etc/sysctl.conf
+vm.swappiness=10
+
+#激活设置：
+sudo sysctl -p
+```
+
 # 设置时区为北京时间
 ```shell
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone
