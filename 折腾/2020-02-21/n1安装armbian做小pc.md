@@ -426,6 +426,26 @@ sudo docker run -d \
 -p 51413:51413/udp \
 transmission:latest
 
+# 这个镜像好像做了什么防止反代的东西，需要docker的内外部端口一致
+# 所以只能先用8080，在web修改端口后，remove掉容器再run一个
+sudo docker volume create qbittorrent_config
+sudo docker volume create qbittorrent_cache
+sudo docker volume create qbittorrent_local
+
+sudo docker run -d \
+--name qbittorrent \
+--restart always \
+-p 6881:6881 \
+-p 6881:6881/udp \
+-p 8080:8080 \
+-v qbittorrent_config:/data/.config \
+-v qbittorrent_cache:/data/.cache \
+-v qbittorrent_local:/data/.local \
+-v /media/user/upan/bt:/data/downloads \
+gists/qbittorrent
+
+
+# 下面这个qbittorrent不知道为啥没速度
 sudo docker volume create qbittorrent_data
 
 sudo docker run -d \
