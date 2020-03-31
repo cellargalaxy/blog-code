@@ -107,37 +107,7 @@ public static PropertySourcesPlaceholderConfigurer properties() {
 }
 ```
 
-# 通过ContextRefresher重新加载或者魔改配置
 
-Spring Cloud Config支持热更配置，其核心在于调用ContextRefresher对象的refresh方法。这部分原理还不是很了解，据参考文章里说，Spring Cloud Config通过创建一个临时的Spring Boot Application加载配置文件。重新加载或者魔改配置的核心在于下面：
-```java
-ConfigurableApplicationContext application = ...;
-ContextRefresher contextRefresher = ...;
-PropertySource<?> propertySource = ...;
-
-application.getEnvironment().getPropertySources().addFirst(propertySource);
-contextRefresher.refresh();
-```
-ConfigurableApplicationContext就不多说了，ContextRefresher我现在是通过application.getBean()获取的。一开始我好像试过通过@Autowired注入ContextRefresher，但不记得是因为不行还是什么其他原因，现在变成了application.getBean()获取。PropertySource就是PropertySourceFactory接口返回的对象。
-
-其中有一点奇怪的，这个PropertySource需要放在队列最前面。通过debug发现，spring不知道为啥会将这个队列倒过来用，即实际上他是最后一个生效的，会覆盖前面的配置。后面的配置覆盖前面的配置，有点像@PropertySource。
-
-
-
-@PropertySource(value = "file:/data/app/taf/tafnode/data/Show.AuditTextServer/bin/conf/application.yml", factory = AuditTextServerApplication.class)
-
-@RemotePropertySource("application.yml")+beancopy
-	启动sql，业务刷新，但是要keyvalue
-
-@PropertySource+beancopy
-	写死文件path，启动sql，业务刷新还需要beancopy，支持yml
-	
-cloud+beancopy
-启动sql，业务刷新，支持yml，但要cloud
-
-
-@RefreshScope
-@Bean
 
 参考文章
 
