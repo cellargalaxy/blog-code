@@ -94,7 +94,7 @@ root：只在admin数据库中可用。超级账号，超级权限
 mongod --maxConns=100 --port=27017 --bind_ip=127.0.0.1 --dbpath=/home/cellargalaxy/file/mongodb/db --logpath=/home/cellargalaxy/file/mongodb/log/mongodb.log --auth
 ```
 当再用`mongo --host 127.0.0.1 --port 27017`登录时
-```shel
+```shell
 cellargalaxy:~$ mongo --host 127.0.0.1 --port 270mongo --host 127.0.0.1 --port 27017 -u "mycloud" -p "pass" --authenticationDatabase "mycloud"17
 MongoDB shell version v3.6.3
 connecting to: mongodb://127.0.0.1:27017/
