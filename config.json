@@ -1,85 +1,60 @@
 {
-  "gitConfig": {
-    "extension": ".md",
-    "dateRegular": "/\\d{4}-\\d{2}-\\d{2}/"
-  },
-  "siteConfig": {
+  "site": {
     "siteUrl": "https://code.cellargalaxy.top",
     "siteName": "无名の窝",
     "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
+    "avatarUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
     "description": "无名の窝",
+    "staticCssUrl": "/css/static.css",
+    "staticJsUrl": "/js/static.js",
     "backgroundImage": {
       "duration": 10000,
       "fade": 1000,
       "images": [
         {
           "description": "青春猪头-牧之原翔子-江之岛",
+          "isPc": true,
           "url": "https://i.loli.net/2020/01/25/cofTzDQXitjeVZ6.jpg"
         },
         {
           "description": "青春猪头-牧之原翔子-江之岛",
+          "isPc": true,
           "url": "https://i.loli.net/2020/01/25/sfaRJ2lVeM3NDbE.jpg"
         },
         {
           "description": "青春猪头-双葉理央",
+          "isPc": true,
           "url": "https://i.loli.net/2020/01/26/KybiTdftam5Su7x.jpg"
         },
         {
           "description": "终将成为你-七海灯子,小糸侑",
-          "url": "https://i.loli.net/2020/02/10/A2gHKpVzLoZSw5E.jpg"
-        },
-        {
-          "description": "终将成为你-七海灯子,小糸侑",
-          "url": "https://i.loli.net/2020/02/10/kEFWTnAGlB1es3u.jpg"
-        },
-        {
-          "description": "终将成为你-七海灯子,小糸侑",
+          "isPc": true,
           "url": "https://i.loli.net/2020/02/14/MAiruNcEFW2HYtg.jpg"
         },
         {
           "description": "玉子市场-北白川玉子",
-          "url": "https://i.loli.net/2020/02/05/FNXgWbVl958dZTK.jpg"
-        },
-        {
-          "description": "玉子市场-北白川玉子",
+          "isPc": true,
           "url": "https://i.loli.net/2020/02/05/EojdAxTDJsFpbPw.jpg"
         },
         {
           "description": "玉子市场-北白川玉子",
-          "url": "https://i.loli.net/2020/02/05/IDSRYLUyc9mT8ZO.jpg"
-        },
-        {
-          "description": "玉子市场-北白川玉子",
+          "isPc": true,
           "url": "https://i.loli.net/2020/02/05/iNV72wrAyn9KRFX.jpg"
         },
         {
           "description": "fate_hf-弓道馆",
+          "isPc": true,
           "url": "https://i.loli.net/2020/01/31/AXxwJDRS9fmN2uU.jpg"
         },
         {
           "description": "fate_hf-樱花树",
+          "isPc": true,
           "url": "https://i.loli.net/2020/02/01/aHhVObpJus6dnM4.jpg"
         }
       ]
-    },
-    "staticCssUrl": "/static.css",
-    "staticJsUrl": "/static.js"
+    }
   },
-  "homeConfig": {
-    "brandInterval": 6000,
-    "brands": [
-      {
-        "imageUrl": "https://i.loli.net/2020/01/21/mMEAnwY5XPC2pFb.jpg",
-        "title": "日常",
-        "texts": [
-          "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
-          "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
-        ]
-      }
-    ],
-    "navs": []
-  },
-  "navbarConfig": {
+  "navbar": {
     "brandText": "无名の窝",
     "brandUrl": "/",
     "navs": [
@@ -96,36 +71,58 @@
         "url": "/article/README/"
       },
       {
+        "text": "写作",
+        "url": "/write/"
+      },
+      {
         "text": "开源",
         "url": "https://github.com/cellargalaxy/blog-vue"
       }
     ]
   },
-  "articleConfig": {
-    "summaryLength": 5,
-    "pageSize": 10,
-    "dateFormat": "yyyy-MM-dd"
+  "home": {
+    "brandInterval": 6000,
+    "brands": [
+      {
+        "imageUrl": "https://i.loli.net/2020/01/21/mMEAnwY5XPC2pFb.jpg",
+        "title": "日常",
+        "texts": [
+          "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
+          "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
+        ]
+      }
+    ],
+    "navs": []
   },
-  "pageFootConfig": [
-    [
+  "file": {
+    "pathDateRegular": "/\\d{8}/",
+    "pathDateFormat": "YYYYMMDD",
+    "pageSize": 10,
+    "summaryRow": 6,
+    "dateStringFormat": "yyyy-MM-dd",
+    "fileConfigs": [
       {
-        "text": "Copyright © 2017-2020 ."
-      },
-      {
-        "text": "备案？不存在的"
-      },
-      {
-        "text": "Powered by Nuxt.js & Github",
-        "url": "https://github.com/"
+        "urlPath": "article",
+        "folderPath": "",
+        "extension": ".md"
       }
     ]
-  ],
-  "errorPageConfig": {
-    "404": {
-      "statusCode": "404",
-      "message": "一个页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程",
-      "returnText": "回去首页溜达",
-      "returnUrl": "/"
-    }
+  },
+  "pageFoot": {
+    "buildTimeFormat": "yyyy-MM-dd hh:mm",
+    "rowContents": [
+      [
+        {
+          "text": "Copyright © 2017-2020 ."
+        },
+        {
+          "text": "备案？不存在的"
+        },
+        {
+          "text": "Powered by Nuxt.js & Github",
+          "url": "https://github.com/"
+        }
+      ]
+    ]
   }
 }
