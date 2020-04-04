@@ -5,6 +5,10 @@ function staticInit() {
 
 function isso() {
   const comment = document.getElementById('comment')
+  if (!comment) {
+    console.log('has no comment node,load comment fail')
+    return
+  }
   const style = comment.getAttribute('style')
   comment.setAttribute('style', style + ';padding: 1em;')
   addNodeInNode(comment, 'section', {id: 'isso-thread'})
