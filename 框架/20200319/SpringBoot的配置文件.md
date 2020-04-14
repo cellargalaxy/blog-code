@@ -122,22 +122,78 @@ ConfigurableApplicationContext就不多说了，ContextRefresher我现在是通�
 
 其中有一点奇怪的，这个PropertySource需要放在队列最前面。通过debug发现，spring不知道为啥会将这个队列倒过来用，即实际上他是最后一个生效的，会覆盖前面的配置。后面的配置覆盖前面的配置，有点像@PropertySource。
 
+# 动态刷新bean
+Spring Cloud Config使用ContextRefresher实现热更，除了能热更@Configuration的配置以外，还能热更任何bean，包括数据库或者redis的。要实现数据库或者redis的热更，需要手动些方法，通过@Bean注解注册bean，然后加上@RefreshScope注解，表明这个bean是需要热更的。
 
+```java
+@Slf4j
+@Configuration
+public class BeanConfig {
+    @RefreshScope
+    @ConfigurationProperties(prefix = "spring.redis")
+    @Bean
+    public RedisProperties redisProperties() {
+        return new RedisProperties();
+    }
 
-@PropertySource(value = "file:/data/app/taf/tafnode/data/Show.AuditTextServer/bin/conf/application.yml", factory = AuditTextServerApplication.class)
+    @RefreshScope
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory(RedisProperties properties) {
+        log.info("配置redis的database: {}", properties.getDatabase());
+        log.info("配置redis的host: {}", properties.getHost());
+        log.info("配置redis的port: {}", properties.getPort());
+        
+		JedisPoolConfig poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxIdle(properties.getPool().getMaxIdle());
+        poolConfig.setMinIdle(properties.getPool().getMinIdle());
+        poolConfig.setMaxTotal(properties.getPool().getMaxActive());
+        poolConfig.setMaxWaitMillis(properties.getPool().getMaxWait());
+        poolConfig.setTestOnBorrow(true);
 
-@RemotePropertySource("application.yml")+beancopy
-	启动sql，业务刷新，但是要keyvalue
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+        jedisConnectionFactory.setDatabase(properties.getDatabase());
+        jedisConnectionFactory.setHostName(properties.getHost());
+        jedisConnectionFactory.setPort(properties.getPort());
+        jedisConnectionFactory.setPassword(properties.getPassword());
+        jedisConnectionFactory.setTimeout(properties.getTimeout());
+        jedisConnectionFactory.setPoolConfig(poolConfig);
+        return jedisConnectionFactory;
+    }
 
-@PropertySource+beancopy
-	写死文件path，启动sql，业务刷新还需要beancopy，支持yml
+    @RefreshScope
+    @Bean
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setValueSerializer(stringRedisSerializer);
+
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(stringRedisSerializer);
+
+        redisTemplate.setEnableDefaultSerializer(true);
+        redisTemplate.setDefaultSerializer(stringRedisSerializer);
+
+        return redisTemplate;
+    }
 	
-cloud+beancopy
-启动sql，业务刷新，支持yml，但要cloud
+	@RefreshScope
+    @ConfigurationProperties(prefix = "spring.datasource")
+    @Bean
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }
 
-
-@RefreshScope
-@Bean
+    @RefreshScope
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+}
+```
 
 参考文章
 
