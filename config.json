@@ -81,7 +81,7 @@
     ]
   },
   "home": {
-    "brandInterval": 6000,
+    "brandInterval": 10000,
     "brands": [
       {
         "imageUrl": "https://i.loli.net/2020/01/21/mMEAnwY5XPC2pFb.jpg",
