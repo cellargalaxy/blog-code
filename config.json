@@ -81,7 +81,7 @@
     ]
   },
   "home": {
-    "brandInterval": 6000,
+    "brandInterval": 10000,
     "brands": [
       {
         "imageUrl": "https://i.loli.net/2020/01/21/mMEAnwY5XPC2pFb.jpg",
@@ -89,6 +89,14 @@
         "texts": [
           "我们所度过的每个平凡的日常，也许就是连续不断发生的奇迹。",
           "日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。"
+        ]
+      },
+      {
+        "imageUrl": "https://i.loli.net/2020/04/19/H1MmXb9xPcYEhT2.jpg",
+        "title": "昨日之歌",
+        "texts": [
+          "明明人不会那么快改变，时间却脚步不停一直往前走去",
+          "人間そんな変わるもんじゃないのに、月日ばっかどんどん過ぎて"
         ]
       }
     ],
