@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>你今日画咗未？</title>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+</head>
+<body style="background-color: black">
+<div id="app">
+    <b-input-group size="sm">
+        <b-form-file v-model="file" placeholder="file" @change="changeFile"></b-form-file>
+        <b-form-input v-model="url" placeholder="url"></b-form-input>
+    </b-input-group>
+    <b-input-group size="sm">
+        <b-form-input v-model="leftSpace" placeholder="leftSpace"></b-form-input>
+        <b-form-input v-model="topSpace" placeholder="topSpace"></b-form-input>
+        <b-form-input v-model="imageWidth" placeholder="imageWidth"></b-form-input>
+        <b-form-input v-model="imageHeight" placeholder="imageHeight"></b-form-input>
+        <b-form-input v-model="whirl" placeholder="whirl" type="number"></b-form-input>
+        <b-form-input v-model="barrier" placeholder="barrier" type="number"></b-form-input>
+    </b-input-group>
+
+    <div style="height: 100vh;width: 100vw;background-color: black">
+        <div style="position:absolute;z-index:1">
+            <img :src="url"
+                 :style="{'height':imageHeight,'width':imageWidth,'margin-left':leftSpace,'margin-top':topSpace,'transform':'rotate('+whirl+'deg)'}"/>
+        </div>
+        <div style="position:absolute;z-index:2">
+            <div style="float:top;width:100vw;height:1px;background-color:rgba(255, 255, 255, 0.8);"
+                 :style="{'margin-top':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+                 v-for="(item, index) in heightBarrierCount" :key="index"></div>
+        </div>
+        <div style="position:absolute;z-index:3">
+            <div style="float:left;width: 1px;height:100vh;background-color:rgba(255, 255, 255, 0.8);"
+                 :style="{'margin-left':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+                 v-for="(item, index) in widthBarrierCount" :key="index"></div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+<script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+<script src="//unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="//unpkg.com/jquery.cookie@1.4.1/jquery.cookie.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            file: null,
+            url: null,
+            leftSpace: '0px',
+            topSpace: '0px',
+            imageWidth: '100px',
+            imageHeight: '100px',
+            whirl: 0,
+            barrier: 100
+        },
+        computed: {
+            widthBarrierCount: () => {
+                return Array.from({length: (document.body.clientWidth / vm.barrier) - 1})
+            },
+            heightBarrierCount: () => {
+                return Array.from({length: (document.body.clientHeight / vm.barrier) - 1})
+            },
+        },
+        methods: {
+            changeFile(event) {
+                const reader = new FileReader()
+                reader.onload = () => vm.url = reader.result
+                reader.readAsDataURL(event.target.files[0])
+            },
+        },
+    })
+
+    readConfig()
+    window.onbeforeunload = saveConfig
+
+    function readConfig() {
+        vm.url = $.cookie('url')
+        vm.leftSpace = $.cookie('leftSpace')
+        vm.topSpace = $.cookie('topSpace')
+        vm.imageWidth = $.cookie('imageWidth')
+        vm.imageHeight = $.cookie('imageHeight')
+        vm.whirl = $.cookie('whirl')
+        vm.barrier = $.cookie('barrier')
+    }
+
+    function saveConfig() {
+        $.cookie('url', vm.url, {expires: 365})
+        $.cookie('leftSpace', vm.leftSpace, {expires: 365})
+        $.cookie('topSpace', vm.topSpace, {expires: 365})
+        $.cookie('imageWidth', vm.imageWidth, {expires: 365})
+        $.cookie('imageHeight', vm.imageHeight, {expires: 365})
+        $.cookie('whirl', vm.whirl, {expires: 365})
+        $.cookie('barrier', vm.barrier, {expires: 365})
+    }
+
+</script>
+</html>
