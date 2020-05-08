@@ -75,6 +75,10 @@
         "url": "/write/"
       },
       {
+        "text": "画画",
+        "url": "/html/hua.html"
+      },
+      {
         "text": "开源",
         "url": "https://github.com/cellargalaxy/blog-vue"
       }
