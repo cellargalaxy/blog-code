@@ -1,8 +1,23 @@
 # 进程
+
 ## 孤儿进程与僵尸进程
-子进程是由父进程创建的，linux能确保子进程结束后，父进程能通过调用wait()或者waitpid()系统调用获取到子进程的信息。其实现方式是，当子进程结束后，虽然系统会是否子进程的大部分资源，如打开的文件，内存等，但是还是会保留少量资源，如pid，直到父进程调用获取子进程的信息才会释放。因此，如果子进程还没结束，父进程就结束了，那这些子进程则是孤儿进程，会被init进程（pid=1）收养，以调用释放孤儿进程的资源。但是如果子进程结束了，但他的父进程既不结束也不调用释放资源，那么这些子进程则是僵尸进程，会一直占用pid，直到系统无pid可用。
+子进程是由父进程创建的，linux能确保子进程结束后，父进程能通过调用wait()或者waitpid()系统调用获取到子进程的信息。
+其实现方式是，当子进程结束后，虽然系统会是否子进程的大部分资源，如打开的文件，内存等，但是还是会保留少量资源，如pid，直到父进程调用获取子进程的信息才会释放。
+因此，如果子进程还没结束，父进程就结束了，那这些子进程则是孤儿进程，会被init进程（pid=1）收养，以调用释放孤儿进程的资源。
+但是如果子进程结束了，但他的父进程既不结束也不调用释放资源，那么这些子进程则是僵尸进程，会一直占用pid，直到系统无pid可用。
 
 # 线程
+
+## 什么是线程安全，如何实现线程安全
+个人理解，确保多个线程操作同一个数据，不会出现错误的结果或者异常，则是线程安全。
+而实现线程安全的本质则是加锁。无论是synchronized，CAS，ConcurrentHasMap还是CountDownLatch来实现线程安全，其实都是锁。
+
+## 线程的生命周期
+1. 新建(New)：new了一个线程对象
+2. 就绪（Runnable）：调用了start方法，但线程还没获取到CPU时间
+3. 运行（Running）：线程获取到CPU时间，正在执行run方法
+4. 阻塞(Blocked)：由于各种原因被阻塞（synchronized，wait，sleep，join，IO，）
+5. 死亡(Dead)：线程完成run方法或者报异常
 
 ## 创建线程的方式
 线程创建的方法有五种（如果线程池的两种也算的话）：
@@ -12,23 +27,15 @@
 4. `void execute(new Runnable())`
 5. `<T> Future<T> submit(new Callable<T>())`
 
-## 线程的生命周期
-线程的生命周期有五种状态：
-1. 新建(New)：new了一个线程对象
-2. 就绪（Runnable）：调用了start方法，但线程还没获取到CPU时间
-3. 运行（Running）：线程获取到CPU时间，正在执行run方法
-4. 阻塞(Blocked)：由于各种原因被阻塞（synchronized，wait，sleep，join，IO，）
-5. 死亡(Dead)：线程完成run方法或者报异常
-
-## 什么是线程安全，如何实现线程安全
-个人理解，确保多个线程操作同一个数据，不会出现错误的结果或者异常，则是线程安全。而实现线程安全的本质则是加锁。无论是synchronized，CAS，ConcurrentHasMap还是countdownlatch来实现线程安全，其实都是锁。
-
 ## 如何关闭线程
-调用废弃的stop方法会立即抛出ThreadDeath异常，并释放全部的锁来停止线程。但是这个异常可能在任何地方抛出，如果抛出的时候正在做什么操作而被强行中断，则有可能导致安全问题。因此正确的方式应该是调用interrupt方法。调用interrupt方法后，我们需要在run方法的逻辑里自行判断当前线程是否被调用过interrupt方法，来自行决定是否要结束线程。其中获取是否被调用过interrupt方法的方法有：
+调用废弃的stop方法会立即抛出ThreadDeath异常，并释放全部的锁来停止线程。
+但是这个异常可能在任何地方抛出，如果抛出的时候正在做什么操作而被强行中断，则有可能导致安全问题。
+因此正确的方式应该是调用interrupt方法，我们需要在run方法的逻辑里自行判断当前线程是否被调用过interrupt方法，来自行决定是否要结束线程。
+其中获取是否被调用过interrupt方法的方法有：
 ```java
 //返回是否被调用过interrupt方法，重置中断状态
 public static boolean interrupted() {
-	return currentThread().isInterrupted(true);
+	return isInterrupted(true);
 }
 //返回是否被调用过interrupt方法，不重置中断状态
 public boolean isInterrupted() {
@@ -37,17 +44,15 @@ public boolean isInterrupted() {
 //返回是否被调用过interrupt方法，入参含义是是否重置中断状态
 private native boolean isInterrupted(boolean ClearInterrupted);
 
-//如果是在会抛InterruptedException的方法时调用interrupt方法，或抛InterruptedException
+//如果在sleep，wait等方法时调用interrupt方法，会抛InterruptedException
 //但抛了InterruptedException之后，会重置中断状态，因为已经通过抛异常来通知了
-//如sleep，wait方法等
 ```
 
-## ThreadLocal的内存溢出
-理解ThreadLocal的内存溢出先需要理解ThreadLocal是怎样实现的。首先，每一个线程回去维护一个ThreadLocalMap。这个map的key是ThreadLocal，value是我们要保存的数据，所以ThreadLocal是不保存我们的数据的，但与普通map不一样的是，ThreadLocalMap对ThreadLocal的引用是弱引用。这是为了当强应用ThreadLocal的对象都被回收之后，由于ThreadLocalMap只是对ThreadLocal进行弱引用，来保证ThreadLocal对象能被回收，剩下key是null的value。但是ThreadLocalMap对value的引用确是强应用，因此ThreadLocal被回收之后value却不会被回收，久而久之就会内存溢出。ThreadLocalMap在设计的时候已经考虑到这个问题，所以在调用他的get，set和remove方法的时候会随带把key是null的value删除。但这毕竟需要调用方法来清理，依然难免会内存溢出，所以随手调用ThreadLocalMap的remove方法是个好习惯。最后，为什么不把value也弄成弱引用呢？value只被ThreadLocalMap弱引用就被回收了呀，转个头ThreadLocal来取值发现value是null的？
-
-
 ## 死锁
-死锁是例如两个线程都各自持有一个锁的同时尝试去获取对方的锁，并且获取对方的锁是无条件等待的，不获取到对方的锁就不释放自己的锁的情形。要解决死锁，【两个线程都各自持有一个锁的同时尝试去获取对方的锁】是很难避免。因此问题的根源在于【获取对方的锁是无条件等待的】，也就是如果获取锁的超时的或者是尝试性的，总会有一方因为等不下去而退出，并做业务回滚，释放自己的锁，使得另外一方获取到全部的锁。因此可以用CAS或者Lock来替代synchronized。
+死锁是例如两个线程都各自持有一个锁的同时尝试去获取对方的锁，并且获取对方的锁是无条件等待的，不获取到对方的锁就不释放自己的锁的情形。
+要解决死锁，【两个线程都各自持有一个锁的同时尝试去获取对方的锁】是很难避免。
+因此问题的根源在于【获取对方的锁是无条件等待的】，也就是如果获取锁的超时的或者是尝试性的，总会有一方因为等不下去，回滚业务，释放自己的锁，使得另外一方获取到全部的锁。
+因此可以用CAS或者Lock来替代synchronized。
 ```java
 public class LockTest {
 	private static String lock1 = "lock1";
@@ -109,9 +114,9 @@ public ThreadPoolExecutor(
 
 饱和策略有四种：
 + CallerRunsPolicy：当线程池没有关闭，使用添加任务的线程来执行此任务
-+ AbortPolicy：直接抛出RejectedExecutionException异常
 + DiscardPolicy：丢弃任务
 + DiscardOldestPolicy：丢弃最旧的任务，在尝试添加此任务
++ AbortPolicy：直接抛出RejectedExecutionException异常
 
 ## 创建线程池的方式
 Executors类提供了好几个静态方法来创建不同类型的线程池，但是这些方法都只是返回新new的ThreadPoolExecutor对象，区别只是ThreadPoolExecutor构造函数的入参值不同
