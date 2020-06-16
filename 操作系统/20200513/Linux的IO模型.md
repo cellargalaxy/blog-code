@@ -55,3 +55,27 @@ UNIX/Linux提供了select、poll、epoll系统调用（epoll比poll、select效�
 
 # 总结
 ![五种IO模型](/file/blog/code/20200513/644.webp)
+
+# select
+调用select会把相应socket的fd_set从用户空间拷贝到内核空间，阻塞直到有就绪事件或者超时返回。
+调用返回会把fd_set从内核空间拷贝回用户空间。之后遍历整个fd_set，来找就绪的socket。
+select几乎在所以平台都支持，但是在linux上限制了单进程fd最大为1024，并且需要通过轮询遍历来查找就绪socket，效率低。
+
+# poll
+poll基本跟select一样，但是他使用链表保存fd_set，所以没有fd数量限制。
+但是依然存在来回的拷贝和遍历socket问题。
+
+# epoll
+epoll的fd限制于硬件资源，1G内存机器能打开十万连接。
+只有活跃的socket才会调用回调函数，并且通过内存映射共享内存，减少数据拷贝。
+epoll对fd的操作模式有两种，水平触发（level trigger，LT）和边缘触发（edge trigger，ET）
++ 水平触发：内核会通知某个socket就绪，如果不做任何操作的话，内核还会继续通知
++ 边缘触发：内核之后通知一次就绪事件，如果不做任何操作的话，内核下次就不再通知了
+
+参考文章：
+
+[聊聊IO多路复用之select、poll、epoll详解](https://www.jianshu.com/p/dfd940e7fca2)
+
+[大话 Select、Poll、Epoll](https://cloud.tencent.com/developer/article/1005481)
+
+[select和epoll区别](https://www.jianshu.com/p/430141f95ddb)
