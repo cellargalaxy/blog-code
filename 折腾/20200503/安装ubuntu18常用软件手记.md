@@ -25,8 +25,12 @@ sudo apt update -y
 ```shell script
 sudo apt-get install -y fcitx-bin
 sudo apt-get install -y fcitx-table
+im-config -n fcitx
+reboot
+
 sudo dpkg -i 软件包名.deb
 sudo apt-get install -f
+fcitx-config-gtk3
 ```
 候选框乱码
 ```shell script
@@ -88,8 +92,11 @@ sudo systemctl start docker
 sudo vim /etc/docker/daemon.json
 {
   "registry-mirrors": [
-    "https://hub-mirror.c.163.com"
-  ]
+    "https://hub-mirror.c.163.com",
+    "https://mirror.baidubce.com"
+  ],
+  "log-driver":"json-file",
+  "log-opts": {"max-size":"5m", "max-file":"3"}
 }
 sudo systemctl daemon-reload
 sudo systemctl restart docker
