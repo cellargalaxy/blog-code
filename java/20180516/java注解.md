@@ -73,16 +73,16 @@ public class A{}
 注解值的提取离不开反射。反射中的Class，Field，Method等都有相应的方法获取其注解
 ```java
 public static void main(String[] args) {
-	Class clazz=A.class;
-	//是否有此注解
-	boolean hasAnnotation = clazz.isAnnotationPresent(TestAnnotation.class);
-	if (hasAnnotation) {
-		//获取@TestAnnotation注解
-		TestAnnotation testAnnotation = clazz.getAnnotation(TestAnnotation.class);
-		//虽说是属性，但还是像方法一样调用获取
-		System.out.println("id:"+testAnnotation.id());
-		System.out.println("msg:"+testAnnotation.msg());
-	}
+    Class clazz=A.class;
+    //是否有此注解
+    boolean hasAnnotation = clazz.isAnnotationPresent(TestAnnotation.class);
+    if (hasAnnotation) {
+        //获取@TestAnnotation注解
+        TestAnnotation testAnnotation = clazz.getAnnotation(TestAnnotation.class);
+        //虽说是属性，但还是像方法一样调用获取
+        System.out.println("id:"+testAnnotation.id());
+        System.out.println("msg:"+testAnnotation.msg());
+    }
 }
 ```
 

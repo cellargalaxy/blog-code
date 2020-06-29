@@ -62,25 +62,25 @@ public class User {
 ```java
 public @interface PropertySource {
     //指定一个配置文件
-	String name() default "";
+    String name() default "";
     //指定多个配置文件，如果多个配置文件直接配置冲突，从左往右，右边优先级高
-	String[] value();
+    String[] value();
     //如果配置文件没找着，是否忽略
-	boolean ignoreResourceNotFound() default false;
+    boolean ignoreResourceNotFound() default false;
     //配置文件编码
-	String encoding() default "";
+    String encoding() default "";
     //配置文件的解析工厂
-	Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
+    Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
 }
 ```
 
 其中比较有趣的是配置文件的解析工厂，默认是PropertySourceFactory，是个接口，其唯一的实现是DefaultPropertySourceFactory：
 ```java
 public class DefaultPropertySourceFactory implements PropertySourceFactory {
-	@Override
-	public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
-		return (name != null ? new ResourcePropertySource(name, resource) : new ResourcePropertySource(resource));
-	}
+    @Override
+    public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
+        return (name != null ? new ResourcePropertySource(name, resource) : new ResourcePropertySource(resource));
+    }
 }
 ```
 
@@ -88,10 +88,10 @@ public class DefaultPropertySourceFactory implements PropertySourceFactory {
 
 ```java
 public class MyYamlPropertySourceFactory implements PropertySourceFactory {
-	@Override
-	public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
-		return return new YamlPropertySourceLoader().load(name, resource).get(0);
-	}
+    @Override
+    public PropertySource<?> createPropertySource(@Nullable String name, EncodedResource resource) throws IOException {
+        return return new YamlPropertySourceLoader().load(name, resource).get(0);
+    }
 }
 ```
 
@@ -99,11 +99,11 @@ public class MyYamlPropertySourceFactory implements PropertySourceFactory {
 ```java
 @Bean
 public static PropertySourcesPlaceholderConfigurer properties() {
-	PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-	YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-	yaml.setResources(new ClassPathResource("simple.yml"));
-	propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
-	return propertySourcesPlaceholderConfigurer;
+    PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+    YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
+    yaml.setResources(new ClassPathResource("simple.yml"));
+    propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+    return propertySourcesPlaceholderConfigurer;
 }
 ```
 
@@ -143,7 +143,7 @@ public class BeanConfig {
         log.info("配置redis的host: {}", properties.getHost());
         log.info("配置redis的port: {}", properties.getPort());
         
-		JedisPoolConfig poolConfig = new JedisPoolConfig();
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxIdle(properties.getPool().getMaxIdle());
         poolConfig.setMinIdle(properties.getPool().getMinIdle());
         poolConfig.setMaxTotal(properties.getPool().getMaxActive());
@@ -179,8 +179,8 @@ public class BeanConfig {
 
         return redisTemplate;
     }
-	
-	@RefreshScope
+    
+    @RefreshScope
     @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     public DataSource dataSource() {

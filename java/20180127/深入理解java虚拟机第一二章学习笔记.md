@@ -47,12 +47,12 @@ import java.util.LinkedList;
  * Created by cellargalaxy on 18-1-28.
  */
 public class HeapOOM {
-	public static void main(String[] args) {
-		LinkedList<HeapOOM> linkedList=new LinkedList<HeapOOM>();
-		while (true) {
-			linkedList.add(new HeapOOM());
-		}
-	}
+    public static void main(String[] args) {
+        LinkedList<HeapOOM> linkedList=new LinkedList<HeapOOM>();
+        while (true) {
+            linkedList.add(new HeapOOM());
+        }
+    }
 }
 ```
 结果
@@ -62,7 +62,7 @@ java.lang.OutOfMemoryError: Java heap space
 Dumping heap to java_pid7166.hprof ...
 Heap dump file created [3193473 bytes in 0.016 secs]
 Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
-	at HeapOOM.main(HeapOOM.java:14)
+    at HeapOOM.main(HeapOOM.java:14)
 ```
 ```java
 /**
@@ -73,21 +73,21 @@ Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
  * Created by cellargalaxy on 18-1-28.
  */
 public class JavaVMStackSOF {
-	private int stackLength=0;
-	public void stackLeak(){
-		stackLength++;
-		stackLeak();
-	}
-	
-	public static void main(String[] args) {
-		JavaVMStackSOF javaVMStackSOF=new JavaVMStackSOF();
-		try {
-			javaVMStackSOF.stackLeak();
-		}catch (Throwable e){
-			System.out.println("stack length: "+javaVMStackSOF.stackLength);
-			e.printStackTrace();
-		}
-	}
+    private int stackLength=0;
+    public void stackLeak(){
+        stackLength++;
+        stackLeak();
+    }
+    
+    public static void main(String[] args) {
+        JavaVMStackSOF javaVMStackSOF=new JavaVMStackSOF();
+        try {
+            javaVMStackSOF.stackLeak();
+        }catch (Throwable e){
+            System.out.println("stack length: "+javaVMStackSOF.stackLength);
+            e.printStackTrace();
+        }
+    }
 }
 ```
 结果
@@ -101,10 +101,10 @@ Error: A fatal exception has occurred. Program will exit.
 cellargalaxy:/tmp/jvm$ java -Xss228k JavaVMStackSOF 
 stack length: 18427
 java.lang.StackOverflowError
-	at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
-	at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
-	at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
-	……
+    at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
+    at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
+    at jvm.JavaVMStackSOF.stackLeak(JavaVMStackSOF.java:14)
+    ……
 ```
 ```java
 /**
@@ -115,26 +115,26 @@ java.lang.StackOverflowError
  * Created by cellargalaxy on 18-1-28.
  */
 public class JavaVMStackOOM {
-	private void dontstop(){
-		while (true) {
-		
-		}
-	}
-	public void stackLeakByThread(){
-		while (true) {
-			Thread thread=new Thread(new Runnable() {
-				public void run() {
-					dontstop();
-				}
-			});
-			thread.start();
-		}
-	}
-	
-	public static void main(String[] args) {
-		JavaVMStackOOM javaVMStackOOM=new JavaVMStackOOM();
-		javaVMStackOOM.stackLeakByThread();
-	}
+    private void dontstop(){
+        while (true) {
+        
+        }
+    }
+    public void stackLeakByThread(){
+        while (true) {
+            Thread thread=new Thread(new Runnable() {
+                public void run() {
+                    dontstop();
+                }
+            });
+            thread.start();
+        }
+    }
+    
+    public static void main(String[] args) {
+        JavaVMStackOOM javaVMStackOOM=new JavaVMStackOOM();
+        javaVMStackOOM.stackLeakByThread();
+    }
 }
 ```
 结果没有结果，我的是jdk8，书的应该是jdk7，cpu占用100%，内存没有明显增加
@@ -150,13 +150,13 @@ public class JavaVMStackOOM {
  * Created by cellargalaxy on 18-1-28.
  */
 public class RuntimeConstantPoolOOM {
-	public static void main(String[] args) {
-		String string1=new StringBuilder("计算机").append("软件").toString();
-		System.out.println(string1==string1.intern());
-		
-		String string2=new StringBuilder("ja").append("va").toString();
-		System.out.println(string2==string2.intern());
-	}
+    public static void main(String[] args) {
+        String string1=new StringBuilder("计算机").append("软件").toString();
+        System.out.println(string1==string1.intern());
+        
+        String string2=new StringBuilder("ja").append("va").toString();
+        System.out.println(string2==string2.intern());
+    }
 }
 ```
 结果
@@ -177,17 +177,17 @@ import java.lang.reflect.Field;
  * Created by cellargalaxy on 18-1-28.
  */
 public class DirectMemoryOOM {
-	private final static int _1MB=1024*1024;
-	public static void main(String[] args) throws IllegalAccessException {
-		while (true) {
-			Field unsafeField= Unsafe.class.getDeclaredFields()[0];
-			unsafeField.setAccessible(true);
-			Unsafe unsafe= (Unsafe) unsafeField.get(null);
-			while (true) {
-				unsafe.allocateMemory(_1MB);
-			}
-		}
-	}
+    private final static int _1MB=1024*1024;
+    public static void main(String[] args) throws IllegalAccessException {
+        while (true) {
+            Field unsafeField= Unsafe.class.getDeclaredFields()[0];
+            unsafeField.setAccessible(true);
+            Unsafe unsafe= (Unsafe) unsafeField.get(null);
+            while (true) {
+                unsafe.allocateMemory(_1MB);
+            }
+        }
+    }
 }
 ```
 结果，内存占到百分之九十几，之后被自动杀死

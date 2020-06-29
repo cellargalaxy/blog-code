@@ -35,11 +35,11 @@
 ```java
 //返回是否被调用过interrupt方法，重置中断状态
 public static boolean interrupted() {
-	return isInterrupted(true);
+    return isInterrupted(true);
 }
 //返回是否被调用过interrupt方法，不重置中断状态
 public boolean isInterrupted() {
-	return isInterrupted(false);
+    return isInterrupted(false);
 }
 //返回是否被调用过interrupt方法，入参含义是是否重置中断状态
 private native boolean isInterrupted(boolean ClearInterrupted);
@@ -55,23 +55,23 @@ private native boolean isInterrupted(boolean ClearInterrupted);
 因此可以用CAS或者Lock来替代synchronized。
 ```java
 public class LockTest {
-	private static String lock1 = "lock1";
-	private static String lock2 = "lock2";
+    private static String lock1 = "lock1";
+    private static String lock2 = "lock2";
 
-	public static void main(String[] args) {
-		new Thread(() -> {
-			synchronized (lock1) {
-				synchronized (lock2) {
-				}
-			}
-		}).start();
-		new Thread(() -> {
-			synchronized (lock2) {
-				synchronized (lock1) {
-				}
-			}
-		}).start();
-	}
+    public static void main(String[] args) {
+        new Thread(() -> {
+            synchronized (lock1) {
+                synchronized (lock2) {
+                }
+            }
+        }).start();
+        new Thread(() -> {
+            synchronized (lock2) {
+                synchronized (lock1) {
+                }
+            }
+        }).start();
+    }
 }
 ```
 

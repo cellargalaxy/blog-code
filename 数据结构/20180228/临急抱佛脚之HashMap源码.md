@@ -18,52 +18,52 @@
 
 HashMap的hash并不是简单通过key的hashCode求余了事。HashMap会根据key的hashCode在进行计算才得到hash值。
 ```java
-	/**
-	 * 计算key的hash
-	 * @param key
-	 * @return
-	 */
-	static final int hash(Object key) {
-		int h;
-		return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
-	}
+    /**
+     * 计算key的hash
+     * @param key
+     * @return
+     */
+    static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
 ```
 
 # HashMap的节点
 
 这里当链表的节点超过8个的时候，就会转换成红黑树，当红黑树的节点不断被删除，少于6个的时候，就会变成链表。这里有链表和红黑树两种数据结构，所以也有两种节点。链表的节点`HashMap.Node<K,V>`，除了存储的key-value外，还有链表所需的next节点，实现`Map.Entry<K, V>`接口。而红黑树的节点继承于`LinkedHashMap.Entry<K,V>`，`LinkedHashMap.Entry<K,V>`继承于`HashMap.Node<K,V>`。所以为红黑树的节点是链表节点的孙子类。
 ```java
-	/**
-	 * 链表的节点，实现Map.Entry<K, V>接口，可以当Map.Entry<K, V>返回
-	 * 有hash，key，value，next
-	 * @param <K>
-	 * @param <V>
-	 */
-	static class Node<K, V> implements Map.Entry<K, V> {
-		final int hash;
-		final K key;
-		V value;
-		HashMapCode.Node<K, V> next;
-		
-		Node(int hash, K key, V value, HashMapCode.Node<K, V> next) {
-			this.hash = hash;
-			this.key = key;
-			this.value = value;
-			this.next = next;
-		}
-		//。。。
-	}
+    /**
+     * 链表的节点，实现Map.Entry<K, V>接口，可以当Map.Entry<K, V>返回
+     * 有hash，key，value，next
+     * @param <K>
+     * @param <V>
+     */
+    static class Node<K, V> implements Map.Entry<K, V> {
+        final int hash;
+        final K key;
+        V value;
+        HashMapCode.Node<K, V> next;
+        
+        Node(int hash, K key, V value, HashMapCode.Node<K, V> next) {
+            this.hash = hash;
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+        //。。。
+    }
 static final class TreeNode<K, V> extends LinkedHashMap.Entry<K, V> {
-	HashMap.TreeNode<K, V> parent;  // red-black tree links
-	HashMap.TreeNode<K, V> left;
-	HashMap.TreeNode<K, V> right;
-	HashMap.TreeNode<K, V> prev;    // needed to unlink next upon deletion
-	boolean red;
+    HashMap.TreeNode<K, V> parent;  // red-black tree links
+    HashMap.TreeNode<K, V> left;
+    HashMap.TreeNode<K, V> right;
+    HashMap.TreeNode<K, V> prev;    // needed to unlink next upon deletion
+    boolean red;
 
-	TreeNode(int hash, K key, V val, HashMap.Node<K, V> next) {
-		super(hash, key, val, next);
-	}
-	//。。。
+    TreeNode(int hash, K key, V val, HashMap.Node<K, V> next) {
+        super(hash, key, val, next);
+    }
+    //。。。
 }
 ```
 
@@ -73,34 +73,34 @@ HashMap的源代码我只看了个开头，但是我发现了些套路。如上�
 
 ```java
 /**
-	 * 根据hash和key，在getNode获取节点，节点不为空返回节点的value
-	 * @param key
-	 * @return
-	 */
-	public V get(Object key) {
-		HashMapCode.Node<K, V> e;
-		return (e = getNode(hash(key), key)) == null ? null : e.value;
-	}
-	
-	final HashMapCode.Node<K, V> getNode(int hash, Object key) {
-		HashMapCode.Node<K, V>[] tab;
-		HashMapCode.Node<K, V> first, e;
-		int n;
-		K k;
-		if ((tab = table) != null && (n = tab.length) > 0 && (first = tab[(n - 1) & hash]) != null) {//table有数据并且索引处不为空
-			if (first.hash == hash && ((k = first.key) == key || (key != null && key.equals(k))))//索引下的链表/树第一个元素通常就是
-				return first;
-			if ((e = first.next) != null) {//第一个不是的话，如果就遍历一下链表/树
-				if (first instanceof HashMapCode.TreeNode)//从树里获取节点
-					return ((HashMapCode.TreeNode<K, V>) first).getTreeNode(hash, key);
-				do {//遍历链表
-					if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
-						return e;
-				} while ((e = e.next) != null);
-			}
-		}
-		return null;
-	}
+     * 根据hash和key，在getNode获取节点，节点不为空返回节点的value
+     * @param key
+     * @return
+     */
+    public V get(Object key) {
+        HashMapCode.Node<K, V> e;
+        return (e = getNode(hash(key), key)) == null ? null : e.value;
+    }
+    
+    final HashMapCode.Node<K, V> getNode(int hash, Object key) {
+        HashMapCode.Node<K, V>[] tab;
+        HashMapCode.Node<K, V> first, e;
+        int n;
+        K k;
+        if ((tab = table) != null && (n = tab.length) > 0 && (first = tab[(n - 1) & hash]) != null) {//table有数据并且索引处不为空
+            if (first.hash == hash && ((k = first.key) == key || (key != null && key.equals(k))))//索引下的链表/树第一个元素通常就是
+                return first;
+            if ((e = first.next) != null) {//第一个不是的话，如果就遍历一下链表/树
+                if (first instanceof HashMapCode.TreeNode)//从树里获取节点
+                    return ((HashMapCode.TreeNode<K, V>) first).getTreeNode(hash, key);
+                do {//遍历链表
+                    if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
+                        return e;
+                } while ((e = e.next) != null);
+            }
+        }
+        return null;
+    }
 ```
 
 # HashMap的容量参数
@@ -134,208 +134,208 @@ final float loadFactor;
 函数处理用来扩展table之外，还会用来初始化table。每次扩展table之后大小将翻2倍，并返回新的table。至于为什么是翻2倍而不是翻3倍，是为了保证table的长度始终是2的次方。这样在计算索引时，就不需要通过求余计算，只需要通过`&`位运算就能得到均匀的分布，计算方法为`(n - 1) & hash`，n是table长度。至于为什么我也不知道。
 ```java
 /**
-	 * 所以resize之后，空table会被初始化，非空table会翻倍
-	 * @return
-	 */
-	final HashMapCode.Node<K, V>[] resize() {
-		HashMapCode.Node<K, V>[] oldTab = table;
-		int oldCap = (oldTab == null) ? 0 : oldTab.length;
-		int oldThr = threshold;
-		int newCap, newThr = 0;
-		if (oldCap > 0) {//普通情况下table有数据
-			if (oldCap >= MAXIMUM_CAPACITY) {//旧容量》最大容量，就直接返回旧table
-				threshold = Integer.MAX_VALUE;
-				return oldTab;
-			} else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY && oldCap >= DEFAULT_INITIAL_CAPACITY)//没大于最大容量就把容量和阈值翻倍
-				newThr = oldThr << 1;
-		} else if (oldThr > 0)//旧阈值》0就赋值给新阈值，这个应该是对于构造函数传入的初始容量的处理，因为构造函数里并没有操作过容量，只是给阈值赋值了，解释了这里把旧阈值赋值给新容量的奇怪
-			newCap = oldThr;
-		else {//本来table就是空的，用来初始化table
-			newCap = DEFAULT_INITIAL_CAPACITY;
-			newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
-		}
-		if (newThr == 0) {
-			float ft = (float) newCap * loadFactor;
-			newThr = (newCap < MAXIMUM_CAPACITY && ft < (float) MAXIMUM_CAPACITY ? (int) ft : Integer.MAX_VALUE);
-		}
-		threshold = newThr;
-		//创建新tbale
-		@SuppressWarnings({"rawtypes", "unchecked"})
-		HashMapCode.Node<K, V>[] newTab = (HashMapCode.Node<K, V>[]) new HashMapCode.Node[newCap];
-		table = newTab;
-		if (oldTab != null) {
-			for (int j = 0; j < oldCap; ++j) {//把旧table值转移到新table
-				HashMapCode.Node<K, V> e;
-				if ((e = oldTab[j]) != null) {
-					oldTab[j] = null;
-					if (e.next == null)//索引下已有一个节点
-						newTab[e.hash & (newCap - 1)] = e;
-					else if (e instanceof HashMapCode.TreeNode)//如果是树就放到树里？
-						((HashMapCode.TreeNode<K, V>) e).split(this, newTab, j, oldCap);
-					else {//最后这个应该就是链表了
-						HashMapCode.Node<K, V> loHead = null, loTail = null;
-						HashMapCode.Node<K, V> hiHead = null, hiTail = null;
-						HashMapCode.Node<K, V> next;
-						do {
-							next = e.next;
-							if ((e.hash & oldCap) == 0) {
-								if (loTail == null)
-									loHead = e;
-								else
-									loTail.next = e;
-								loTail = e;
-							} else {
-								if (hiTail == null)
-									hiHead = e;
-								else
-									hiTail.next = e;
-								hiTail = e;
-							}
-						} while ((e = next) != null);
-						if (loTail != null) {
-							loTail.next = null;
-							newTab[j] = loHead;
-						}
-						if (hiTail != null) {
-							hiTail.next = null;
-							newTab[j + oldCap] = hiHead;
-						}
-					}
-				}
-			}
-		}
-		return newTab;
-	}
+     * 所以resize之后，空table会被初始化，非空table会翻倍
+     * @return
+     */
+    final HashMapCode.Node<K, V>[] resize() {
+        HashMapCode.Node<K, V>[] oldTab = table;
+        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+        int oldThr = threshold;
+        int newCap, newThr = 0;
+        if (oldCap > 0) {//普通情况下table有数据
+            if (oldCap >= MAXIMUM_CAPACITY) {//旧容量》最大容量，就直接返回旧table
+                threshold = Integer.MAX_VALUE;
+                return oldTab;
+            } else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY && oldCap >= DEFAULT_INITIAL_CAPACITY)//没大于最大容量就把容量和阈值翻倍
+                newThr = oldThr << 1;
+        } else if (oldThr > 0)//旧阈值》0就赋值给新阈值，这个应该是对于构造函数传入的初始容量的处理，因为构造函数里并没有操作过容量，只是给阈值赋值了，解释了这里把旧阈值赋值给新容量的奇怪
+            newCap = oldThr;
+        else {//本来table就是空的，用来初始化table
+            newCap = DEFAULT_INITIAL_CAPACITY;
+            newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+        }
+        if (newThr == 0) {
+            float ft = (float) newCap * loadFactor;
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float) MAXIMUM_CAPACITY ? (int) ft : Integer.MAX_VALUE);
+        }
+        threshold = newThr;
+        //创建新tbale
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        HashMapCode.Node<K, V>[] newTab = (HashMapCode.Node<K, V>[]) new HashMapCode.Node[newCap];
+        table = newTab;
+        if (oldTab != null) {
+            for (int j = 0; j < oldCap; ++j) {//把旧table值转移到新table
+                HashMapCode.Node<K, V> e;
+                if ((e = oldTab[j]) != null) {
+                    oldTab[j] = null;
+                    if (e.next == null)//索引下已有一个节点
+                        newTab[e.hash & (newCap - 1)] = e;
+                    else if (e instanceof HashMapCode.TreeNode)//如果是树就放到树里？
+                        ((HashMapCode.TreeNode<K, V>) e).split(this, newTab, j, oldCap);
+                    else {//最后这个应该就是链表了
+                        HashMapCode.Node<K, V> loHead = null, loTail = null;
+                        HashMapCode.Node<K, V> hiHead = null, hiTail = null;
+                        HashMapCode.Node<K, V> next;
+                        do {
+                            next = e.next;
+                            if ((e.hash & oldCap) == 0) {
+                                if (loTail == null)
+                                    loHead = e;
+                                else
+                                    loTail.next = e;
+                                loTail = e;
+                            } else {
+                                if (hiTail == null)
+                                    hiHead = e;
+                                else
+                                    hiTail.next = e;
+                                hiTail = e;
+                            }
+                        } while ((e = next) != null);
+                        if (loTail != null) {
+                            loTail.next = null;
+                            newTab[j] = loHead;
+                        }
+                        if (hiTail != null) {
+                            hiTail.next = null;
+                            newTab[j + oldCap] = hiHead;
+                        }
+                    }
+                }
+            }
+        }
+        return newTab;
+    }
 ```
 
 # HashMap的put方法
 ```java
-	/**
-	 * 在putVal里通过计算hash，key，value以及两个不知道有啥用的boolean来put值
-	 * @param key
-	 * @param value
-	 * @return
-	 */
-	public V put(K key, V value) {
-		return putVal(hash(key), key, value, false, true);
-	}
-	
-	final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
-		HashMapCode.Node<K, V>[] tab;
-		HashMapCode.Node<K, V> p;
-		int n, i;
-		if ((tab = table) == null || (n = tab.length) == 0)//table没数据，初始化一下
-			n = (tab = resize()).length;
-		if ((p = tab[i = (n - 1) & hash]) == null)//如果索引下为空，直接放进去
-			tab[i] = newNode(hash, key, value, null);
-		else {
-			HashMapCode.Node<K, V> e;//如果索引下不为空，这个e就是用来存储value的节点
-			K k;
-			if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))//第一个节点往往就是
-				e = p;
-			else if (p instanceof HashMapCode.TreeNode)//否则往树里put
-				e = ((HashMapCode.TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
-			else {//最后是链表里put
-				for (int binCount = 0; ; ++binCount) {
-					if ((e = p.next) == null) {
-						p.next = newNode(hash, key, value, null);
-						if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
-							treeifyBin(tab, hash);
-						break;
-					}
-					if (e.hash == hash &&
-							((k = e.key) == key || (key != null && key.equals(k))))
-						break;
-					p = e;
-				}
-			}
-			if (e != null) { //put成功了，设新值，反旧值
-				V oldValue = e.value;
-				if (!onlyIfAbsent || oldValue == null)
-					e.value = value;
-				afterNodeAccess(e);
-				return oldValue;
-			}
-		}
-		++modCount;//上面的if，如果索引下为空，或者e为空，证明是新put而不是替换旧值，modCount+1
-		if (++size > threshold)//检查是否超过阈值
-			resize();
-		afterNodeInsertion(evict);
-		return null;
-	}
+    /**
+     * 在putVal里通过计算hash，key，value以及两个不知道有啥用的boolean来put值
+     * @param key
+     * @param value
+     * @return
+     */
+    public V put(K key, V value) {
+        return putVal(hash(key), key, value, false, true);
+    }
+    
+    final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+        HashMapCode.Node<K, V>[] tab;
+        HashMapCode.Node<K, V> p;
+        int n, i;
+        if ((tab = table) == null || (n = tab.length) == 0)//table没数据，初始化一下
+            n = (tab = resize()).length;
+        if ((p = tab[i = (n - 1) & hash]) == null)//如果索引下为空，直接放进去
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            HashMapCode.Node<K, V> e;//如果索引下不为空，这个e就是用来存储value的节点
+            K k;
+            if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))//第一个节点往往就是
+                e = p;
+            else if (p instanceof HashMapCode.TreeNode)//否则往树里put
+                e = ((HashMapCode.TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
+            else {//最后是链表里put
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                            ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { //put成功了，设新值，反旧值
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;//上面的if，如果索引下为空，或者e为空，证明是新put而不是替换旧值，modCount+1
+        if (++size > threshold)//检查是否超过阈值
+            resize();
+        afterNodeInsertion(evict);
+        return null;
+    }
 ```
 
 # HashMap的链表变红黑树方法
 ```java
-	final void treeifyBin(HashMapCode.Node<K, V>[] tab, int hash) {
-		int n, index;
-		HashMapCode.Node<K, V> e;
-		if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)//table空或者table大小小于变树最小容量，就扩容？为啥？
-			resize();
-		else if ((e = tab[index = (n - 1) & hash]) != null) {//hash的索引为有数据
-			HashMapCode.TreeNode<K, V> hd = null, tl = null;
-			do {
-				HashMapCode.TreeNode<K, V> p = replacementTreeNode(e, null);//将链表节点封装成树节点
-				if (tl == null)
-					hd = p;
-				else {
-					p.prev = tl;
-					tl.next = p;
-				}
-				tl = p;
-			} while ((e = e.next) != null);//好像就是把链表全部节点都封装成树节点？
-			if ((tab[index] = hd) != null)//不懂这个判断的含义
-				hd.treeify(tab);//听闻这个就是把链表转换成红黑树的方法
-		}
-	}
+    final void treeifyBin(HashMapCode.Node<K, V>[] tab, int hash) {
+        int n, index;
+        HashMapCode.Node<K, V> e;
+        if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)//table空或者table大小小于变树最小容量，就扩容？为啥？
+            resize();
+        else if ((e = tab[index = (n - 1) & hash]) != null) {//hash的索引为有数据
+            HashMapCode.TreeNode<K, V> hd = null, tl = null;
+            do {
+                HashMapCode.TreeNode<K, V> p = replacementTreeNode(e, null);//将链表节点封装成树节点
+                if (tl == null)
+                    hd = p;
+                else {
+                    p.prev = tl;
+                    tl.next = p;
+                }
+                tl = p;
+            } while ((e = e.next) != null);//好像就是把链表全部节点都封装成树节点？
+            if ((tab[index] = hd) != null)//不懂这个判断的含义
+                hd.treeify(tab);//听闻这个就是把链表转换成红黑树的方法
+        }
+    }
 ```
 
 # HashMap的阈值
 ```java
-	/**
-	 * 用容量计算容量阈值？然而我完全看不懂他在算什么。。。
-	 * @param cap
-	 * @return
-	 */
-	static final int tableSizeFor(int cap) {
-		int n = cap - 1;
-		n |= n >>> 1;
-		n |= n >>> 2;
-		n |= n >>> 4;
-		n |= n >>> 8;
-		n |= n >>> 16;
-		return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
-	}
+    /**
+     * 用容量计算容量阈值？然而我完全看不懂他在算什么。。。
+     * @param cap
+     * @return
+     */
+    static final int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
 ```
 
 # HashMap的构造方法
 最后是HashMap的构造方法。我们可以看到构造方法并没有对table进行初始化，table的初始化都是交给resize方法的。
 ```java
 /**
-	 * 输入初始容量与负荷
-	 * 检查0《容量《最大容量，负荷是数字 && 0《负荷
-	 * 计算容量阈值并赋值，赋值负荷
-	 * @param initialCapacity
-	 * @param loadFactor
-	 */
-	public HashMapCode(int initialCapacity, float loadFactor) {
-		if (initialCapacity < 0)
-			throw new IllegalArgumentException("Illegal initial capacity: " + initialCapacity);
-		if (initialCapacity > MAXIMUM_CAPACITY)
-			initialCapacity = MAXIMUM_CAPACITY;
-		if (loadFactor <= 0 || Float.isNaN(loadFactor))
-			throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
-		this.loadFactor = loadFactor;
-		this.threshold = tableSizeFor(initialCapacity);
-	}
-	
-	public HashMapCode(int initialCapacity) {
-		this(initialCapacity, DEFAULT_LOAD_FACTOR);
-	}
-	
-	public HashMapCode() {
-		this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
-	}
+     * 输入初始容量与负荷
+     * 检查0《容量《最大容量，负荷是数字 && 0《负荷
+     * 计算容量阈值并赋值，赋值负荷
+     * @param initialCapacity
+     * @param loadFactor
+     */
+    public HashMapCode(int initialCapacity, float loadFactor) {
+        if (initialCapacity < 0)
+            throw new IllegalArgumentException("Illegal initial capacity: " + initialCapacity);
+        if (initialCapacity > MAXIMUM_CAPACITY)
+            initialCapacity = MAXIMUM_CAPACITY;
+        if (loadFactor <= 0 || Float.isNaN(loadFactor))
+            throw new IllegalArgumentException("Illegal load factor: " + loadFactor);
+        this.loadFactor = loadFactor;
+        this.threshold = tableSizeFor(initialCapacity);
+    }
+    
+    public HashMapCode(int initialCapacity) {
+        this(initialCapacity, DEFAULT_LOAD_FACTOR);
+    }
+    
+    public HashMapCode() {
+        this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
+    }
 ```
 
 HashMap的remove方法没看，但是相信也是围绕四种状态来进行操作的。

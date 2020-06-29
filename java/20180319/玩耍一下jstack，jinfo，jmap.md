@@ -5,13 +5,13 @@ jstack用于查看java的某个进程的线程的堆栈信息，先来个死循�
 由于图床有点bug，上传不了图片，所以就先盗别人的图顶着先了。
 ```java
 class Jstack {
-	public static void main(String[] args) {
-		while (true) {
-			if (Math.random()==Math.random()) {
-				System.out.println("zhe me qiao");
-			}
-		}
-	}
+    public static void main(String[] args) {
+        while (true) {
+            if (Math.random()==Math.random()) {
+                System.out.println("zhe me qiao");
+            }
+        }
+    }
 }
 ```
 
@@ -36,25 +36,25 @@ The -F option can be used when the target process is not responding
 ```
 "Finalizer" #3 daemon prio=8 os_prio=0 tid=0x00007f0bec083800 nid=0x4777 in Object.wait() [0x00007f0bc74d2000]
    java.lang.Thread.State: WAITING (on object monitor)
-	at java.lang.Object.wait(Native Method)
-	- waiting on <0x00000000d6e08ec8> (a java.lang.ref.ReferenceQueue$Lock)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
-	- locked <0x00000000d6e08ec8> (a java.lang.ref.ReferenceQueue$Lock)
-	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:164)
-	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:209)
+    at java.lang.Object.wait(Native Method)
+    - waiting on <0x00000000d6e08ec8> (a java.lang.ref.ReferenceQueue$Lock)
+    at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:143)
+    - locked <0x00000000d6e08ec8> (a java.lang.ref.ReferenceQueue$Lock)
+    at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:164)
+    at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:209)
 
 "Reference Handler" #2 daemon prio=10 os_prio=0 tid=0x00007f0bec07f000 nid=0x4776 in Object.wait() [0x00007f0bc75d3000]
    java.lang.Thread.State: WAITING (on object monitor)
-	at java.lang.Object.wait(Native Method)
-	- waiting on <0x00000000d6e06b68> (a java.lang.ref.Reference$Lock)
-	at java.lang.Object.wait(Object.java:502)
-	at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
-	- locked <0x00000000d6e06b68> (a java.lang.ref.Reference$Lock)
-	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
+    at java.lang.Object.wait(Native Method)
+    - waiting on <0x00000000d6e06b68> (a java.lang.ref.Reference$Lock)
+    at java.lang.Object.wait(Object.java:502)
+    at java.lang.ref.Reference.tryHandlePending(Reference.java:191)
+    - locked <0x00000000d6e06b68> (a java.lang.ref.Reference$Lock)
+    at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:153)
 
 "main" #1 prio=5 os_prio=0 tid=0x00007f0bec009800 nid=0x4770 runnable [0x00007f0bf4082000]
    java.lang.Thread.State: RUNNABLE
-	at Jstack.main(T.java:4)
+    at Jstack.main(T.java:4)
 ```
 
 # jinfo
@@ -66,20 +66,20 @@ Server compiler detected.
 JVM version is 25.131-b11
 Java System Properties:
 
-java.vm.name = Java HotSpot(TM) 64-Bit Server VM	虚拟机
-user.dir = /tmp		执行目录
-java.runtime.version = 1.8.0_131-b11		jre版本
-os.arch = amd64		cpu？
+java.vm.name = Java HotSpot(TM) 64-Bit Server VM    虚拟机
+user.dir = /tmp        执行目录
+java.runtime.version = 1.8.0_131-b11        jre版本
+os.arch = amd64        cpu？
 
-os.name = Linux		系统
-java.class.version = 52.0		class版本
-sun.management.compiler = HotSpot 64-Bit Tiered Compilers		还是虚拟机
+os.name = Linux        系统
+java.class.version = 52.0        class版本
+sun.management.compiler = HotSpot 64-Bit Tiered Compilers        还是虚拟机
 user.home = 用户目录
 user.name = 用户名
-sun.java.command = Jstack -Xms30m -Xmx60m		执行java命令时添加的jvm参数
-java.version = 1.8.0_131		jdk版本？
+sun.java.command = Jstack -Xms30m -Xmx60m        执行java命令时添加的jvm参数
+java.version = 1.8.0_131        jdk版本？
 
-VM Flags:		其余乱七八糟的参数？
+VM Flags:        其余乱七八糟的参数？
 Non-default VM flags: -XX:CICompilerCount=3 -XX:InitialHeapSize=130023424 -XX:MaxHeapSize=2069889024 -XX:MaxNewSize=689963008 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=42991616 -XX:OldSize=87031808 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseFastUnorderedTimeStamps -XX:+UseParallelGC 
 Command line:
 ```
@@ -89,13 +89,13 @@ jmap用于查看内存情况，用法：`jmap -heap 进程pid`
 ```java
 import java.util.LinkedList;
 public class HeapOOM {
-	public static void main(String[] args) throws InterruptedException {
-		LinkedList<HeapOOM> linkedList=new LinkedList<HeapOOM>();
-		while (true) {
-			linkedList.add(new HeapOOM());
-			Thread.sleep(1);
-		}
-	}
+    public static void main(String[] args) throws InterruptedException {
+        LinkedList<HeapOOM> linkedList=new LinkedList<HeapOOM>();
+        while (true) {
+            linkedList.add(new HeapOOM());
+            Thread.sleep(1);
+        }
+    }
 }
 ```
 执行`java -Xms2m -Xmx2m -XX:+HeapDumpOnOutOfMemoryError HeapOOM`，限制一下堆大小。然后好不容易试到了下面的jmap
@@ -111,12 +111,12 @@ Parallel GC with 4 thread(s)
 Heap Configuration:
    MinHeapFreeRatio         = 0
    MaxHeapFreeRatio         = 100
-   MaxHeapSize              = 2097152 (2.0MB)		指定的最大对内存2m
+   MaxHeapSize              = 2097152 (2.0MB)        指定的最大对内存2m
    NewSize                  = 1572864 (1.5MB)
    MaxNewSize               = 1572864 (1.5MB)
-   OldSize                  = 524288 (0.5MB)		应该是指老年代大小
+   OldSize                  = 524288 (0.5MB)        应该是指老年代大小
    NewRatio                 = 2
-   SurvivorRatio            = 8			新生代那个复制算法的比例
+   SurvivorRatio            = 8            新生代那个复制算法的比例
    MetaspaceSize            = 21807104 (20.796875MB)
    CompressedClassSpaceSize = 1073741824 (1024.0MB)
    MaxMetaspaceSize         = 17592186044415 MB
@@ -125,10 +125,10 @@ Heap Configuration:
 Heap Usage:
 PS Young Generation
 Eden Space:
-   capacity = 524288 (0.5MB)					应该是Eden的大小
-   used     = 335896 (0.32033538818359375MB)	Eden用了0.32m
-   free     = 188392 (0.17966461181640625MB)	Eden剩余0.179m
-   64.06707763671875% used						Eden用了64%
+   capacity = 524288 (0.5MB)                    应该是Eden的大小
+   used     = 335896 (0.32033538818359375MB)    Eden用了0.32m
+   free     = 188392 (0.17966461181640625MB)    Eden剩余0.179m
+   64.06707763671875% used                        Eden用了64%
 From Space:
    capacity = 524288 (0.5MB)
    used     = 515640 (0.49175262451171875MB)
@@ -139,7 +139,7 @@ To Space:
    used     = 0 (0.0MB)
    free     = 524288 (0.5MB)
    0.0% used
-PS Old Generation								老年代
+PS Old Generation                                老年代
    capacity = 524288 (0.5MB)
    used     = 385672 (0.36780548095703125MB)
    free     = 138616 (0.13219451904296875MB)
@@ -175,9 +175,9 @@ Heap Usage:
 PS Young Generation
 Eden Space:
    capacity = 524288 (0.5MB)
-   used     = 524280 (0.49999237060546875MB)		Eden用了0.49m
-   free     = 8 (7.62939453125E-6MB)				Eden几乎没剩了
-   99.99847412109375% used							Eden用了99%
+   used     = 524280 (0.49999237060546875MB)        Eden用了0.49m
+   free     = 8 (7.62939453125E-6MB)                Eden几乎没剩了
+   99.99847412109375% used                            Eden用了99%
 From Space:
    capacity = 524288 (0.5MB)
    used     = 515640 (0.49175262451171875MB)
@@ -188,7 +188,7 @@ To Space:
    used     = 0 (0.0MB)
    free     = 524288 (0.5MB)
    0.0% used
-PS Old Generation			Eden满了，老年代的使用也增加，所剩无几了
+PS Old Generation            Eden满了，老年代的使用也增加，所剩无几了
    capacity = 524288 (0.5MB)
    used     = 454496 (0.433441162109375MB)
    free     = 69792 (0.066558837890625MB)

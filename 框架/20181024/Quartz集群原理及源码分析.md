@@ -17,46 +17,46 @@ org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
 首先用户获得的是一个Scheduler接口，常用实现类为StdScheduler。但其实StdScheduler基本上是个代理类，代理的是QuartzScheduler类。
 ```java
 public class QuartzScheduler implements RemotableQuartzScheduler {
-	//资源管理类，用于管理线程池（默认实现是SimpleThreadPool），JobStore等
-	private QuartzSchedulerResources resources;
-	//同于处理任务调度
-	private QuartzSchedulerThread schedThread;
-	...
-	//Job的监听器
-	private HashMap<String, JobListener> internalJobListeners = new HashMap<String, JobListener>(10);
-	//Trigger的监听器
-	private HashMap<String, TriggerListener> internalTriggerListeners = new HashMap<String, TriggerListener>(10);
-	//Scheduler的监听器
-	private ArrayList<SchedulerListener> internalSchedulerListeners = new ArrayList<SchedulerListener>(10);
-	...
+    //资源管理类，用于管理线程池（默认实现是SimpleThreadPool），JobStore等
+    private QuartzSchedulerResources resources;
+    //同于处理任务调度
+    private QuartzSchedulerThread schedThread;
+    ...
+    //Job的监听器
+    private HashMap<String, JobListener> internalJobListeners = new HashMap<String, JobListener>(10);
+    //Trigger的监听器
+    private HashMap<String, TriggerListener> internalTriggerListeners = new HashMap<String, TriggerListener>(10);
+    //Scheduler的监听器
+    private ArrayList<SchedulerListener> internalSchedulerListeners = new ArrayList<SchedulerListener>(10);
+    ...
 }
 ```
 
 而QuartzSchedulerThread的run方法是调度的主循环方法。可以猜测调用acquireNextTriggers方法需要在保证同步的情况下找到并激活trigger
 ```java
 public class QuartzScheduler implements RemotableQuartzScheduler {
-	public void run() {
-		...
-		while (!halted.get()) {
-			...
-			
-			//调度器在trigger队列中寻找30秒内一定数目的trigger(需要保证集群节点的系统时间一致)
-			triggers = qsRsrcs.getJobStore().acquireNextTriggers(
-				now + idleWaitTime, Math.min(availThreadCount, qsRsrcs.getMaxBatchSize()), qsRsrcs.getBatchTimeWindow());
+    public void run() {
+        ...
+        while (!halted.get()) {
+            ...
+            
+            //调度器在trigger队列中寻找30秒内一定数目的trigger(需要保证集群节点的系统时间一致)
+            triggers = qsRsrcs.getJobStore().acquireNextTriggers(
+                now + idleWaitTime, Math.min(availThreadCount, qsRsrcs.getMaxBatchSize()), qsRsrcs.getBatchTimeWindow());
 
-			...
+            ...
 
-			//触发trigger
-			List<TriggerFiredResult> res = qsRsrcs.getJobStore().triggersFired(triggers);
+            //触发trigger
+            List<TriggerFiredResult> res = qsRsrcs.getJobStore().triggersFired(triggers);
 
-			...
+            ...
 
-			//释放trigger
-			for (int i = 0; i < triggers.size(); i++) {
-				qsRsrcs.getJobStore().releaseAcquiredTrigger(triggers.get(i));
-			}
-		}			 
-	}
+            //释放trigger
+            for (int i = 0; i < triggers.size(); i++) {
+                qsRsrcs.getJobStore().releaseAcquiredTrigger(triggers.get(i));
+            }
+        }             
+    }
 }
 ```
 
@@ -64,109 +64,109 @@ public class QuartzScheduler implements RemotableQuartzScheduler {
 
 ```java
 public abstract class JobStoreSupport implements JobStore, Constants {
-	public List<OperableTrigger> acquireNextTriggers(final long noLaterThan, final int maxCount, final long timeWindow) throws JobPersistenceException {
-		...
-		return executeInNonManagedTXLock(lockName, ...);
-	}
-	
-	protected <T> T executeInNonManagedTXLock( String lockName,   TransactionCallback<T> txCallback, final TransactionValidator<T> txValidator) throws JobPersistenceException {
-		try {
-			if (lockName != null) {
-				...
-				//获取锁
-				transOwner = getLockHandler().obtainLock(conn, lockName);
-			}
-			
-			if (conn == null) {
-				conn = getNonManagedTXConnection();
-			}
-			
-			final T result = txCallback.execute(conn);
-			try {
-				commitConnection(conn);
-			} catch (JobPersistenceException e) {
-				...
-			}
+    public List<OperableTrigger> acquireNextTriggers(final long noLaterThan, final int maxCount, final long timeWindow) throws JobPersistenceException {
+        ...
+        return executeInNonManagedTXLock(lockName, ...);
+    }
+    
+    protected <T> T executeInNonManagedTXLock( String lockName,   TransactionCallback<T> txCallback, final TransactionValidator<T> txValidator) throws JobPersistenceException {
+        try {
+            if (lockName != null) {
+                ...
+                //获取锁
+                transOwner = getLockHandler().obtainLock(conn, lockName);
+            }
+            
+            if (conn == null) {
+                conn = getNonManagedTXConnection();
+            }
+            
+            final T result = txCallback.execute(conn);
+            try {
+                commitConnection(conn);
+            } catch (JobPersistenceException e) {
+                ...
+            }
 
-			return result;
-		} catch (JobPersistenceException e) {
-			rollbackConnection(conn);
-			throw e;
-		} catch (RuntimeException e) {
-			rollbackConnection(conn);
-			throw new JobPersistenceException("Unexpected runtime exception: "
-					+ e.getMessage(), e);
-		} finally {
-			try {
-				releaseLock(lockName, transOwner);//释放锁
-			} finally {
-				cleanupConnection(conn);
-			}
-		}
-	}
+            return result;
+        } catch (JobPersistenceException e) {
+            rollbackConnection(conn);
+            throw e;
+        } catch (RuntimeException e) {
+            rollbackConnection(conn);
+            throw new JobPersistenceException("Unexpected runtime exception: "
+                    + e.getMessage(), e);
+        } finally {
+            try {
+                releaseLock(lockName, transOwner);//释放锁
+            } finally {
+                cleanupConnection(conn);
+            }
+        }
+    }
 }
 ```
 
 在上面的getLockHandler().obtainLock(conn, lockName);里，调用的是Semaphore接口的obtainLock方法。Semaphore只有三个方法。其最后的实现StdRowLockSemaphore类。
 ```java
 public interface Semaphore {
-	boolean obtainLock(Connection conn, String lockName) throws LockException;
+    boolean obtainLock(Connection conn, String lockName) throws LockException;
 
-	void releaseLock(String lockName) throws LockException;
+    void releaseLock(String lockName) throws LockException;
 
-	boolean requiresConnection();
+    boolean requiresConnection();
 }
 
 public class StdRowLockSemaphore extends DBSemaphore {
-	public static final String SELECT_FOR_LOCK = "SELECT * FROM "
-			+ TABLE_PREFIX_SUBST + TABLE_LOCKS + " WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
-			+ " AND " + COL_LOCK_NAME + " = ? FOR UPDATE";
+    public static final String SELECT_FOR_LOCK = "SELECT * FROM "
+            + TABLE_PREFIX_SUBST + TABLE_LOCKS + " WHERE " + COL_SCHEDULER_NAME + " = " + SCHED_NAME_SUBST
+            + " AND " + COL_LOCK_NAME + " = ? FOR UPDATE";
 
-	public static final String INSERT_LOCK = "INSERT INTO "
-		+ TABLE_PREFIX_SUBST + TABLE_LOCKS + "(" + COL_SCHEDULER_NAME + ", " + COL_LOCK_NAME + ") VALUES (" 
-		+ SCHED_NAME_SUBST + ", ?)"; 
-		
-	//指定锁定SQL
-	protected void executeSQL(Connection conn, String lockName, String expandedSQL) throws LockException {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = conn.prepareStatement(expandedSQL);
-			ps.setString(1, lockName);
-			...
-			rs = ps.executeQuery();
-			if (!rs.next()) {
-				throw new SQLException(Util.rtp(
-					"No row exists in table " + TABLE_PREFIX_SUBST +
-					TABLE_LOCKS + " for lock named: " + lockName, getTablePrefix()));
-			}
-		} catch (SQLException sqle) {
-			...
-		} finally {
-			...
-		}
-	  }
-	}
+    public static final String INSERT_LOCK = "INSERT INTO "
+        + TABLE_PREFIX_SUBST + TABLE_LOCKS + "(" + COL_SCHEDULER_NAME + ", " + COL_LOCK_NAME + ") VALUES (" 
+        + SCHED_NAME_SUBST + ", ?)"; 
+        
+    //指定锁定SQL
+    protected void executeSQL(Connection conn, String lockName, String expandedSQL) throws LockException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement(expandedSQL);
+            ps.setString(1, lockName);
+            ...
+            rs = ps.executeQuery();
+            if (!rs.next()) {
+                throw new SQLException(Util.rtp(
+                    "No row exists in table " + TABLE_PREFIX_SUBST +
+                    TABLE_LOCKS + " for lock named: " + lockName, getTablePrefix()));
+            }
+        } catch (SQLException sqle) {
+            ...
+        } finally {
+            ...
+        }
+      }
+    }
 
-	//获取QRTZ_LOCKS行级锁
-	public boolean obtainLock(Connection conn, String lockName) throws LockException {
-		lockName = lockName.intern();
+    //获取QRTZ_LOCKS行级锁
+    public boolean obtainLock(Connection conn, String lockName) throws LockException {
+        lockName = lockName.intern();
 
-		if (!isLockOwner(conn, lockName)) {
-			executeSQL(conn, lockName, expandedSQL);
-			getThreadLocks().add(lockName);
-		}
-		return true;
-	}
+        if (!isLockOwner(conn, lockName)) {
+            executeSQL(conn, lockName, expandedSQL);
+            getThreadLocks().add(lockName);
+        }
+        return true;
+    }
 
-	//释放QRTZ_LOCKS行级锁
-	public void releaseLock(Connection conn, String lockName) {
-		lockName = lockName.intern();
-		if (isLockOwner(conn, lockName)) {
-			getThreadLocks().remove(lockName);
-		}
-		......
-	}
+    //释放QRTZ_LOCKS行级锁
+    public void releaseLock(Connection conn, String lockName) {
+        lockName = lockName.intern();
+        if (isLockOwner(conn, lockName)) {
+            getThreadLocks().remove(lockName);
+        }
+        ......
+    }
 }
 ```
 

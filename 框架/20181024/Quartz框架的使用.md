@@ -12,15 +12,15 @@ Job是个接口，只有一个叫execute的方法。业务逻辑需要我们实�
  * @time 2018/10/23
  */
 public class HelloJob implements Job {
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		System.out.println("任务开始执行");
-		JobDataMap jobDataMap = context.getMergedJobDataMap();
-		for (Map.Entry<String, Object> entry : jobDataMap.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
-		System.out.println("任务执行完成");
-	}
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        System.out.println("任务开始执行");
+        JobDataMap jobDataMap = context.getMergedJobDataMap();
+        for (Map.Entry<String, Object> entry : jobDataMap.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        System.out.println("任务执行完成");
+    }
 }
 ```
 
@@ -28,9 +28,9 @@ public class HelloJob implements Job {
 
 ```java
 JobDetail jobDetail = org.quartz.JobBuilder.newJob(HelloJob.class)
-	.withIdentity("myJob", "group1")
-	.usingJobData("iKey", "iValue")
-	.build();
+    .withIdentity("myJob", "group1")
+    .usingJobData("iKey", "iValue")
+    .build();
 ```
 
 ## Trigger
@@ -39,22 +39,22 @@ Trigger用于指定JobDetail的执行时间。可以设定一个优先级priorit
 SimpleTrigger用于间隔一段时间来重复执行。
 ```java
 Trigger trigger = newTrigger()
-	.withIdentity("trigger3", "group1")//名字和组名
-	.startAt(myTimeToStartFiring)//开始执行的时间，当然也有结束时间可以设定
-	.withSchedule(simpleSchedule()
-		.withIntervalInSeconds(10)//每隔十秒
-		.withRepeatCount(10))//重复十次，永远用repeatForever方法
-	.usingJobData("yKey", "yValue")//Trigger也可以给Job传递数据
-	.build();
+    .withIdentity("trigger3", "group1")//名字和组名
+    .startAt(myTimeToStartFiring)//开始执行的时间，当然也有结束时间可以设定
+    .withSchedule(simpleSchedule()
+        .withIntervalInSeconds(10)//每隔十秒
+        .withRepeatCount(10))//重复十次，永远用repeatForever方法
+    .usingJobData("yKey", "yValue")//Trigger也可以给Job传递数据
+    .build();
 ```
 
 CronTrigger则通过指定cron来执行。
 ```java
 Trigger trigger = newTrigger()
-	.withIdentity("trigger3", "group1")//名字和组名
-	.withSchedule(cronSchedule("0 42 10 * * ?"))//指定cron
-	.usingJobData("yKey", "yValue")//Trigger也可以给Job传递数据
-	.build();
+    .withIdentity("trigger3", "group1")//名字和组名
+    .withSchedule(cronSchedule("0 42 10 * * ?"))//指定cron
+    .usingJobData("yKey", "yValue")//Trigger也可以给Job传递数据
+    .build();
 ```
 
 ## Scheduler
@@ -82,11 +82,11 @@ scheduler.shutdown();
 激活失败的处理策略对于不同的Scheduler略有不同。全部Scheduler的默认使用MISFIRE_INSTRUCTION_SMART_POLICY，即“聪明策略”。这个聪明策略的策略是：
 ```
 如果任务不重复执行：
-	MISFIRE_INSTRUCTION_FIRE_NOW
+    MISFIRE_INSTRUCTION_FIRE_NOW
 如果任务永远执行：
-	MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
+    MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_REMAINING_COUNT
 如果任务重复执行且有限：
-	MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
+    MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT
 ```
 
 SimpleTrigger的策略：
@@ -114,21 +114,21 @@ MISFIRE_INSTRUCTION_DO_NOTHING 目前不执行，然后按计划执行
 ```java
 //捕获异常，立即重新执行任务
 try {
-	
+    
 } catch (Exception e) {
-	JobExecutionException e2 = new JobExecutionException(e);
-	//立即重新执行任务
-	e2.setRefireImmediately(true);
-	throw e2;
+    JobExecutionException e2 = new JobExecutionException(e);
+    //立即重新执行任务
+    e2.setRefireImmediately(true);
+    throw e2;
 }
 //捕获异常，取消全部任务
 try {
-	
+    
 } catch (Exception e) {
-	JobExecutionException e2 = new JobExecutionException(e);
-	//取消全部跟这个Job有关的trigger，避免再执行这个trigger
-	e2.setUnscheduleAllTriggers(true);
-	throw e2;
+    JobExecutionException e2 = new JobExecutionException(e);
+    //取消全部跟这个Job有关的trigger，避免再执行这个trigger
+    e2.setUnscheduleAllTriggers(true);
+    throw e2;
 }
 ```
 

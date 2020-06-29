@@ -14,47 +14,47 @@ import java.util.Date;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeClientInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
-	public TimeClientInboundHandlerAdapter() {
-		super();
-		System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter()");
-	}
+    public TimeClientInboundHandlerAdapter() {
+        super();
+        System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter()");
+    }
 
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter.channelRead()");
-//		ByteBuf byteBuf = (ByteBuf) msg;//如果没有TimeDecoder这个先前处理，则直接转型为ByteBuf
-//		try {
-//			long ll = byteBuf.readLong();
-//			System.out.println("发来的时间: " + new Date(ll));
-//		} finally {
-//			byteBuf.release();//在ByteBuf读操作之后，据说是个重要的操作，要在finally里确保执行
-//		}
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter.channelRead()");
+//        ByteBuf byteBuf = (ByteBuf) msg;//如果没有TimeDecoder这个先前处理，则直接转型为ByteBuf
+//        try {
+//            long ll = byteBuf.readLong();
+//            System.out.println("发来的时间: " + new Date(ll));
+//        } finally {
+//            byteBuf.release();//在ByteBuf读操作之后，据说是个重要的操作，要在finally里确保执行
+//        }
 
-		Time time = (Time) msg;//如果有TimeDecoder这个先前处理，就可以直接转型为Time了
-		System.out.println("发来的时间: " + time.createDate());
+        Time time = (Time) msg;//如果有TimeDecoder这个先前处理，就可以直接转型为Time了
+        System.out.println("发来的时间: " + time.createDate());
 
-		ByteBuf byteBuf = ctx.alloc().buffer(8);//创建一个ByteBuf，大小为8个字节，装下一个long
-		byteBuf.writeLong(new Date().getTime());//往byteBuf写数据
-		//往管道(?)里写数据。可以用ctx.write(Object)和ctx.flush()代替
-		//ctx.write(Object)并不会往管道里写数据，而是只是把数据存放在缓存里，所以需要ctx.flush()
-		//当然由于是非阻塞IO，这个方法执行后不代表数据已经发送，所以返回一个ChannelFuture对象
-		ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
-		//给channelFuture添加一个监听器，当数据发送完成就关闭管道
-		channelFuture.addListener(new ChannelFutureListener() {
-			@Override
-			public void operationComplete(ChannelFuture channelFuture) throws Exception {
-				ctx.close();
-			}
-		});
-	}
+        ByteBuf byteBuf = ctx.alloc().buffer(8);//创建一个ByteBuf，大小为8个字节，装下一个long
+        byteBuf.writeLong(new Date().getTime());//往byteBuf写数据
+        //往管道(?)里写数据。可以用ctx.write(Object)和ctx.flush()代替
+        //ctx.write(Object)并不会往管道里写数据，而是只是把数据存放在缓存里，所以需要ctx.flush()
+        //当然由于是非阻塞IO，这个方法执行后不代表数据已经发送，所以返回一个ChannelFuture对象
+        ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
+        //给channelFuture添加一个监听器，当数据发送完成就关闭管道
+        channelFuture.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                ctx.close();
+            }
+        });
+    }
 
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter.exceptionCaught()");
-		ctx.close();//发送异常就关闭管道
-		cause.printStackTrace();//打印异常
-	}
-	//。。。
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeClientInboundHandlerAdapter.exceptionCaught()");
+        ctx.close();//发送异常就关闭管道
+        cause.printStackTrace();//打印异常
+    }
+    //。。。
 }
 ```
 ```java
@@ -67,103 +67,103 @@ import java.util.Date;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeServerInboundHandlerAdapter extends ChannelInboundHandlerAdapter {
-	public TimeServerInboundHandlerAdapter() {
-		super();
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter()");
-	}
+    public TimeServerInboundHandlerAdapter() {
+        super();
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter()");
+    }
 
-	//当channel处于活动状态（连接到远程节点）被调用
-	@Override
-	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelActive()");
-		ByteBuf byteBuf = ctx.alloc().buffer(8);
-		byteBuf.writeLong(new Date().getTime());
-		ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
-	}
+    //当channel处于活动状态（连接到远程节点）被调用
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelActive()");
+        ByteBuf byteBuf = ctx.alloc().buffer(8);
+        byteBuf.writeLong(new Date().getTime());
+        ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
+    }
 
-	//当处理过程中发生异常时被调用
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.exceptionCaught()");
-		ctx.close();
-		cause.printStackTrace();
-	}
+    //当处理过程中发生异常时被调用
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.exceptionCaught()");
+        ctx.close();
+        cause.printStackTrace();
+    }
 
-	//该方法不允许将此ChannelHandler共享复用
-	@Override
-	public boolean isSharable() {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.isSharable()");
-		return super.isSharable();
-	}
+    //该方法不允许将此ChannelHandler共享复用
+    @Override
+    public boolean isSharable() {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.isSharable()");
+        return super.isSharable();
+    }
 
-	@Override
-	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.handlerAdded()");
-		super.handlerAdded(ctx);
-	}
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.handlerAdded()");
+        super.handlerAdded(ctx);
+    }
 
-	@Override
-	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.handlerRemoved()");
-		super.handlerRemoved(ctx);
-	}
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.handlerRemoved()");
+        super.handlerRemoved(ctx);
+    }
 
-	//当channel被注册到EventLoop时被调用
-	@Override
-	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelRegistered()");
-		super.channelRegistered(ctx);
-	}
+    //当channel被注册到EventLoop时被调用
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelRegistered()");
+        super.channelRegistered(ctx);
+    }
 
-	//当channel已经被创建，但还未注册到EventLoop（或者从EventLoop中注销）被调用
-	@Override
-	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelUnregistered()");
-		super.channelUnregistered(ctx);
-	}
+    //当channel已经被创建，但还未注册到EventLoop（或者从EventLoop中注销）被调用
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelUnregistered()");
+        super.channelUnregistered(ctx);
+    }
 
-	//当channel处于非活动状态（没有连接到远程节点）被调用
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelInactive()");
-		super.channelInactive(ctx);
-	}
+    //当channel处于非活动状态（没有连接到远程节点）被调用
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelInactive()");
+        super.channelInactive(ctx);
+    }
 
-	//当从channel读取数据时被调用
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelRead()");
-		Time time = (Time) msg;
-		System.out.println("发来的时间: " + time.createDate());
-		ctx.close();
-	}
+    //当从channel读取数据时被调用
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelRead()");
+        Time time = (Time) msg;
+        System.out.println("发来的时间: " + time.createDate());
+        ctx.close();
+    }
 
-	//当channel的上一个读操作完成时被调用
-	@Override
-	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelReadComplete()");
-		super.channelReadComplete(ctx);
-	}
+    //当channel的上一个读操作完成时被调用
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelReadComplete()");
+        super.channelReadComplete(ctx);
+    }
 
-	//当ChannelInboundHandler.fireUserEventTriggered()方法被调用时被调用
-	@Override
-	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.userEventTriggered()");
-		super.userEventTriggered(ctx, evt);
-	}
+    //当ChannelInboundHandler.fireUserEventTriggered()方法被调用时被调用
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.userEventTriggered()");
+        super.userEventTriggered(ctx, evt);
+    }
 
-	//当channel的可写状态发生改变时被调用
-	@Override
-	public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelWritabilityChanged()");
-		super.channelWritabilityChanged(ctx);
-	}
+    //当channel的可写状态发生改变时被调用
+    @Override
+    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.channelWritabilityChanged()");
+        super.channelWritabilityChanged(ctx);
+    }
 
-	@Override
-	protected void ensureNotSharable() {
-		System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.ensureNotSharable()");
-		super.ensureNotSharable();
-	}
+    @Override
+    protected void ensureNotSharable() {
+        System.out.println("调用:" + hashCode() + ": TimeServerInboundHandlerAdapter.ensureNotSharable()");
+        super.ensureNotSharable();
+    }
 }
 ```
 ```java
@@ -177,99 +177,99 @@ import java.net.SocketAddress;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeServerOutboundHandlerAdapter extends ChannelOutboundHandlerAdapter {
-	public TimeServerOutboundHandlerAdapter() {
-		super();
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter()");
-	}
+    public TimeServerOutboundHandlerAdapter() {
+        super();
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter()");
+    }
 
-	//当请求将Channel绑定到一个地址时被调用
-	//ChannelPromise是ChannelFuture的一个子接口，定义了如setSuccess(),setFailure()等方法
-	@Override
-	public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.bind()");
-		super.bind(ctx, localAddress, promise);
-	}
+    //当请求将Channel绑定到一个地址时被调用
+    //ChannelPromise是ChannelFuture的一个子接口，定义了如setSuccess(),setFailure()等方法
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.bind()");
+        super.bind(ctx, localAddress, promise);
+    }
 
-	//当请求将Channel连接到远程节点时被调用
-	@Override
-	public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.connect()");
-		super.connect(ctx, remoteAddress, localAddress, promise);
-	}
+    //当请求将Channel连接到远程节点时被调用
+    @Override
+    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.connect()");
+        super.connect(ctx, remoteAddress, localAddress, promise);
+    }
 
-	//当请求将Channel从远程节点断开时被调用
-	@Override
-	public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.disconnect()");
-		super.disconnect(ctx, promise);
-	}
+    //当请求将Channel从远程节点断开时被调用
+    @Override
+    public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.disconnect()");
+        super.disconnect(ctx, promise);
+    }
 
-	//当请求关闭Channel时被调用
-	@Override
-	public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.close()");
-		super.close(ctx, promise);
-	}
+    //当请求关闭Channel时被调用
+    @Override
+    public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.close()");
+        super.close(ctx, promise);
+    }
 
-	//当请求将Channel从它的EventLoop中注销时被调用
-	@Override
-	public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.deregister()");
-		super.deregister(ctx, promise);
-	}
+    //当请求将Channel从它的EventLoop中注销时被调用
+    @Override
+    public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.deregister()");
+        super.deregister(ctx, promise);
+    }
 
-	//当请求从Channel读取数据时被调用
-	@Override
-	public void read(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.read()");
-		super.read(ctx);
-	}
+    //当请求从Channel读取数据时被调用
+    @Override
+    public void read(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.read()");
+        super.read(ctx);
+    }
 
-	//当请求通过Channel将数据写到远程节点时被调用
-	@Override
-	public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.write()");
-		super.write(ctx, msg, promise);
-	}
+    //当请求通过Channel将数据写到远程节点时被调用
+    @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.write()");
+        super.write(ctx, msg, promise);
+    }
 
-	//当请求通过Channel将缓冲中的数据冲刷到远程节点时被调用
-	@Override
-	public void flush(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.flush()");
-		super.flush(ctx);
-	}
+    //当请求通过Channel将缓冲中的数据冲刷到远程节点时被调用
+    @Override
+    public void flush(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.flush()");
+        super.flush(ctx);
+    }
 
-	@Override
-	protected void ensureNotSharable() {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.ensureNotSharable()");
-		super.ensureNotSharable();
-	}
+    @Override
+    protected void ensureNotSharable() {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.ensureNotSharable()");
+        super.ensureNotSharable();
+    }
 
-	//该方法不允许将此ChannelHandler共享复用
-	@Override
-	public boolean isSharable() {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.isSharable()");
-		return super.isSharable();
-	}
+    //该方法不允许将此ChannelHandler共享复用
+    @Override
+    public boolean isSharable() {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.isSharable()");
+        return super.isSharable();
+    }
 
-	@Override
-	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.handlerAdded()");
-		super.handlerAdded(ctx);
-	}
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.handlerAdded()");
+        super.handlerAdded(ctx);
+    }
 
-	@Override
-	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.handlerRemoved()");
-		super.handlerRemoved(ctx);
-	}
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.handlerRemoved()");
+        super.handlerRemoved(ctx);
+    }
 
-	//当处理过程中发生异常时被调用
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.exceptionCaught()");
-		super.exceptionCaught(ctx, cause);
-	}
+    //当处理过程中发生异常时被调用
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        System.out.println("调用:" + hashCode() + ": TimeServerOutboundHandlerAdapter.exceptionCaught()");
+        super.exceptionCaught(ctx, cause);
+    }
 }
 ```
 
@@ -286,13 +286,13 @@ import java.util.List;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeDecoder extends ByteToMessageDecoder {
-	@Override
-	protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-		if (byteBuf.readableBytes() < 8) {//不够8个字节时直接返回
-			return;
-		}
-		list.add(new Time(byteBuf.readLong()));//够8个字节就new一个Time
-	}
+    @Override
+    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
+        if (byteBuf.readableBytes() < 8) {//不够8个字节时直接返回
+            return;
+        }
+        list.add(new Time(byteBuf.readLong()));//够8个字节就new一个Time
+    }
 }
 ```
 
@@ -313,42 +313,42 @@ import io.netty.util.concurrent.Future;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeServer {
-	public static void main(String[] args) throws InterruptedException {
-		//用于处理连接的接收
-		EventLoopGroup boss = new NioEventLoopGroup();
-		//用于处理连接数据的收发
-		EventLoopGroup worker = new NioEventLoopGroup();
-		try {
-			//主类，服务端的是ServerBootstrap
-			ServerBootstrap serverBootstrap = new ServerBootstrap();
-			//设置两个EventLoopGroup
-			serverBootstrap.group(boss, worker);
-			//所创建的隧道为NioServerSocketChannel，实现ServerSocketChannel接口
-			serverBootstrap.channel(NioServerSocketChannel.class);
-			//ServerSocketChannel的最大连接数
-			serverBootstrap.option(ChannelOption.SO_BACKLOG, 16);
-			//ServerSocketChannel接收的SocketChannel是长连接
-			serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-			//ServerSocketChannel接收的SocketChannel的初始化操作
-			serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-				@Override
-				protected void initChannel(SocketChannel socketChannel) throws Exception {
-					//我们的初始化操作是给这个SocketChannel添加Handler，下面添加的Handler是有一定顺序的
-					socketChannel.pipeline().addLast(
-							new TimeDecoder(), //先把数据转变的Time
-							new TimeServerInboundHandlerAdapter(), //再处理Time
-							new TimeServerOutboundHandlerAdapter());
-				}
-			});
-			//绑定端口
-			ChannelFuture channelFuture = serverBootstrap.bind(3210).sync();
-			//这个不懂什么意思
-			channelFuture.channel().closeFuture().sync();
-		} finally {//关闭EventLoopGroup
-			Future bossFuture = boss.shutdownGracefully();
-			Future workerFuture = worker.shutdownGracefully();
-		}
-	}
+    public static void main(String[] args) throws InterruptedException {
+        //用于处理连接的接收
+        EventLoopGroup boss = new NioEventLoopGroup();
+        //用于处理连接数据的收发
+        EventLoopGroup worker = new NioEventLoopGroup();
+        try {
+            //主类，服务端的是ServerBootstrap
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            //设置两个EventLoopGroup
+            serverBootstrap.group(boss, worker);
+            //所创建的隧道为NioServerSocketChannel，实现ServerSocketChannel接口
+            serverBootstrap.channel(NioServerSocketChannel.class);
+            //ServerSocketChannel的最大连接数
+            serverBootstrap.option(ChannelOption.SO_BACKLOG, 16);
+            //ServerSocketChannel接收的SocketChannel是长连接
+            serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+            //ServerSocketChannel接收的SocketChannel的初始化操作
+            serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel socketChannel) throws Exception {
+                    //我们的初始化操作是给这个SocketChannel添加Handler，下面添加的Handler是有一定顺序的
+                    socketChannel.pipeline().addLast(
+                            new TimeDecoder(), //先把数据转变的Time
+                            new TimeServerInboundHandlerAdapter(), //再处理Time
+                            new TimeServerOutboundHandlerAdapter());
+                }
+            });
+            //绑定端口
+            ChannelFuture channelFuture = serverBootstrap.bind(3210).sync();
+            //这个不懂什么意思
+            channelFuture.channel().closeFuture().sync();
+        } finally {//关闭EventLoopGroup
+            Future bossFuture = boss.shutdownGracefully();
+            Future workerFuture = worker.shutdownGracefully();
+        }
+    }
 }
 ```
 ```java
@@ -366,36 +366,36 @@ import io.netty.util.concurrent.Future;
  * Created by cellargalaxy on 18-5-9.
  */
 public class TimeClient {
-	public static void main(String[] args) throws InterruptedException {
-		EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-		try {
-			//主类，客户端的是Bootstrap
-			Bootstrap bootstrap = new Bootstrap();
-			//设置EventLoopGroup，这时候boss和worker都是同一个EventLoopGroup
-			bootstrap.group(eventLoopGroup);
-			//创建的隧道是NioSocketChannel，实现SocketChannel接口
-			bootstrap.channel(NioSocketChannel.class);
-			//长连接
-			bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-			//创建的SocketChannel的初始化操作
-			bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-				@Override
-				protected void initChannel(SocketChannel socketChannel) throws Exception {
-					//我们的初始化操作是给这个SocketChannel添加Handler，下面添加的Handler是有一定顺序的
-					socketChannel.pipeline().addLast(
-							new TimeDecoder(), //先把数据转变的Time
-							new TimeClientInboundHandlerAdapter(), //再处理Time
-							new TimeClientOutboundHandlerAdapter());
-				}
-			});
-			//连接到某个地址
-			ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 3210).sync();
-			//这个不懂什么意思
-			channelFuture.channel().closeFuture().sync();
-		} finally {//关闭EventLoopGroup
-			Future future = eventLoopGroup.shutdownGracefully();
-		}
-	}
+    public static void main(String[] args) throws InterruptedException {
+        EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
+        try {
+            //主类，客户端的是Bootstrap
+            Bootstrap bootstrap = new Bootstrap();
+            //设置EventLoopGroup，这时候boss和worker都是同一个EventLoopGroup
+            bootstrap.group(eventLoopGroup);
+            //创建的隧道是NioSocketChannel，实现SocketChannel接口
+            bootstrap.channel(NioSocketChannel.class);
+            //长连接
+            bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+            //创建的SocketChannel的初始化操作
+            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel socketChannel) throws Exception {
+                    //我们的初始化操作是给这个SocketChannel添加Handler，下面添加的Handler是有一定顺序的
+                    socketChannel.pipeline().addLast(
+                            new TimeDecoder(), //先把数据转变的Time
+                            new TimeClientInboundHandlerAdapter(), //再处理Time
+                            new TimeClientOutboundHandlerAdapter());
+                }
+            });
+            //连接到某个地址
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 3210).sync();
+            //这个不懂什么意思
+            channelFuture.channel().closeFuture().sync();
+        } finally {//关闭EventLoopGroup
+            Future future = eventLoopGroup.shutdownGracefully();
+        }
+    }
 }
 ```
 

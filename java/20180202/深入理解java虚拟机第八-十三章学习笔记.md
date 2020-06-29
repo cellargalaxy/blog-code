@@ -25,21 +25,21 @@
 ```java
 //静态分派演示
 public class Test{
-	static abstract class Human{}
-	static class Man extends Human{}
-	static class Woman extends Human{}
-	
-	public void say(Human human){ System.out.println("human say"); }
-	public void say(Man man){ System.out.println("man say"); }
-	public void say(Woman woman){ System.out.println("woman say"); }
-	
-	public static void main(String[] args){
-		Human man=new Man();
-		Human woman=new Woman();
-		Test t=new Test();
-		t.say(man);
-		t.say(woman);
-	}
+    static abstract class Human{}
+    static class Man extends Human{}
+    static class Woman extends Human{}
+    
+    public void say(Human human){ System.out.println("human say"); }
+    public void say(Man man){ System.out.println("man say"); }
+    public void say(Woman woman){ System.out.println("woman say"); }
+    
+    public static void main(String[] args){
+        Human man=new Man();
+        Human woman=new Woman();
+        Test t=new Test();
+        t.say(man);
+        t.say(woman);
+    }
 }
 ```
 结果两个都是`human say`。对于`Human man=new Man();`，向上转型为`Human`是叫做静态类型，而它实际的类型`Man`就叫做实际类型。静态分派就是根据变量的静态类型来分派方法版本。在这里，即是由于`new Man()`和`new Woman()`都向上转型为`Human`，所以就分派到`say(Human human)`了。
@@ -47,17 +47,17 @@ public class Test{
 书上还举例了一个变态的例子
 ```java
 public class Test{
-	public static void say(char a){ System.out.println("char say"); }
-	public static void say(int a){ System.out.println("int say"); }
-	public static void say(long a){ System.out.println("long say"); }
-	public static void say(Character a){ System.out.println("Character say"); }
-	public static void say(Serializable a){ System.out.println("Serializable say"); }
-	public static void say(Object a){ System.out.println("Object say"); }
-	public static void say(char... a){ System.out.println("char... say"); }
-	
-	public static void main(String[] args){
-		say('a');
-	}
+    public static void say(char a){ System.out.println("char say"); }
+    public static void say(int a){ System.out.println("int say"); }
+    public static void say(long a){ System.out.println("long say"); }
+    public static void say(Character a){ System.out.println("Character say"); }
+    public static void say(Serializable a){ System.out.println("Serializable say"); }
+    public static void say(Object a){ System.out.println("Object say"); }
+    public static void say(char... a){ System.out.println("char... say"); }
+    
+    public static void main(String[] args){
+        say('a');
+    }
 }
 ```
 这里say方法进行了多次恶心的重载，这种情况选择那个版本的方法并不是一个唯一答案，而是一个最适合的答案。这里几个方法以及按适合程度排序，就是注释掉第一个方法将会选择第二个方法。在全部方法里，显然char是最适合的，任何变动都不需要，其次是int，char可以转为int，，如果int没有了，int就变长long，显然是尽量可以是基础变量就转为其他的基础变量，基础变量会以char>int>long>float>double方向转型。基础变量的方法都注释掉以后，就不得不自动装箱为Character，Character也没有就转为Character的接口Serializable，Serializable也注释就Object，最后变长参数是等级最低的。
@@ -71,24 +71,24 @@ public class Test{
 举栗子
 ```java
 public class Test{
-	static class QQ{}
-	static class _360{}
-	
-	public static class Father{
-		public void choice(QQ qq){ System.out.println("Father choice QQ"); }
-		public void choice(_360 args){ System.out.println("Father choice 360"); }
-	}
-	public static class Son extends Father{
-		public void choice(QQ qq){ System.out.println("Son choice QQ"); }
-		public void choice(_360 args){ System.out.println("Son choice 360"); }
-	}
-	
-	public static void main(String[] args){
-		Father father=new Father();
-		Father son=new Son();
-		father.choice(new _360());
-		son.choice(new QQ());
-	}
+    static class QQ{}
+    static class _360{}
+    
+    public static class Father{
+        public void choice(QQ qq){ System.out.println("Father choice QQ"); }
+        public void choice(_360 args){ System.out.println("Father choice 360"); }
+    }
+    public static class Son extends Father{
+        public void choice(QQ qq){ System.out.println("Son choice QQ"); }
+        public void choice(_360 args){ System.out.println("Son choice 360"); }
+    }
+    
+    public static void main(String[] args){
+        Father father=new Father();
+        Father son=new Son();
+        father.choice(new _360());
+        son.choice(new QQ());
+    }
 }
 ```
 结果
@@ -109,34 +109,34 @@ import static java.lang.invoke.MethodHandles.lookup;
  * Created by cellargalaxy on 18-2-2.
  */
 public class MethodHandleTest {
-	static class Print{
-		public void println(String string){
-			System.out.println(string);
-		}
-	}
-	
-	private static MethodHandle getPrintlnMH(Object object) throws NoSuchMethodException, IllegalAccessException {
-		MethodType methodType=MethodType.methodType(void.class,String.class);
-		return lookup().findVirtual(object.getClass(),"println",methodType).bindTo(object);
-	}
-	
-	public static void main(String[] args) throws Throwable {
-		Object object=new Print();
-		getPrintlnMH(object).invokeExact("aaaaa");
-	}
+    static class Print{
+        public void println(String string){
+            System.out.println(string);
+        }
+    }
+    
+    private static MethodHandle getPrintlnMH(Object object) throws NoSuchMethodException, IllegalAccessException {
+        MethodType methodType=MethodType.methodType(void.class,String.class);
+        return lookup().findVirtual(object.getClass(),"println",methodType).bindTo(object);
+    }
+    
+    public static void main(String[] args) throws Throwable {
+        Object object=new Print();
+        getPrintlnMH(object).invokeExact("aaaaa");
+    }
 }
 ```
 不知道为何报错
 ```java
 Error: A JNI error has occurred, please check your installation and try again
 Exception in thread "main" java.lang.VerifyError: (class: jvm/MethodHandleTest, method: main signature: ([Ljava/lang/String;)V) Incompatible argument to function
-	at java.lang.Class.getDeclaredMethods0(Native Method)
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
-	at java.lang.Class.privateGetMethodRecursive(Class.java:3048)
-	at java.lang.Class.getMethod0(Class.java:3018)
-	at java.lang.Class.getMethod(Class.java:1784)
-	at sun.launcher.LauncherHelper.validateMainClass(LauncherHelper.java:544)
-	at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:526)
+    at java.lang.Class.getDeclaredMethods0(Native Method)
+    at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+    at java.lang.Class.privateGetMethodRecursive(Class.java:3048)
+    at java.lang.Class.getMethod0(Class.java:3018)
+    at java.lang.Class.getMethod(Class.java:1784)
+    at sun.launcher.LauncherHelper.validateMainClass(LauncherHelper.java:544)
+    at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:526)
 ```
 第九章类加载及执行子系统的案例与实战跳过
 
@@ -145,15 +145,15 @@ C#中的泛型被成为真实泛型，因为C#无论是在源码中，编译后�
 ```java
 //源代码
 public static void main(String[] args){
-	Map<String,String> map=new HashMap<String,String>();
-	map.put("key","value");
-	System.out.println(map.get("key"));
+    Map<String,String> map=new HashMap<String,String>();
+    map.put("key","value");
+    System.out.println(map.get("key"));
 }
 //编译后其实是
 public static void main(String[] args){
-	Map map=new HashMap();
-	map.put("key","value");
-	System.out.println((String)map.get("key"));
+    Map map=new HashMap();
+    map.put("key","value");
+    System.out.println((String)map.get("key"));
 }
 ```
 

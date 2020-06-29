@@ -61,18 +61,18 @@ JMM禁止编译器把final域的写重排序到构造函数以外，也会在cpu
 # 双重检查锁定与延迟初始化
 ```java
 public class Test{
-	private static Object o;
-	
-	pubcli static Object getObject(){//多个线程调用此方法
-		if(o==null){
-			synchronized(Test.class){
-				if(o==null){
-					o=new Object();
-				}
-			}
-		}
-		return o;
-	}
+    private static Object o;
+    
+    pubcli static Object getObject(){//多个线程调用此方法
+        if(o==null){
+            synchronized(Test.class){
+                if(o==null){
+                    o=new Object();
+                }
+            }
+        }
+        return o;
+    }
 }
 ```
 以上代码就是**错误的**双重检查锁定，代码设计者希望调用`o`的时候才初始化，但又不想每次调用`getObject`方法都进行加锁和解锁，就先判断`o`是否为空，空才锁定来初始化。但是我们假设，第一次调用是线程A，那么自然A就会进入同步快初始化`o`，但如果`o`有普通变量，那么这些普通变量对于线程A来说可能会在`new Object();`到方法返回之间才初始化，但是这个阶段即是是对于A来说，还是对于其他线程来说，`o`都是`!=null`的。那么可能在A运行到`new Object();`到方法返回之间，`o`的普通变量还没初始化，但是这是线程B调用方法，发现`o!=null`，就直接拿还没完全初始化完成的`o`来调用了。正确的双重检查锁定应该为`o`加上`volatile`。为什么加上`volatile`就可以呢？因为`o=new Object();`是volatile写操作，volatile写要确保其之前的读写操作已经完成并且任意线程可见，这就包括了构造函数里的全部初始化写操作。
@@ -88,19 +88,19 @@ java在Atomic包里提供了13个原子操作类，分四类，原子更新基�
 乍看这些方法并没什么特别，但特别在与这些方法都是原子操作的，什么？例如compareAndSet方法，按逻辑应该有三步，取出原值，比较原值与expect，设置值为update。如果我们自己用if语句什么的实现这个逻辑，三步里就会有两个空挡，这两个空挡在多线程下是不安全的。而这个方法不同，虽然逻辑上是三步，但他一步完成（也就是为什么叫原值操作），没有任何空挡导致线程安全问题。因此我们可以构建一个线程安全的计数器，上面的getAndIncrement也是这么实现的。
 ```java
 public class Test{
-	private static final AtomicInteger ai=new AtomicInteger(0);
-	public static void increment(){
-		while(true){
-			int i=ai.get();
-			int update=i+1;
-			if(ai.compareAndSet(i,update)){
-				return;
-			}
-		}
-	}
-	public static int getCount(){
-		return ai.get();
-	}
+    private static final AtomicInteger ai=new AtomicInteger(0);
+    public static void increment(){
+        while(true){
+            int i=ai.get();
+            int update=i+1;
+            if(ai.compareAndSet(i,update)){
+                return;
+            }
+        }
+    }
+    public static int getCount(){
+        return ai.get();
+    }
 }
 ```
 
@@ -136,12 +136,12 @@ public class Test{
 ```java
 private volatile boolean runable=true;
 public run(){
-	while(runable && !Thread.currentThread().isInterrupted()){
-		...
-	}
+    while(runable && !Thread.currentThread().isInterrupted()){
+        ...
+    }
 }
 public void down(){
-	runable=false;
+    runable=false;
 }
 ```
 
@@ -149,15 +149,15 @@ public void down(){
 ```java
 //等待方
 synchronized(锁对象){
-	while(条件不满足){
-		锁对象.wait();
-	}
-	其他逻辑
+    while(条件不满足){
+        锁对象.wait();
+    }
+    其他逻辑
 }
 //通知方
 synchronized(锁对象){
-	改变条件
-	锁对象.notify();
+    改变条件
+    锁对象.notify();
 }
 ```
 
@@ -215,20 +215,20 @@ Condition接口提供类似Object的方法，与Lock配合可以实现等待/通
 Lock lock=new ReentratLock();
 Condition condition=lock.newCondition();
 public void conditionWait(){
-	lock.lock();
-	try{
-		condition.await();
-	}finally{
-		lock.unlock();
-	}
+    lock.lock();
+    try{
+        condition.await();
+    }finally{
+        lock.unlock();
+    }
 }
 public void conditionSignal(){
-	lock.lock();
-	try{
-		condition.singal();
-	}finally{
-		lock.unlock();
-	}
+    lock.lock();
+    try{
+        condition.singal();
+    }finally{
+        lock.unlock();
+    }
 }
 ```
 

@@ -10,16 +10,16 @@
 @RequestMapping("/account")
 public class AccountController {
 
-	@CrossOrigin(origins = "http://domain2.com")
-	@GetMapping("/{id}")
-	public Account retrieve(@PathVariable Long id) {
-		// ...
-	}
+    @CrossOrigin(origins = "http://domain2.com")
+    @GetMapping("/{id}")
+    public Account retrieve(@PathVariable Long id) {
+        // ...
+    }
 
-	@DeleteMapping("/{id}")
-	public void remove(@PathVariable Long id) {
-		// ...
-	}
+    @DeleteMapping("/{id}")
+    public void remove(@PathVariable Long id) {
+        // ...
+    }
 }
 ```
 
@@ -27,9 +27,9 @@ public class AccountController {
 ```java
 @Override
 protected void configure(HttpSecurity http) throws Exception {
-	http
-		.cors().and()
-	...
+    http
+        .cors().and()
+    ...
 }
 ```
 

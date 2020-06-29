@@ -54,71 +54,71 @@ commit;
  */
 @Service
 public class RedisLock {
-	//加锁操作成功返回的字符串
-	private static final String LOCK_SUCCESS = "OK";
-	//释放锁的Lua脚本，下面会解释这东西
-	private static final String UN_LOCK_SCRIPT = "if redis.call('get', KEYS[1]) ~= ARGV[1] then return 1 else return redis.call('del', KEYS[1]) end";
-	//加锁操作成功返回的long
-	private static final Long RELEASE_SUCCESS = 1L;
-	//每一个服务实例的每一个线程都有一个唯一的id
-	private final ThreadLocal<String> id = new ThreadLocal<>();
-	//当前线程是否已经获取了锁，默认为false
-	private final ThreadLocal<Boolean> hasLock = ThreadLocal.withInitial(() -> false);
-	private final JedisPool jedisPool;
+    //加锁操作成功返回的字符串
+    private static final String LOCK_SUCCESS = "OK";
+    //释放锁的Lua脚本，下面会解释这东西
+    private static final String UN_LOCK_SCRIPT = "if redis.call('get', KEYS[1]) ~= ARGV[1] then return 1 else return redis.call('del', KEYS[1]) end";
+    //加锁操作成功返回的long
+    private static final Long RELEASE_SUCCESS = 1L;
+    //每一个服务实例的每一个线程都有一个唯一的id
+    private final ThreadLocal<String> id = new ThreadLocal<>();
+    //当前线程是否已经获取了锁，默认为false
+    private final ThreadLocal<Boolean> hasLock = ThreadLocal.withInitial(() -> false);
+    private final JedisPool jedisPool;
 
-	@Autowired
-	public RedisLock(JedisPool jedisPool) {
-		this.jedisPool = jedisPool;
-	}
+    @Autowired
+    public RedisLock(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
 
-	public boolean tryLock(String lockKey, int expireTime) {
-		if (id.get() == null) {
-			//初始化线程id
-			id.set(UUID.randomUUID().toString());
-		}
-		try (Jedis jedis = jedisPool.getResource()) {
-			//SetParams是除了key-value，redis操作的其他参数
-			//nx意思的SET IF NOT EXIST，即key不存在才操作
-			//px是如果进行操作，这个key的过期时间
-			SetParams setParams = new SetParams().nx().px(expireTime);
-			//虽然这里检查了key是否存在，设置了value以及过期时间三个操作
-			//但是这里调用了一次set方法，redis保证这三个操作的原子性
-			String result = jedis.set(lockKey, id.get(), setParams);
-			if (LOCK_SUCCESS.equals(result)) {
-				hasLock.set(true);
-				return true;
-			}
-			return false;
-		}
-	}
+    public boolean tryLock(String lockKey, int expireTime) {
+        if (id.get() == null) {
+            //初始化线程id
+            id.set(UUID.randomUUID().toString());
+        }
+        try (Jedis jedis = jedisPool.getResource()) {
+            //SetParams是除了key-value，redis操作的其他参数
+            //nx意思的SET IF NOT EXIST，即key不存在才操作
+            //px是如果进行操作，这个key的过期时间
+            SetParams setParams = new SetParams().nx().px(expireTime);
+            //虽然这里检查了key是否存在，设置了value以及过期时间三个操作
+            //但是这里调用了一次set方法，redis保证这三个操作的原子性
+            String result = jedis.set(lockKey, id.get(), setParams);
+            if (LOCK_SUCCESS.equals(result)) {
+                hasLock.set(true);
+                return true;
+            }
+            return false;
+        }
+    }
 
-	public boolean unLock(String lockKey) {
-		if (id.get() == null) {
-			//初始化线程id
-			id.set(UUID.randomUUID().toString());
-		}
-		try (Jedis jedis = jedisPool.getResource()) {
-			//这里让redis执行Lua脚本，redis也保证Lua脚本的执行的原子性
-			Object result = jedis.eval(UN_LOCK_SCRIPT, Collections.singletonList(lockKey), Collections.singletonList(id.get()));
-			if (RELEASE_SUCCESS.equals(result)) {
-				hasLock.set(false);
-				return true;
-			}
-			return false;
-		}
-	}
+    public boolean unLock(String lockKey) {
+        if (id.get() == null) {
+            //初始化线程id
+            id.set(UUID.randomUUID().toString());
+        }
+        try (Jedis jedis = jedisPool.getResource()) {
+            //这里让redis执行Lua脚本，redis也保证Lua脚本的执行的原子性
+            Object result = jedis.eval(UN_LOCK_SCRIPT, Collections.singletonList(lockKey), Collections.singletonList(id.get()));
+            if (RELEASE_SUCCESS.equals(result)) {
+                hasLock.set(false);
+                return true;
+            }
+            return false;
+        }
+    }
 
-	public final String getId() {
-		if (id.get() == null) {
-			//初始化线程id
-			id.set(UUID.randomUUID().toString());
-		}
-		return id.get();
-	}
+    public final String getId() {
+        if (id.get() == null) {
+            //初始化线程id
+            id.set(UUID.randomUUID().toString());
+        }
+        return id.get();
+    }
 
-	public boolean hasLock() {
-		return hasLock.get();
-	}
+    public boolean hasLock() {
+        return hasLock.get();
+    }
 }
 ```
 获取锁的解释在代码的注释里了，需要继续解释的是释放锁的那个脚本。`KEYS[1]`就是`lockKey`，`ARGV[1]`是`id.get()`。脚本意思显然是，如果加锁线程不是自己，则自己的锁就一定被释放了。否则返回删除key的结果。这是我参考[Redis 分布式锁的正确实现方式（ Java 版 ）](http://www.importnew.com/27477.html)改来的，他的脚本我觉得有问题。问题在于如果锁是因为过期而释放的，但对于调用这个方法的线程来说，锁确实是释放成功了，毕竟他已经不持有锁了。但是redis.call('get', KEYS[1]) == ARGV[1]却为false了，返回的是释放失败。
@@ -126,17 +126,17 @@ public class RedisLock {
 //我的脚本
 if redis.call('get', KEYS[1]) ~= ARGV[1] 
 then 
-	return 1 
+    return 1 
 else 
-	return redis.call('del', KEYS[1]) 
+    return redis.call('del', KEYS[1]) 
 end
 
 //importnew的脚本
 if redis.call('get', KEYS[1]) == ARGV[1] 
 then 
-	return redis.call('del', KEYS[1]) 
+    return redis.call('del', KEYS[1]) 
 else 
-	return 0 
+    return 0 
 end
 ```
 

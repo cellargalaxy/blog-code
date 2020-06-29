@@ -41,36 +41,36 @@ Channel叫做管道，角色相当于IO流里的InputStream和OutputStream。不
 还有一点要注意的，Channel的创建可以像RandomAccessFile那样用InputStream，OutputStream，但是就相应的只读或者只写了。并且FileChannel还是阻塞的，不能设置为非阻塞。
 ```java
 public static final void fileRead() throws IOException {
-	RandomAccessFile randomAccessFile = new RandomAccessFile("/home/cellargalaxy/nio.txt", "rw");
-	FileChannel fileChannel = randomAccessFile.getChannel();
-	ByteBuffer byteBuffer = ByteBuffer.allocate(8);
-	
-	int len;
-	while ((len = fileChannel.read(byteBuffer)) != -1) {//buffer任意的写操作
-		byteBuffer.flip();//buffer转为读状态
-		System.out.print(new String(byteBuffer.array(), 0, len));//buffer任意的读操作
-		byteBuffer.clear();//buffer清空
-	}
-	
-	fileChannel.close();
-	randomAccessFile.close();
+    RandomAccessFile randomAccessFile = new RandomAccessFile("/home/cellargalaxy/nio.txt", "rw");
+    FileChannel fileChannel = randomAccessFile.getChannel();
+    ByteBuffer byteBuffer = ByteBuffer.allocate(8);
+    
+    int len;
+    while ((len = fileChannel.read(byteBuffer)) != -1) {//buffer任意的写操作
+        byteBuffer.flip();//buffer转为读状态
+        System.out.print(new String(byteBuffer.array(), 0, len));//buffer任意的读操作
+        byteBuffer.clear();//buffer清空
+    }
+    
+    fileChannel.close();
+    randomAccessFile.close();
 }
 
 public static final void fileWrite() throws IOException {
-	RandomAccessFile randomAccessFile = new RandomAccessFile("/home/cellargalaxy/nio.txt", "rw");
-	FileChannel fileChannel = randomAccessFile.getChannel();
-	ByteBuffer byteBuffer = ByteBuffer.allocate(128);
-	
-	byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());//buffer任意的写操作
-	byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());
-	byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());
-	byteBuffer.flip();//buffer转为读状态
-	while (byteBuffer.hasRemaining()) {//还有没有没读完的数据
-		fileChannel.write(byteBuffer);//buffer任意的读操作
-	}
-	
-	fileChannel.close();
-	randomAccessFile.close();
+    RandomAccessFile randomAccessFile = new RandomAccessFile("/home/cellargalaxy/nio.txt", "rw");
+    FileChannel fileChannel = randomAccessFile.getChannel();
+    ByteBuffer byteBuffer = ByteBuffer.allocate(128);
+    
+    byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());//buffer任意的写操作
+    byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());
+    byteBuffer.put((UUID.randomUUID().toString() + "\n").getBytes());
+    byteBuffer.flip();//buffer转为读状态
+    while (byteBuffer.hasRemaining()) {//还有没有没读完的数据
+        fileChannel.write(byteBuffer);//buffer任意的读操作
+    }
+    
+    fileChannel.close();
+    randomAccessFile.close();
 }
 ```
 
@@ -78,122 +78,122 @@ public static final void fileWrite() throws IOException {
 SocketChannel就是非阻塞的了，就是非阻塞的Socket的输入输出流版。
 ```java
 public static final void client0() throws IOException, InterruptedException {
-	SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 8787));//创建一个SocketChannel
-	socketChannel.configureBlocking(false);//设置为非阻塞，FileChannel没得设置。
-	ByteBuffer byteBuffer = ByteBuffer.allocate(64);
+    SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 8787));//创建一个SocketChannel
+    socketChannel.configureBlocking(false);//设置为非阻塞，FileChannel没得设置。
+    ByteBuffer byteBuffer = ByteBuffer.allocate(64);
 
-	if (socketChannel.finishConnect()) {
-		byteBuffer.put("GET / HTTP/1.1\nHost:www.baidu.com\n".getBytes());//buffer任意的写操作
-		byteBuffer.flip();//buffer转为读状态
-		while (byteBuffer.hasRemaining()) {//还有没有没读完的数据
-			System.out.println("write: " + socketChannel.write(byteBuffer));//buffer任意的读操作
-		}
+    if (socketChannel.finishConnect()) {
+        byteBuffer.put("GET / HTTP/1.1\nHost:www.baidu.com\n".getBytes());//buffer任意的写操作
+        byteBuffer.flip();//buffer转为读状态
+        while (byteBuffer.hasRemaining()) {//还有没有没读完的数据
+            System.out.println("write: " + socketChannel.write(byteBuffer));//buffer任意的读操作
+        }
 
-		byteBuffer.clear();//buffer清空
-		int len;
-		while (true) {
-			while ((len = socketChannel.read(byteBuffer)) > 0) {//buffer任意的写操作
-//					System.out.println("已经读取的byte数：" + len);
-				byteBuffer.flip();//buffer转为读状态
-				System.out.print(new String(byteBuffer.array(), 0, len));//buffer任意的读操作
-				byteBuffer.clear();//buffer清空，开始新的循环
-			}
-			if (len == -1) {
-				System.out.println("close");
-				break;
-			}
-			TimeUnit.SECONDS.sleep(1);
-		}
-	}
+        byteBuffer.clear();//buffer清空
+        int len;
+        while (true) {
+            while ((len = socketChannel.read(byteBuffer)) > 0) {//buffer任意的写操作
+//                    System.out.println("已经读取的byte数：" + len);
+                byteBuffer.flip();//buffer转为读状态
+                System.out.print(new String(byteBuffer.array(), 0, len));//buffer任意的读操作
+                byteBuffer.clear();//buffer清空，开始新的循环
+            }
+            if (len == -1) {
+                System.out.println("close");
+                break;
+            }
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
 
-	socketChannel.close();
+    socketChannel.close();
 }
 //先用传统的ServerSocket做测试
 public static void server0() throws IOException {
-	ServerSocket serverSocket = new ServerSocket(8787);
-	Socket socket = serverSocket.accept();
-	SocketAddress socketAddress = socket.getRemoteSocketAddress();
-	System.out.println("Handling client at " + socketAddress);
-	InputStream in = socket.getInputStream();
-	byte[] bytes = new byte[1024];
-	int len;
-	StringBuilder stringBuilder = new StringBuilder();
-	while (stringBuilder.length() < 34 && (len = in.read(bytes)) != -1) {//还没接收够34个字符的数据并且还有数据来
-		stringBuilder.append(new String(bytes, 0, len));
-//			System.out.println("??>>" + len + "?" + stringBuilder.length() + " : " + new String(bytes, 0, len));
-	}
-	System.out.println(stringBuilder.toString());
-	
-	OutputStream outputStream = socket.getOutputStream();//接收够34个字符之后往对方写些数据
-	for (int i = 0; i < 10; i++) {
-		outputStream.write(("data:" + i + "\n").getBytes());
-	}
-	socket.close();
-	serverSocket.close();
+    ServerSocket serverSocket = new ServerSocket(8787);
+    Socket socket = serverSocket.accept();
+    SocketAddress socketAddress = socket.getRemoteSocketAddress();
+    System.out.println("Handling client at " + socketAddress);
+    InputStream in = socket.getInputStream();
+    byte[] bytes = new byte[1024];
+    int len;
+    StringBuilder stringBuilder = new StringBuilder();
+    while (stringBuilder.length() < 34 && (len = in.read(bytes)) != -1) {//还没接收够34个字符的数据并且还有数据来
+        stringBuilder.append(new String(bytes, 0, len));
+//            System.out.println("??>>" + len + "?" + stringBuilder.length() + " : " + new String(bytes, 0, len));
+    }
+    System.out.println(stringBuilder.toString());
+    
+    OutputStream outputStream = socket.getOutputStream();//接收够34个字符之后往对方写些数据
+    for (int i = 0; i < 10; i++) {
+        outputStream.write(("data:" + i + "\n").getBytes());
+    }
+    socket.close();
+    serverSocket.close();
 }
 ```
 # Selector
 既然NIO可以非阻塞，那我们就可以创建多几个管道，单个线程下，没有数据需要输入输出的管道就先不管，只操作有数据输入输出的管道。那这样就意味着我们可能需要不断遍历全部管道，检查各个管道的情况。这样效率并不高（不是很懂为什么）。因此相比输入输出流，NIO多个一个Selector用来管理多个管道，通过Selector给各个管道注册我们像操作的情况，从Selector就能获取正在发送这种情况的管道了。
 ```java
 public static final void server2() throws IOException {
-	Selector selector = Selector.open();//创建一个Selector
-	
-	ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();//创建一个ServerSocketChannel
-	serverSocketChannel.socket().bind(new InetSocketAddress(8787));//设置端口
-	serverSocketChannel.configureBlocking(false);//设置非阻塞
-	serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);//绑定到Selector里，当有连接事件时触发
-	
-	while (true) {
-		if (selector.select(3000) == 0) {//有多少个注册了的管道发生了事件
-			System.out.println("==");
-			continue;
-		}
-		
-		Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();//获取全部发送了事件的管道
-		while (iterator.hasNext()) {
-			SelectionKey selectionKey = iterator.next();
-			if (selectionKey.isAcceptable()) {//如果是有新连接进来
-				ServerSocketChannel serverSocket = (ServerSocketChannel) selectionKey.channel();//获取注册的管道，便是ServerSocketChannel了
-				SocketChannel socketChannel = serverSocket.accept();//获取新连接的SocketChannel
-				socketChannel.configureBlocking(false);//设置非阻塞
-				socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ, ByteBuffer.allocate(1024));//把新连接注册到selector里，事件是有可读的
-			}
-			if (selectionKey.isReadable()) {//当有管道有可读事件
-				SocketChannel socketChannel = (SocketChannel) selectionKey.channel();//便是SocketChannel了
-				ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();//获取注册时顺带的ByteBuffer
-				byteBuffer.clear();
-				int len;
-				while ((len = socketChannel.read(byteBuffer)) > 0) {
-					byteBuffer.flip();
-					System.out.print(new String(byteBuffer.array(), 0, len));
-					byteBuffer.clear();
-				}
-				if (len == -1) {
-					socketChannel.close();
-					System.out.println("close");
-				}else {
-					byteBuffer.clear();
-					byteBuffer.put("i an server.\n".getBytes());
-					byteBuffer.flip();
-					while (byteBuffer.hasRemaining()) {
-						System.out.println("write1: " + socketChannel.write(byteBuffer));
-					}
-				}
-			}
-			if (selectionKey.isWritable() && selectionKey.isValid()) {//当有管道有可写事件并且是有效管道
-				SocketChannel socketChannel = (SocketChannel) selectionKey.channel();//便是SocketChannel了
-				ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();//获取注册时顺带的ByteBuffer
-				byteBuffer.flip();
-				while (byteBuffer.hasRemaining()) {
-					System.out.println("write2: " + socketChannel.write(byteBuffer));
-				}
-			}
-			if (selectionKey.isConnectable()) {
-				System.out.println("isConnectable");
-			}
-			iterator.remove();//最后要删除以及操作了管道，不然selector不会从队列里 删除以及操作了的管道
-		}
-	}
+    Selector selector = Selector.open();//创建一个Selector
+    
+    ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();//创建一个ServerSocketChannel
+    serverSocketChannel.socket().bind(new InetSocketAddress(8787));//设置端口
+    serverSocketChannel.configureBlocking(false);//设置非阻塞
+    serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);//绑定到Selector里，当有连接事件时触发
+    
+    while (true) {
+        if (selector.select(3000) == 0) {//有多少个注册了的管道发生了事件
+            System.out.println("==");
+            continue;
+        }
+        
+        Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();//获取全部发送了事件的管道
+        while (iterator.hasNext()) {
+            SelectionKey selectionKey = iterator.next();
+            if (selectionKey.isAcceptable()) {//如果是有新连接进来
+                ServerSocketChannel serverSocket = (ServerSocketChannel) selectionKey.channel();//获取注册的管道，便是ServerSocketChannel了
+                SocketChannel socketChannel = serverSocket.accept();//获取新连接的SocketChannel
+                socketChannel.configureBlocking(false);//设置非阻塞
+                socketChannel.register(selectionKey.selector(), SelectionKey.OP_READ, ByteBuffer.allocate(1024));//把新连接注册到selector里，事件是有可读的
+            }
+            if (selectionKey.isReadable()) {//当有管道有可读事件
+                SocketChannel socketChannel = (SocketChannel) selectionKey.channel();//便是SocketChannel了
+                ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();//获取注册时顺带的ByteBuffer
+                byteBuffer.clear();
+                int len;
+                while ((len = socketChannel.read(byteBuffer)) > 0) {
+                    byteBuffer.flip();
+                    System.out.print(new String(byteBuffer.array(), 0, len));
+                    byteBuffer.clear();
+                }
+                if (len == -1) {
+                    socketChannel.close();
+                    System.out.println("close");
+                }else {
+                    byteBuffer.clear();
+                    byteBuffer.put("i an server.\n".getBytes());
+                    byteBuffer.flip();
+                    while (byteBuffer.hasRemaining()) {
+                        System.out.println("write1: " + socketChannel.write(byteBuffer));
+                    }
+                }
+            }
+            if (selectionKey.isWritable() && selectionKey.isValid()) {//当有管道有可写事件并且是有效管道
+                SocketChannel socketChannel = (SocketChannel) selectionKey.channel();//便是SocketChannel了
+                ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();//获取注册时顺带的ByteBuffer
+                byteBuffer.flip();
+                while (byteBuffer.hasRemaining()) {
+                    System.out.println("write2: " + socketChannel.write(byteBuffer));
+                }
+            }
+            if (selectionKey.isConnectable()) {
+                System.out.println("isConnectable");
+            }
+            iterator.remove();//最后要删除以及操作了管道，不然selector不会从队列里 删除以及操作了的管道
+        }
+    }
 }
 ```
 

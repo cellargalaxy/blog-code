@@ -32,41 +32,41 @@ List<FileItem> items = upload.parseRequest(request);
 获取到了`List<FileItem>`，遍历他便是了。如果item是普通的key-value，那`item.isFormField()`方法会返回true，否则就是文件。
 ```java
 if (item.isFormField()) {
-	String name = item.getFieldName();//key
-	String value = item.getString();//value
-	...
+    String name = item.getFieldName();//key
+    String value = item.getString();//value
+    ...
 }
 if (!item.isFormField()) {
-	String fieldName = item.getFieldName();//key
-	String fileName = item.getName();//文件的原名
-	String contentType = item.getContentType();//文件类型
-	boolean isInMemory = item.isInMemory();//文件是保存在内存里还是保存在临时文件里
-	long sizeInBytes = item.getSize();//文件大小
-	
-	if (writeToFile) {
-		File uploadedFile = new File(...);
-		item.write(uploadedFile);//把数据保存指定文件里
-	} else {
-		InputStream uploadedStream = item.getInputStream();//获取流
-		...
-		uploadedStream.close();
-		
-		byte[] data = item.get();//也可以直接把数据拿出来
-	}
+    String fieldName = item.getFieldName();//key
+    String fileName = item.getName();//文件的原名
+    String contentType = item.getContentType();//文件类型
+    boolean isInMemory = item.isInMemory();//文件是保存在内存里还是保存在临时文件里
+    long sizeInBytes = item.getSize();//文件大小
+    
+    if (writeToFile) {
+        File uploadedFile = new File(...);
+        item.write(uploadedFile);//把数据保存指定文件里
+    } else {
+        InputStream uploadedStream = item.getInputStream();//获取流
+        ...
+        uploadedStream.close();
+        
+        byte[] data = item.get();//也可以直接把数据拿出来
+    }
 }
 ```
 有时候我们需要报告文件上传进度，这时候需要在文件上传对象里设置一个进度监听对象
 ```java
 //创建一个进度监听对象
 ProgressListener progressListener = new ProgressListener(){
-	public void update(long pBytesRead, long pContentLength, int pItems) {
-		System.out.println("We are currently reading item " + pItems);
-		if (pContentLength == -1) {
-			System.out.println("So far, " + pBytesRead + " bytes have been read.");
-		} else {
-			System.out.println("So far, " + pBytesRead + " of " + pContentLength + " bytes have been read.");
-		}
-	}
+    public void update(long pBytesRead, long pContentLength, int pItems) {
+        System.out.println("We are currently reading item " + pItems);
+        if (pContentLength == -1) {
+            System.out.println("So far, " + pBytesRead + " bytes have been read.");
+        } else {
+            System.out.println("So far, " + pBytesRead + " of " + pContentLength + " bytes have been read.");
+        }
+    }
 };
 upload.setProgressListener(progressListener);//在文件上传对象里设置进度监听对象
 ```

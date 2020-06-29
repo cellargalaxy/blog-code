@@ -42,38 +42,38 @@ jwt规定的载荷的五个标准属性：
 第二生成jwt
 ```java
 public static void main(String[] args) {
-	String jwt = Jwts.builder()
-		//签名算法与密匙
-		.signWith(SignatureAlgorithm.HS256,"SECRET_KEY")
-		//账号
-		.setSubject("cellargalaxy")
-		//过期时间（立即过期）
-		.setExpiration(new Date())
-		//加入自定义key，value
-		.claim("key","vaule")
-		.compact();
+    String jwt = Jwts.builder()
+        //签名算法与密匙
+        .signWith(SignatureAlgorithm.HS256,"SECRET_KEY")
+        //账号
+        .setSubject("cellargalaxy")
+        //过期时间（立即过期）
+        .setExpiration(new Date())
+        //加入自定义key，value
+        .claim("key","vaule")
+        .compact();
 }
 ```
 第三解析jwt
 ```java
 public static void main(String[] args) {
-	try {
-		//解析JWT字符串中的数据，并进行最基础的验证
-		Claims claims = Jwts.parser()
-			//会自动签名算法
-			.setSigningKey("SECRET_KEY")
-			//jwt字符串
-			.parseClaimsJws(jwt)
-			.getBody();
-		//获取自定义字段key
-		String vaule = claims.get("key", String.class);
-	} catch (SignatureException e) {
-		//如果密钥不正确，抛出SignatureException异常
-		e.printStackTrace();
-	} catch (ExpiredJwtException e) {
-		//如果jwt已过期，抛出ExpiredJwtException异常
-		e.printStackTrace();
-	}
+    try {
+        //解析JWT字符串中的数据，并进行最基础的验证
+        Claims claims = Jwts.parser()
+            //会自动签名算法
+            .setSigningKey("SECRET_KEY")
+            //jwt字符串
+            .parseClaimsJws(jwt)
+            .getBody();
+        //获取自定义字段key
+        String vaule = claims.get("key", String.class);
+    } catch (SignatureException e) {
+        //如果密钥不正确，抛出SignatureException异常
+        e.printStackTrace();
+    } catch (ExpiredJwtException e) {
+        //如果jwt已过期，抛出ExpiredJwtException异常
+        e.printStackTrace();
+    }
 }
 ```
 

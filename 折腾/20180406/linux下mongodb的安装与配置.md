@@ -65,13 +65,13 @@ switched to db mycloud
   }
 )
 Successfully added user: {
-	"user" : "test",
-	"roles" : [
-		{
-			"role" : "readWrite",
-			"db" : "mycloud"
-		}
-	]
+    "user" : "test",
+    "roles" : [
+        {
+            "role" : "readWrite",
+            "db" : "mycloud"
+        }
+    ]
 }
 > db.auth("test","123456")
 1
@@ -103,10 +103,10 @@ MongoDB server version: 3.6.3
 switched to db mycloud
 > db.mycloud.find()
 Error: error: {
-	"ok" : 0,
-	"errmsg" : "not authorized on mycloud to execute command { find: \"mycloud\", filter: {}, $db: \"mycloud\" }",
-	"code" : 13,
-	"codeName" : "Unauthorized"
+    "ok" : 0,
+    "errmsg" : "not authorized on mycloud to execute command { find: \"mycloud\", filter: {}, $db: \"mycloud\" }",
+    "code" : 13,
+    "codeName" : "Unauthorized"
 }
 ```
 用`mongo --host 127.0.0.1 --port 27017 -u "test" -p "123456" --authenticationDatabase "mycloud"`登录

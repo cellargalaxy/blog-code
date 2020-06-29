@@ -28,159 +28,159 @@ rs.status()
 ```json
 > rs.initiate()//初始化
 {
-	"info2" : "no configuration specified. Using a default configuration for the set",
-	"me" : "127.0.0.1:27017",
-	"ok" : 1,
-	"operationTime" : Timestamp(1526472651, 1),
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526472651, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "info2" : "no configuration specified. Using a default configuration for the set",
+    "me" : "127.0.0.1:27017",
+    "ok" : 1,
+    "operationTime" : Timestamp(1526472651, 1),
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526472651, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 rs0:SECONDARY> //可以看到一开始他自己是从数据库（SECONDARY）
 rs0:PRIMARY> //回车之后选举完成，自己就变成了主数据库（PRIMARY）
 rs0:PRIMARY> rs.add("127.0.0.1:27017")//添加数据库
 {
-	"ok" : 0,
-	"errmsg" : "Found two member configurations with same host field, members.0.host == members.1.host == 127.0.0.1:27017",
-	"code" : 103,
-	"codeName" : "NewReplicaSetConfigurationIncompatible",
-	"operationTime" : Timestamp(1526472673, 1),
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526472673, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "ok" : 0,
+    "errmsg" : "Found two member configurations with same host field, members.0.host == members.1.host == 127.0.0.1:27017",
+    "code" : 103,
+    "codeName" : "NewReplicaSetConfigurationIncompatible",
+    "operationTime" : Timestamp(1526472673, 1),
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526472673, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 rs0:PRIMARY> rs.add("127.0.0.1:27018")
 {
-	"ok" : 1,
-	"operationTime" : Timestamp(1526472678, 1),
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526472678, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "ok" : 1,
+    "operationTime" : Timestamp(1526472678, 1),
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526472678, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 rs0:PRIMARY> rs.add("127.0.0.1:27019")
 {
-	"ok" : 1,
-	"operationTime" : Timestamp(1526472680, 1),
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526472680, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "ok" : 1,
+    "operationTime" : Timestamp(1526472680, 1),
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526472680, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 rs0:PRIMARY> rs.status()//查看各个数据库的状态
 {
-	"set" : "rs0",//Replica Set的名字
-	"date" : ISODate("2018-05-16T12:11:28.944Z"),
-	"myState" : 1,
-	"term" : NumberLong(1),
-	"heartbeatIntervalMillis" : NumberLong(2000),
-	"optimes" : {
-		"lastCommittedOpTime" : {
-			"ts" : Timestamp(1526472680, 1),
-			"t" : NumberLong(1)
-		},
-		"readConcernMajorityOpTime" : {
-			"ts" : Timestamp(1526472680, 1),
-			"t" : NumberLong(1)
-		},
-		"appliedOpTime" : {
-			"ts" : Timestamp(1526472680, 1),
-			"t" : NumberLong(1)
-		},
-		"durableOpTime" : {
-			"ts" : Timestamp(1526472680, 1),
-			"t" : NumberLong(1)
-		}
-	},
-	"members" : [
-		{
-			"_id" : 0,
-			"name" : "127.0.0.1:27017",//数据库地址
-			"health" : 1,
-			"state" : 1,
-			"stateStr" : "PRIMARY",//主数据库
-			"uptime" : 103,
-			"optime" : {
-				"ts" : Timestamp(1526472680, 1),
-				"t" : NumberLong(1)
-			},
-			"optimeDate" : ISODate("2018-05-16T12:11:20Z"),
-			"infoMessage" : "could not find member to sync from",
-			"electionTime" : Timestamp(1526472651, 2),
-			"electionDate" : ISODate("2018-05-16T12:10:51Z"),
-			"configVersion" : 3,
-			"self" : true
-		},
-		{
-			"_id" : 1,
-			"name" : "127.0.0.1:27018",
-			"health" : 1,
-			"state" : 2,
-			"stateStr" : "SECONDARY",
-			"uptime" : 10,
-			"optime" : {
-				"ts" : Timestamp(1526472680, 1),
-				"t" : NumberLong(1)
-			},
-			"optimeDurable" : {
-				"ts" : Timestamp(1526472680, 1),
-				"t" : NumberLong(1)
-			},
-			"optimeDate" : ISODate("2018-05-16T12:11:20Z"),
-			"optimeDurableDate" : ISODate("2018-05-16T12:11:20Z"),
-			"lastHeartbeat" : ISODate("2018-05-16T12:11:28.385Z"),
-			"lastHeartbeatRecv" : ISODate("2018-05-16T12:11:27.388Z"),
-			"pingMs" : NumberLong(0),
-			"syncingTo" : "127.0.0.1:27019",
-			"configVersion" : 3
-		},
-		{
-			"_id" : 2,
-			"name" : "127.0.0.1:27019",
-			"health" : 1,
-			"state" : 2,
-			"stateStr" : "SECONDARY",
-			"uptime" : 8,
-			"optime" : {
-				"ts" : Timestamp(1526472680, 1),
-				"t" : NumberLong(1)
-			},
-			"optimeDurable" : {
-				"ts" : Timestamp(1526472680, 1),
-				"t" : NumberLong(1)
-			},
-			"optimeDate" : ISODate("2018-05-16T12:11:20Z"),
-			"optimeDurableDate" : ISODate("2018-05-16T12:11:20Z"),
-			"lastHeartbeat" : ISODate("2018-05-16T12:11:28.386Z"),
-			"lastHeartbeatRecv" : ISODate("2018-05-16T12:11:28.898Z"),
-			"pingMs" : NumberLong(0),
-			"syncingTo" : "127.0.0.1:27017",
-			"configVersion" : 3
-		}
-	],
-	"ok" : 1,
-	"operationTime" : Timestamp(1526472680, 1),
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526472680, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "set" : "rs0",//Replica Set的名字
+    "date" : ISODate("2018-05-16T12:11:28.944Z"),
+    "myState" : 1,
+    "term" : NumberLong(1),
+    "heartbeatIntervalMillis" : NumberLong(2000),
+    "optimes" : {
+        "lastCommittedOpTime" : {
+            "ts" : Timestamp(1526472680, 1),
+            "t" : NumberLong(1)
+        },
+        "readConcernMajorityOpTime" : {
+            "ts" : Timestamp(1526472680, 1),
+            "t" : NumberLong(1)
+        },
+        "appliedOpTime" : {
+            "ts" : Timestamp(1526472680, 1),
+            "t" : NumberLong(1)
+        },
+        "durableOpTime" : {
+            "ts" : Timestamp(1526472680, 1),
+            "t" : NumberLong(1)
+        }
+    },
+    "members" : [
+        {
+            "_id" : 0,
+            "name" : "127.0.0.1:27017",//数据库地址
+            "health" : 1,
+            "state" : 1,
+            "stateStr" : "PRIMARY",//主数据库
+            "uptime" : 103,
+            "optime" : {
+                "ts" : Timestamp(1526472680, 1),
+                "t" : NumberLong(1)
+            },
+            "optimeDate" : ISODate("2018-05-16T12:11:20Z"),
+            "infoMessage" : "could not find member to sync from",
+            "electionTime" : Timestamp(1526472651, 2),
+            "electionDate" : ISODate("2018-05-16T12:10:51Z"),
+            "configVersion" : 3,
+            "self" : true
+        },
+        {
+            "_id" : 1,
+            "name" : "127.0.0.1:27018",
+            "health" : 1,
+            "state" : 2,
+            "stateStr" : "SECONDARY",
+            "uptime" : 10,
+            "optime" : {
+                "ts" : Timestamp(1526472680, 1),
+                "t" : NumberLong(1)
+            },
+            "optimeDurable" : {
+                "ts" : Timestamp(1526472680, 1),
+                "t" : NumberLong(1)
+            },
+            "optimeDate" : ISODate("2018-05-16T12:11:20Z"),
+            "optimeDurableDate" : ISODate("2018-05-16T12:11:20Z"),
+            "lastHeartbeat" : ISODate("2018-05-16T12:11:28.385Z"),
+            "lastHeartbeatRecv" : ISODate("2018-05-16T12:11:27.388Z"),
+            "pingMs" : NumberLong(0),
+            "syncingTo" : "127.0.0.1:27019",
+            "configVersion" : 3
+        },
+        {
+            "_id" : 2,
+            "name" : "127.0.0.1:27019",
+            "health" : 1,
+            "state" : 2,
+            "stateStr" : "SECONDARY",
+            "uptime" : 8,
+            "optime" : {
+                "ts" : Timestamp(1526472680, 1),
+                "t" : NumberLong(1)
+            },
+            "optimeDurable" : {
+                "ts" : Timestamp(1526472680, 1),
+                "t" : NumberLong(1)
+            },
+            "optimeDate" : ISODate("2018-05-16T12:11:20Z"),
+            "optimeDurableDate" : ISODate("2018-05-16T12:11:20Z"),
+            "lastHeartbeat" : ISODate("2018-05-16T12:11:28.386Z"),
+            "lastHeartbeatRecv" : ISODate("2018-05-16T12:11:28.898Z"),
+            "pingMs" : NumberLong(0),
+            "syncingTo" : "127.0.0.1:27017",
+            "configVersion" : 3
+        }
+    ],
+    "ok" : 1,
+    "operationTime" : Timestamp(1526472680, 1),
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526472680, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 ```
 # 测试
@@ -213,18 +213,18 @@ rs0:SECONDARY> use mycloud
 switched to db mycloud
 rs0:SECONDARY> db.mycloud.find()
 Error: error: {
-	"operationTime" : Timestamp(1526474043, 1),
-	"ok" : 0,
-	"errmsg" : "not master and slaveOk=false",
-	"code" : 13435,
-	"codeName" : "NotMasterNoSlaveOk",
-	"$clusterTime" : {
-		"clusterTime" : Timestamp(1526474043, 1),
-		"signature" : {
-			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
-			"keyId" : NumberLong(0)
-		}
-	}
+    "operationTime" : Timestamp(1526474043, 1),
+    "ok" : 0,
+    "errmsg" : "not master and slaveOk=false",
+    "code" : 13435,
+    "codeName" : "NotMasterNoSlaveOk",
+    "$clusterTime" : {
+        "clusterTime" : Timestamp(1526474043, 1),
+        "signature" : {
+            "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+            "keyId" : NumberLong(0)
+        }
+    }
 }
 ```
 

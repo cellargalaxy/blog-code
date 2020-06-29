@@ -35,12 +35,12 @@ public class AutoPushRedisImpl {
 依赖，这里jedis的版本由spring-boot-starter-redis决定。
 ```xml
 <dependency>
-	<groupId>redis.clients</groupId>
-	<artifactId>jedis</artifactId>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
 </dependency>
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-redis</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-redis</artifactId>
 </dependency>
 ```
 
@@ -122,17 +122,17 @@ public class RedisLockImpl {
 //我的脚本
 if redis.call('get', KEYS[1]) ~= ARGV[1] 
 then 
-	return 1 
+    return 1 
 else 
-	return redis.call('del', KEYS[1]) 
+    return redis.call('del', KEYS[1]) 
 end
 
 //importnew的脚本
 if redis.call('get', KEYS[1]) == ARGV[1] 
 then 
-	return redis.call('del', KEYS[1]) 
+    return redis.call('del', KEYS[1]) 
 else 
-	return 0 
+    return 0 
 end
 ```
 

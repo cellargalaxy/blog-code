@@ -44,189 +44,189 @@ FTP是用来传输文件的
 先来回顾一下Exec包是怎么用的
 ```java
 public static void main(String[] args) throws IOException, InterruptedException {
-		CommandLine commandLine = new CommandLine("xxx.exe");
-		DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
-		ExecuteWatchdog watchdog = new ExecuteWatchdog(60*1000);
-		Executor executor = new DefaultExecutor();
-		executor.setExitValue(1);
-		executor.setWatchdog(watchdog);
-		//在执行方法添加DefaultExecuteResultHandler对象，这样方法就不会阻塞了
-		executor.execute(commandLine, resultHandler);
-		//waitFor方法会阻塞直到命令执行完成或者到监控狗指定的时间
-		resultHandler.waitFor();
-	}
+        CommandLine commandLine = new CommandLine("xxx.exe");
+        DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(60*1000);
+        Executor executor = new DefaultExecutor();
+        executor.setExitValue(1);
+        executor.setWatchdog(watchdog);
+        //在执行方法添加DefaultExecuteResultHandler对象，这样方法就不会阻塞了
+        executor.execute(commandLine, resultHandler);
+        //waitFor方法会阻塞直到命令执行完成或者到监控狗指定的时间
+        resultHandler.waitFor();
+    }
 ```
 最最重要的就是执行器类：DefaultExecutor。接下来看看DefaultExecutor的源码，从execute方法切入。
 ```java
 public class MyDefaultExecutor {
-	private ExecuteStreamHandler streamHandler = new PumpStreamHandler();//应该是用来处理命令执行时候的流
-	private File workingDirectory = new File(".");//命令执行的当前路径
-	private ExecuteWatchdog watchdog;
-	private int[] exitValues = new int[0];
-	private final CommandLauncher launcher = CommandLauncherFactory.createVMLauncher();
-	private ProcessDestroyer processDestroyer;//运行执行摧毁器
-	private Thread executorThread;//执行线程
-	private IOException exceptionCaught = null;
+    private ExecuteStreamHandler streamHandler = new PumpStreamHandler();//应该是用来处理命令执行时候的流
+    private File workingDirectory = new File(".");//命令执行的当前路径
+    private ExecuteWatchdog watchdog;
+    private int[] exitValues = new int[0];
+    private final CommandLauncher launcher = CommandLauncherFactory.createVMLauncher();
+    private ProcessDestroyer processDestroyer;//运行执行摧毁器
+    private Thread executorThread;//执行线程
+    private IOException exceptionCaught = null;
 
 
-	public int execute(CommandLine command) throws ExecuteException, IOException {
-		return execute(command, (Map) null);
-	}
+    public int execute(CommandLine command) throws ExecuteException, IOException {
+        return execute(command, (Map) null);
+    }
 
-	public int execute(CommandLine command, Map<String, String> environment) throws ExecuteException, IOException {
-		if (this.workingDirectory != null && !this.workingDirectory.exists()) {
-			throw new IOException(this.workingDirectory + " doesn't exist.");
-		} else {
-			//利用executeInternal方法执行，会阻塞
-			return executeInternal(command, environment, this.workingDirectory, this.streamHandler);
-		}
-	}
+    public int execute(CommandLine command, Map<String, String> environment) throws ExecuteException, IOException {
+        if (this.workingDirectory != null && !this.workingDirectory.exists()) {
+            throw new IOException(this.workingDirectory + " doesn't exist.");
+        } else {
+            //利用executeInternal方法执行，会阻塞
+            return executeInternal(command, environment, this.workingDirectory, this.streamHandler);
+        }
+    }
 
-	public void execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException {
-		this.execute(command, null, handler);
-	}
+    public void execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException {
+        this.execute(command, null, handler);
+    }
 
-	public void execute(final CommandLine command, final Map<String, String> environment, final ExecuteResultHandler handler) throws ExecuteException, IOException {
-		if (this.workingDirectory != null && !this.workingDirectory.exists()) {
-			throw new IOException(this.workingDirectory + " doesn't exist.");
-		} else {
-			if (this.watchdog != null) {
-				//设置运行执行未开始？
-				this.watchdog.setProcessNotStarted();
-			}
+    public void execute(final CommandLine command, final Map<String, String> environment, final ExecuteResultHandler handler) throws ExecuteException, IOException {
+        if (this.workingDirectory != null && !this.workingDirectory.exists()) {
+            throw new IOException(this.workingDirectory + " doesn't exist.");
+        } else {
+            if (this.watchdog != null) {
+                //设置运行执行未开始？
+                this.watchdog.setProcessNotStarted();
+            }
 
-			Runnable runnable = new Runnable() {
-				public void run() {
-					int exitValue = -559038737;
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    int exitValue = -559038737;
 
-					try {
-						//同样利用executeInternal方法执行，会阻塞。但不怕，比较在线程里
-						exitValue = MyDefaultExecutor.this.executeInternal(command, environment, DefaultExecutor.this.workingDirectory, DefaultExecutor.this.streamHandler);
-						//执行完后，调用handler的onProcessComplete方法，handler就可以从waitFor方法里返回
-						handler.onProcessComplete(exitValue);
-					} catch (ExecuteException var3) {
-						//异常什么的都记录到handler里
-						handler.onProcessFailed(var3);
-					} catch (Exception var4) {
-						handler.onProcessFailed(new ExecuteException("Execution failed", exitValue, var4));
-					}
-				}
-			};
-			//创建一个Thread然后start，就不阻塞了
-			this.executorThread = this.createThread(runnable, "Exec Default Executor");
-			this.getExecutorThread().start();
-		}
-	}
+                    try {
+                        //同样利用executeInternal方法执行，会阻塞。但不怕，比较在线程里
+                        exitValue = MyDefaultExecutor.this.executeInternal(command, environment, DefaultExecutor.this.workingDirectory, DefaultExecutor.this.streamHandler);
+                        //执行完后，调用handler的onProcessComplete方法，handler就可以从waitFor方法里返回
+                        handler.onProcessComplete(exitValue);
+                    } catch (ExecuteException var3) {
+                        //异常什么的都记录到handler里
+                        handler.onProcessFailed(var3);
+                    } catch (Exception var4) {
+                        handler.onProcessFailed(new ExecuteException("Execution failed", exitValue, var4));
+                    }
+                }
+            };
+            //创建一个Thread然后start，就不阻塞了
+            this.executorThread = this.createThread(runnable, "Exec Default Executor");
+            this.getExecutorThread().start();
+        }
+    }
 
-	protected Thread createThread(Runnable runnable, String name) {
-		return new Thread(runnable, name);
-	}
+    protected Thread createThread(Runnable runnable, String name) {
+        return new Thread(runnable, name);
+    }
 
-	//执行命令，会阻塞，因为调用了process.waitFor()
-	private int executeInternal(CommandLine command, Map<String, String> environment, File dir, ExecuteStreamHandler streams) throws IOException {
-		this.setExceptionCaught(null);
-		//创建一个运行之类的对象
-		Process process = this.launch(command, environment, dir);
+    //执行命令，会阻塞，因为调用了process.waitFor()
+    private int executeInternal(CommandLine command, Map<String, String> environment, File dir, ExecuteStreamHandler streams) throws IOException {
+        this.setExceptionCaught(null);
+        //创建一个运行之类的对象
+        Process process = this.launch(command, environment, dir);
 
-		try {
-			//往流处理器里设置这个运行对象
-			streams.setProcessInputStream(process.getOutputStream());
-			streams.setProcessOutputStream(process.getInputStream());
-			streams.setProcessErrorStream(process.getErrorStream());
-		} catch (IOException var29) {
-			process.destroy();
-			throw var29;
-		}
+        try {
+            //往流处理器里设置这个运行对象
+            streams.setProcessInputStream(process.getOutputStream());
+            streams.setProcessOutputStream(process.getInputStream());
+            streams.setProcessErrorStream(process.getErrorStream());
+        } catch (IOException var29) {
+            process.destroy();
+            throw var29;
+        }
 
-		//启动用于处理流处理器的输入输出异常流的三个线程
-		//（又是三个新创建的线程啊，怎么没有用线程池呢）
-		streams.start();
+        //启动用于处理流处理器的输入输出异常流的三个线程
+        //（又是三个新创建的线程啊，怎么没有用线程池呢）
+        streams.start();
 
-		int var7;
-		try {
-			if (getProcessDestroyer() != null) {
-				//往运行摧毁器里添加这处理（运行摧毁器会按照监控狗来摧毁运行吗？）
-				getProcessDestroyer().add(process);
-			}
+        int var7;
+        try {
+            if (getProcessDestroyer() != null) {
+                //往运行摧毁器里添加这处理（运行摧毁器会按照监控狗来摧毁运行吗？）
+                getProcessDestroyer().add(process);
+            }
 
-			if (this.watchdog != null) {
-				//监控狗执行运行？
-				this.watchdog.start(process);
-			}
+            if (this.watchdog != null) {
+                //监控狗执行运行？
+                this.watchdog.start(process);
+            }
 
-			int exitValue = -559038737;
+            int exitValue = -559038737;
 
-			try {
-				//执行后等待完成，并获取离开值
-				exitValue = process.waitFor();
-			} catch (InterruptedException var27) {
-				process.destroy();
-			} finally {
-				Thread.interrupted();
-			}
+            try {
+                //执行后等待完成，并获取离开值
+                exitValue = process.waitFor();
+            } catch (InterruptedException var27) {
+                process.destroy();
+            } finally {
+                Thread.interrupted();
+            }
 
-			if (this.watchdog != null) {
-				//停止监控狗
-				this.watchdog.stop();
-			}
+            if (this.watchdog != null) {
+                //停止监控狗
+                this.watchdog.stop();
+            }
 
-			try {
-				//关闭三个流的线程
-				streams.stop();
-			} catch (IOException var26) {
-				this.setExceptionCaught(var26);
-			}
+            try {
+                //关闭三个流的线程
+                streams.stop();
+            } catch (IOException var26) {
+                this.setExceptionCaught(var26);
+            }
 
-			//关闭各种流
-			closeProcessStreams(process);
-			if (this.getExceptionCaught() != null) {
-				throw this.getExceptionCaught();
-			}
+            //关闭各种流
+            closeProcessStreams(process);
+            if (this.getExceptionCaught() != null) {
+                throw this.getExceptionCaught();
+            }
 
-			if (this.watchdog != null) {
-				try {
-					this.watchdog.checkException();
-				} catch (IOException var24) {
-					throw var24;
-				} catch (Exception var25) {
-					throw new IOException(var25.getMessage());
-				}
-			}
+            if (this.watchdog != null) {
+                try {
+                    this.watchdog.checkException();
+                } catch (IOException var24) {
+                    throw var24;
+                } catch (Exception var25) {
+                    throw new IOException(var25.getMessage());
+                }
+            }
 
-			if (this.isFailure(exitValue)) {
-				throw new ExecuteException("Process exited with an error: " + exitValue, exitValue);
-			}
+            if (this.isFailure(exitValue)) {
+                throw new ExecuteException("Process exited with an error: " + exitValue, exitValue);
+            }
 
-			var7 = exitValue;
-		} finally {
-			if (this.getProcessDestroyer() != null) {
-				this.getProcessDestroyer().remove(process);
-			}
+            var7 = exitValue;
+        } finally {
+            if (this.getProcessDestroyer() != null) {
+                this.getProcessDestroyer().remove(process);
+            }
 
-		}
-		return var7;
-	}
+        }
+        return var7;
+    }
 
-	private void closeProcessStreams(Process process) {
-		try {
-			process.getInputStream().close();
-		} catch (IOException var5) {
-			this.setExceptionCaught(var5);
-		}
+    private void closeProcessStreams(Process process) {
+        try {
+            process.getInputStream().close();
+        } catch (IOException var5) {
+            this.setExceptionCaught(var5);
+        }
 
-		try {
-			process.getOutputStream().close();
-		} catch (IOException var4) {
-			this.setExceptionCaught(var4);
-		}
+        try {
+            process.getOutputStream().close();
+        } catch (IOException var4) {
+            this.setExceptionCaught(var4);
+        }
 
-		try {
-			process.getErrorStream().close();
-		} catch (IOException var3) {
-			this.setExceptionCaught(var3);
-		}
-	}
-	//还有一些setget方法
+        try {
+            process.getErrorStream().close();
+        } catch (IOException var3) {
+            this.setExceptionCaught(var3);
+        }
+    }
+    //还有一些setget方法
 }
 ```
 

@@ -81,10 +81,10 @@ InnoDB默认优先尝试使用行级锁。与Oracle是对相应数据行加锁�
 
 ```sql
 create table user (
-	id int primary key,
-	name varchar(30),
-	age int,
-	index (age) 
+    id int primary key,
+    name varchar(30),
+    age int,
+    index (age) 
 ) ENGINE=InnoDB;
 
 insert into user values (1, 'name1', 11), (2, 'name2', 22), (3, 'name3', 33);

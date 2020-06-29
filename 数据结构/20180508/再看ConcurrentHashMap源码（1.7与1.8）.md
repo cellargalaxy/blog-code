@@ -10,19 +10,19 @@
 
 ```java
 static class Node<K, V> implements Map.Entry<K, V> {
-		final int hash;
-		final K key;
-		volatile V val;
-		volatile Node<K, V> next;
-		//。。。
+    final int hash;
+    final K key;
+    volatile V val;
+    volatile Node<K, V> next;
+    //。。。
 }
 static final class TreeNode<K, V> extends Node<K, V> {
-		TreeNode<K, V> parent;  // red-black tree links
-		TreeNode<K, V> left;
-		TreeNode<K, V> right;
-		TreeNode<K, V> prev;    // needed to unlink next upon deletion
-		boolean red;
-		//。。。
+    TreeNode<K, V> parent;  // red-black tree links
+    TreeNode<K, V> left;
+    TreeNode<K, V> right;
+    TreeNode<K, V> prev;    // needed to unlink next upon deletion
+    boolean red;
+    //。。。
 }
 ```
 
@@ -31,25 +31,25 @@ static final class TreeNode<K, V> extends Node<K, V> {
 # 成员变量
 ```java
 //默认为null，初始化发生在第一次插入操作，默认大小为16，主要数据结构
-	transient volatile Node<K, V>[] table;
-	//默认为null，扩容时新生成的数组，其大小为原数组的两倍
-	private transient volatile Node<K, V>[] nextTable;
-	//元素的个数
-	private transient volatile long baseCount;
-	/**
-	 * 默认为0，用来控制table的初始化和扩容操作
-	 * table未初始化: table需要初始化的大小
-	 * table正在初始化: -1
-	 * table初始化完成: table的容量，默认是table大小的0.75倍
-	 * 有N-1个线程正在进行扩容操作: -N
-	 */
-	private transient volatile int sizeCtl;
-	//与扩容有关
-	private transient volatile int transferIndex;
-	//与计算元素个数有关
-	private transient volatile int cellsBusy;
-	//与计算元素个数有关
-	private transient volatile CounterCell[] counterCells;
+transient volatile Node<K, V>[] table;
+//默认为null，扩容时新生成的数组，其大小为原数组的两倍
+private transient volatile Node<K, V>[] nextTable;
+//元素的个数
+private transient volatile long baseCount;
+/**
+ * 默认为0，用来控制table的初始化和扩容操作
+ * table未初始化: table需要初始化的大小
+ * table正在初始化: -1
+ * table初始化完成: table的容量，默认是table大小的0.75倍
+ * 有N-1个线程正在进行扩容操作: -N
+ */
+private transient volatile int sizeCtl;
+//与扩容有关
+private transient volatile int transferIndex;
+//与计算元素个数有关
+private transient volatile int cellsBusy;
+//与计算元素个数有关
+private transient volatile CounterCell[] counterCells;
 ```
 
 # put操作
@@ -61,65 +61,65 @@ static final class TreeNode<K, V> extends Node<K, V> {
 
 ```java
 public V put(K key, V value) {
-	return putVal(key, value, false);
+    return putVal(key, value, false);
 }
 
 final V putVal(K key, V value, boolean onlyIfAbsent) {
-	if (key == null || value == null) throw new NullPointerException();//key-value不允许空值
-	int hash = spread(key.hashCode());//算hash
-	int binCount = 0;
-	for (Node<K, V>[] tab = table; ; ) {
-		Node<K, V> f;
-		int n, i, fh;
-		if (tab == null || (n = tab.length) == 0)//如果table是空的就初始化一下
-			tab = initTable();
-		else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {//否则获取到桶，如果桶是空的
-			if (casTabAt(tab, i, null, new Node<K, V>(hash, key, value, null)))//就用cas往桶里插入第一个值
-				break;
-		} else if ((fh = f.hash) == MOVED)//如果桶第一个节点hash==-1
-			tab = helpTransfer(tab, f);//就不知道在干嘛
-		else {
-			V oldVal = null;
-			synchronized (f) {//最后，否则，对这个桶加锁
-				if (tabAt(tab, i) == f) {//如果是链表（我也不知道为什么是链表）
-					if (fh >= 0) {
-						binCount = 1;
-						for (Node<K, V> e = f; ; ++binCount) {////遍历链表？又好像不是，没看到循环的next。binCount又是为何++？记录的是链表的长度？
-							K ek;
-							if (e.hash == hash && ((ek = e.key) == key || (ek != null && key.equals(ek)))) {//节点的key的hash相等并且key相等，那就是更新
-								oldVal = e.val;//获取旧值
-								if (!onlyIfAbsent)
-									e.val = value;//设新值
-								break;
-							}
-							Node<K, V> pred = e;
-							if ((e = e.next) == null) {//遍历到最后都还没找到就是插入
-								pred.next = new Node<K, V>(hash, key, value, null);
-								break;
-							}
-						}
-					} else if (f instanceof TreeBin) {//如果是红黑树
-						Node<K, V> p;
-						binCount = 2;
-						if ((p = ((TreeBin<K, V>) f).putTreeVal(hash, key, value)) != null) {
-							oldVal = p.val;
-							if (!onlyIfAbsent)
-								p.val = value;
-						}
-					}
-				}
-			}
-			if (binCount != 0) {
-				if (binCount >= TREEIFY_THRESHOLD)//链表太长，变成红黑树
-					treeifyBin(tab, i);
-			get	if (oldVal != null)
-					return oldVal;
-				break;
-			}
-		}
-	}
-	addCount(1L, binCount);
-	return null;
+    if (key == null || value == null) throw new NullPointerException();//key-value不允许空值
+    int hash = spread(key.hashCode());//算hash
+    int binCount = 0;
+    for (Node<K, V>[] tab = table; ; ) {
+        Node<K, V> f;
+        int n, i, fh;
+        if (tab == null || (n = tab.length) == 0)//如果table是空的就初始化一下
+            tab = initTable();
+        else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {//否则获取到桶，如果桶是空的
+            if (casTabAt(tab, i, null, new Node<K, V>(hash, key, value, null)))//就用cas往桶里插入第一个值
+                break;
+        } else if ((fh = f.hash) == MOVED)//如果桶第一个节点hash==-1
+            tab = helpTransfer(tab, f);//就不知道在干嘛
+        else {
+            V oldVal = null;
+            synchronized (f) {//最后，否则，对这个桶加锁
+                if (tabAt(tab, i) == f) {//如果是链表（我也不知道为什么是链表）
+                    if (fh >= 0) {
+                        binCount = 1;
+                        for (Node<K, V> e = f; ; ++binCount) {////遍历链表？又好像不是，没看到循环的next。binCount又是为何++？记录的是链表的长度？
+                            K ek;
+                            if (e.hash == hash && ((ek = e.key) == key || (ek != null && key.equals(ek)))) {//节点的key的hash相等并且key相等，那就是更新
+                                oldVal = e.val;//获取旧值
+                                if (!onlyIfAbsent)
+                                    e.val = value;//设新值
+                                break;
+                            }
+                            Node<K, V> pred = e;
+                            if ((e = e.next) == null) {//遍历到最后都还没找到就是插入
+                                pred.next = new Node<K, V>(hash, key, value, null);
+                                break;
+                            }
+                        }
+                    } else if (f instanceof TreeBin) {//如果是红黑树
+                        Node<K, V> p;
+                        binCount = 2;
+                        if ((p = ((TreeBin<K, V>) f).putTreeVal(hash, key, value)) != null) {
+                            oldVal = p.val;
+                            if (!onlyIfAbsent)
+                                p.val = value;
+                        }
+                    }
+                }
+            }
+            if (binCount != 0) {
+                if (binCount >= TREEIFY_THRESHOLD)//链表太长，变成红黑树
+                    treeifyBin(tab, i);
+            get    if (oldVal != null)
+                    return oldVal;
+                break;
+            }
+        }
+    }
+    addCount(1L, binCount);
+    return null;
 }
 ```
 
@@ -129,23 +129,23 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ```java
 public V get(Object key) {
-	Node<K, V>[] tab;
-	Node<K, V> e, p;
-	int n, eh;
-	K ek;
-	int h = spread(key.hashCode());//再hash
-	if ((tab = table) != null && (n = tab.length) > 0 && (e = tabAt(tab, (n - 1) & h)) != null) {//table不为空，table长度大于0，桶不为空
-		if ((eh = e.hash) == h) {
-			if ((ek = e.key) == key || (ek != null && key.equals(ek)))//桶的第一个节点的key的hash相等并且key相等，找到了
-				return e.val;
-		} else if (eh < 0)
-			return (p = e.find(h, key)) != null ? p.val : null;//这是红黑树？
-		while ((e = e.next) != null) {
-			if (e.hash == h && ((ek = e.key) == key || (ek != null && key.equals(ek))))//遍历链表，key的hash相等并且key相等，找到了
-				return e.val;
-		}
-	}
-	return null;
+    Node<K, V>[] tab;
+    Node<K, V> e, p;
+    int n, eh;
+    K ek;
+    int h = spread(key.hashCode());//再hash
+    if ((tab = table) != null && (n = tab.length) > 0 && (e = tabAt(tab, (n - 1) & h)) != null) {//table不为空，table长度大于0，桶不为空
+        if ((eh = e.hash) == h) {
+            if ((ek = e.key) == key || (ek != null && key.equals(ek)))//桶的第一个节点的key的hash相等并且key相等，找到了
+                return e.val;
+        } else if (eh < 0)
+            return (p = e.find(h, key)) != null ? p.val : null;//这是红黑树？
+        while ((e = e.next) != null) {
+            if (e.hash == h && ((ek = e.key) == key || (ek != null && key.equals(ek))))//遍历链表，key的hash相等并且key相等，找到了
+                return e.val;
+        }
+    }
+    return null;
 }
 ```
 

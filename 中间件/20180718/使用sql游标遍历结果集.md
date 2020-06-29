@@ -16,30 +16,30 @@ drop procedure if exists my_procedure;
 #创建一个名叫my_procedure的方法
 CREATE PROCEDURE my_procedure()
 BEGIN
-	#声明三个变量my_id,my_name和done
-	#my_id和my_name表示select出来的id和name
-	#done用来控制循环
+    #声明三个变量my_id,my_name和done
+    #my_id和my_name表示select出来的id和name
+    #done用来控制循环
     declare my_id int;
     declare my_name varchar(16);
     declare done int default false;
-	#创建游标：declare 游标名 cursor for select语句
+    #创建游标：declare 游标名 cursor for select语句
     declare my_cursor cursor for select id,name from my_table;
-	#指定游标循环结束时的返回值（这句没看懂）
+    #指定游标循环结束时的返回值（这句没看懂）
     declare continue HANDLER for not found set done = true;
-	#打开游标
+    #打开游标
     open my_cursor;
-	#遍历
+    #遍历
     read_loop:loop
-		#读取下一行数据到my_id和my_name里
-		fetch my_cursor into my_id,my_name;
-		if done then
-			#如果结束就跳出循环
-			leave read_loop;
-		end if;
-		#这里可以做自己的操作
-		update my_table2 set name2=name where id2=id;
+        #读取下一行数据到my_id和my_name里
+        fetch my_cursor into my_id,my_name;
+        if done then
+            #如果结束就跳出循环
+            leave read_loop;
+        end if;
+        #这里可以做自己的操作
+        update my_table2 set name2=name where id2=id;
     end loop;
-	#关闭游标
+    #关闭游标
     close my_cursor;
 END;
 #上面只是创建了方法，这里调用方法
