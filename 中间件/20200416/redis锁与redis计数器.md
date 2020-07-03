@@ -136,6 +136,22 @@ else
 end
 ```
 
+# 分布式Redis锁
+上面的redis锁是基于单个主节点的，如果主节点宕机进行了选举，新的主节点不一定能把锁的key同步，就可能会导致有两个实例获取到锁。
+
+## Redlock
+所以在redis集群里，有N个（例如5个）独立的主节点，可以使用Redlock（红锁）算法。
+
+1. 获取当前时间戳作为开始时间戳
+2. 依次向全部主节点加锁。每次加锁请求都需要设置超时时间，并且超时时间应该远远短于锁的有效时间
+3. 如果获取到了过半数主节点的锁，并且当前时间减去开始时间戳小于锁有效时间，即锁还没过期，则获取锁成功。这样子锁的实际有效时间就是距离锁过期剩下的时间了
+4. 如果没能获取过半锁，或者遍历完全部主节点后锁已经过期了，则向全部主节点解锁，稍等一段随机时间再重试
+
+# Redlock的问题
+1. 宕机问题：实例1拿到ABC三个锁，之后C宕机选举了，新C的锁丢了，实例2拿到了CDE三个锁，那就有两个实例拿到锁了
+2. 停顿问题：实例1拿到了锁，之后经历了很长的GC，长到锁过期了，之后实例2拿到了锁，但实例1从GC醒来的时候还以为只有自己有锁
+3. 时间问题：实例1拿到了ABC三个锁，C的时间出了问题导致锁提前过期，实例2拿到了CDE的锁
+
 # redis计数器
 redis计数器就很简单了，直接redisTemplate就能调用，返回的是加一之后的值。
 ```java
@@ -153,3 +169,6 @@ long increase = redisTemplate.opsForValue().increment(key, delta);
 [基于 Redis 的分布式锁](https://crossoverjie.top/2018/03/29/distributed-lock/distributed-lock-redis/)
 
 [基于Redis实现分布式锁之前，这些坑你一定得知道](https://juejin.im/post/5e6727e16fb9a07cc845b9ba)
+
+[Redlock算法](https://blog.wangqi.love/articles/distributed/Redlock%E7%AE%97%E6%B3%95.html)
+
