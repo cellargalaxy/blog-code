@@ -22,6 +22,9 @@
   - 遍历数组，有对应坑位+1，否则全体-1
   - 如果有坑位要被减到负，则置换其一负坑位为当前值，出现数量为1
   - 最后坑位里的即出现次数最多的n个元素
+* 排序矩阵搜索
+  - 左上角/右下角：最小值/最大值
+  - 左下角/右上角：能按照当前大小有方向行进
 
 + 先根遍历
 ```java
@@ -38,7 +41,7 @@ public static void 先根遍历(TreeNode root) {
     }
 }
 ```
-+ 中根遍历
++ 中根遍历：二叉搜索树是升序遍历
 ```java
 public void 中根遍历(TreeNode root) {
     Stack<TreeNode> stack = new Stack<>();
@@ -51,6 +54,17 @@ public void 中根遍历(TreeNode root) {
         System.out.println(root.val);
         root = root.right;
     }
+}
+```
++ 后根遍历
+```java
+public void 后根遍历(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    后根遍历(root.left);
+    后根遍历(root.right);
+    System.out.println(root.val);
 }
 ```
 + 层序遍历
@@ -69,6 +83,26 @@ public void 层序遍历(Main.TreeNode root) {
             }
         }
         list = ls;
+    }
+}
+```
++ 遍历树路径
+```java
+public void 遍历树路径(TreeNode root) {
+    Stack<TreeNode> stack = new Stack<>();
+    LinkedList<TreeNode> path = new LinkedList<>();
+    while (root != null || !stack.isEmpty()) {
+        while (root != null) {
+            path.add(root);
+            System.out.println(root.val + ": " + path);
+            stack.add(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        while (root != path.getLast()) {
+            path.removeLast();
+        }
+        root = root.right;
     }
 }
 ```
@@ -190,3 +224,6 @@ public void 层序遍历(Main.TreeNode root) {
 + ✔[229]求众数 II：**摩尔投票法**。但由于摩尔投票法只是数量最多，不一定能过三分之一。
   所以摩尔投票法之后还要遍历一遍数组统计是不是超过三分之一。
 
++ ✔[238]除自身以外数组的乘积：这题又是妙呀妙呀。两个新数字，分别表示从左往右和从右往左的累乘，那么下标i即为i的左边累乘乘以右边的累乘。
+
++ ✔[240]搜索二维矩阵 II：这题又是妙呀妙呀。**排序矩阵搜索**。我以为我好不容易想出了的矩阵范围缩减策略能过，结果还是超时。
