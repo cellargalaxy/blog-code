@@ -97,6 +97,13 @@ mysql> explain select countryCode,status from tb_devicemap where updateDate > '2
   - **Using index**：索引覆盖
   - Using temporary：使用了零时表，一般出现于排序, 分组和多表join
 
+# 读写分离
++ 主库将修改写入binlog文件
++ 从库连接到主库，会起一个IO线程把binlog复制到自己的中继日志中
++ 然后再起一个SQL线程从中继日志中读取执行binlog的的命令
++ 一般延迟几十或几百毫秒，如果此时主库挂了，数据就丢失了
+  - 半同步复制：主库写入binlog之后强制数据立即同步到从库，至少有一个从库确认同步了才算写入成功
+  - 并行复制：起多个SQL线程来执行中继日志
 
 # 分库分表
 一个表控制在两百万以内，一个库最好一千QPS，最多两千QPS。
@@ -114,14 +121,40 @@ mysql> explain select countryCode,status from tb_devicemap where updateDate > '2
 + 主键id自增步长
 + redis自增
 
-# 读写分离
-+ 主库将修改写入binlog文件
-+ 从库连接到主库，会起一个IO线程把binlog复制到自己的中继日志中
-+ 然后再起一个SQL线程从中继日志中读取执行binlog的的命令
-+ 一般延迟几十或几百毫秒，如果此时主库挂了，数据就丢失了
-  - 半同步复制：主库写入binlog之后强制数据立即同步到从库，至少有一个从库确认同步了才算写入成功
-  - 并行复制：起多个SQL线程来执行中继日志
+# 优化
++ 表设计优化
+  - 使用整型表示枚举字符串
+  - 尽量不使用null，索引里null被认为是最小值，会被放在最左边，如果有大量null会降低索引性能
+  - 尽量别`select *`，尽量`count(*)`
+  - 货币数据使用decimal
++ 索引优化：如上
++ 读写分离：如上
++ 分库分表：如上
 
+# InnoDB与MyISAM
+
+InnoDB是聚集索引，即索引跟数据在一起。必须有主键(没有会自建一个隐藏的)，非主键->二级索引->主键->一级索引->数据。
+而MyISAM的索引则是保存数据文件的指针。
+
+|        |InnoDB                      |MyISAM                        |
+|---     |---                         |---                           |
+|存储结构|索引和数据都保存在一个文件里|分为表结构、索引和数据三个文件|
+|事务    |支持                        |不支持                        |
+|全文索引|不支持                      |支持                          |
+|锁      |表锁和行锁                  |表锁                          |
+|CURD    |偏向于写                    |偏向于读                      |
+|数据恢复|相对容易                    |相对困难                      |
+
+# Binlog
+Binlog会记录每一个更新操作，作为一个事件。在记录模式上分为三类：
++ statement：记录所执行的SQL
++ row：记录每一行数据的变化字段的前后值
++ mixed：statement和row的混合模式
+使用场景：
++ 读写分离：主从同步
++ 数据恢复
++ 数据同步：binlog->MQ-其他服务(redis、ES)。使用binlog同步组件拉取。
++ 异地多活：主键冲突、数据回环问题
 
 参考文章：
 
@@ -130,3 +163,13 @@ mysql> explain select countryCode,status from tb_devicemap where updateDate > '2
 [MySQL InnoDB中的行锁 Next-Key Lock消除幻读](https://blog.csdn.net/tb3039450/article/details/66475638)
 
 [explain结果每个字段的含义说明](https://www.jianshu.com/p/8fab76bbf448)
+
+[mysql decimal用法与问题](http://jimolonely.github.io/2019/09/24/db/011-mysql-decimal/)
+
+[MySQL中IS NULL、IS NOT NULL、!=不能用索引？胡扯！](https://juejin.im/post/5d5defc2518825591523a1db)
+
+[MySQL存储引擎－－MyISAM与InnoDB区别](https://www.jianshu.com/p/a957b18ba40d)
+
+[MySQL存储引擎MyISAM和InnoDB有哪些区别？](https://xushanxiang.com/2019/11/the-difference-between-mysql-storage-engine-myisam-and-innodb.html)
+
+[mysql binlog应用场景与原理深度剖析](http://www.jiangxinlingdu.com/mysql/2019/06/07/binlog.html)
