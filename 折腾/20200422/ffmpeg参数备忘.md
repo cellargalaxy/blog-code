@@ -1,6 +1,7 @@
 由于对ffmpeg基本一窍不通，所以只能在网上搜索一下别人写好的ffmpeg参数，复制粘贴一下，做个备忘。
 
 # 将一个视频转为多张图片
+
 + -vf：为图片添加水印，字体大小15，颜色灰色，时间格式hms
 + -r：每秒取五张截图
 + -q:v：生成的图片质量（好像）
@@ -17,7 +18,9 @@ ffmpeg \
 ```
 
 # 将一个图片转为视频
+
 这样子视频只有一帧
+
 ```bash
 ffmpeg -i input.jpg output.mp4
 ```
@@ -44,4 +47,12 @@ ffmpeg \
 -r 25 \
 -t 10 \
 output.mp4
+```
+
+# 转为音频
+
++ -ac：音轨数量
+
+```bash
+ffmpeg -i video.mkv -ac 2 audio.wav
 ```
