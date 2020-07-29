@@ -13,15 +13,15 @@
         <b-form-input v-model="url" placeholder="url"></b-form-input>
     </b-input-group>
     <b-input-group size="sm">
-        <b-form-input v-model="leftSpace" placeholder="leftSpace"></b-form-input>
-        <b-form-input v-model="topSpace" placeholder="topSpace"></b-form-input>
-        <b-form-input v-model="imageWidth" placeholder="imageWidth"></b-form-input>
-        <b-form-input v-model="imageHeight" placeholder="imageHeight"></b-form-input>
-        <b-form-input v-model="whirl" placeholder="whirl" type="number"></b-form-input>
-        <b-form-input v-model="barrier" placeholder="barrier" type="number"></b-form-input>
+        <b-form-input placeholder="leftSpace(0px)" v-model="leftSpace"></b-form-input>
+        <b-form-input placeholder="topSpace(0px)" v-model="topSpace"></b-form-input>
+        <b-form-input placeholder="imageWidth(100px)" v-model="imageWidth"></b-form-input>
+        <b-form-input placeholder="imageHeight(100px)" v-model="imageHeight"></b-form-input>
+        <b-form-input placeholder="whirl(0)" type="number" v-model="whirl"></b-form-input>
+        <b-form-input placeholder="barrier(0)" type="number" v-model="barrier"></b-form-input>
     </b-input-group>
 
-    <div style="height: 100vh;width: 100vw;background-color: black">
+    <div style="height: 100vh;background-color: black">
         <div style="position:absolute;z-index:1">
             <img :src="url"
                  :style="{'height':imageHeight,'width':imageWidth,'margin-left':leftSpace,'margin-top':topSpace,'transform':'rotate('+whirl+'deg)'}"/>
@@ -43,13 +43,12 @@
 <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
 <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
 <script src="//unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="//unpkg.com/jquery.cookie@1.4.1/jquery.cookie.js"></script>
 <script>
     var vm = new Vue({
         el: '#app',
         data: {
             file: null,
-            url: null,
+            url: '',
             leftSpace: '0px',
             topSpace: '0px',
             imageWidth: '100px',
@@ -58,17 +57,17 @@
             barrier: 100
         },
         computed: {
-            widthBarrierCount: () => {
-                return Array.from({length: (document.body.clientWidth / vm.barrier) - 1})
+            widthBarrierCount: function () {
+                return Array.from({length: (document.body.clientWidth / this.barrier) - 1})
             },
-            heightBarrierCount: () => {
-                return Array.from({length: (document.body.clientHeight / vm.barrier) - 1})
+            heightBarrierCount: function () {
+                return Array.from({length: (document.body.clientHeight / this.barrier) - 1})
             },
         },
         methods: {
-            changeFile(event) {
+            changeFile: function (event) {
                 const reader = new FileReader()
-                reader.onload = () => vm.url = reader.result
+                reader.onload = () => this.url = reader.result
                 reader.readAsDataURL(event.target.files[0])
             },
         },
@@ -78,24 +77,47 @@
     window.onbeforeunload = saveConfig
 
     function readConfig() {
-        vm.url = $.cookie('url')
-        vm.leftSpace = $.cookie('leftSpace')
-        vm.topSpace = $.cookie('topSpace')
-        vm.imageWidth = $.cookie('imageWidth')
-        vm.imageHeight = $.cookie('imageHeight')
-        vm.whirl = $.cookie('whirl')
-        vm.barrier = $.cookie('barrier')
+        const url = localStorage.url
+        vm.url = url != undefined && url != null && url != '' ? url : vm.url
+
+        const leftSpace = localStorage.leftSpace
+        vm.leftSpace = leftSpace != undefined && leftSpace != null && leftSpace != '' ? leftSpace : vm.leftSpace
+
+        const topSpace = localStorage.topSpace
+        vm.topSpace = topSpace != undefined && topSpace != null && topSpace != '' ? topSpace : vm.topSpace
+
+        const imageWidth = localStorage.imageWidth
+        vm.imageWidth = imageWidth != undefined && imageWidth != null && imageWidth != '' ? imageWidth : vm.imageWidth
+
+        const imageHeight = localStorage.imageHeight
+        vm.imageHeight = imageHeight != undefined && imageHeight != null && imageHeight != '' ? imageHeight : vm.imageHeight
+
+        const whirl = parseInt(localStorage.whirl)
+        if (isNum(whirl)) {
+            vm.whirl = whirl
+        }
+
+        const barrier = parseInt(localStorage.barrier)
+        if (isNum(barrier)) {
+            vm.barrier = barrier
+        }
     }
 
     function saveConfig() {
-        $.cookie('url', vm.url, {expires: 365})
-        $.cookie('leftSpace', vm.leftSpace, {expires: 365})
-        $.cookie('topSpace', vm.topSpace, {expires: 365})
-        $.cookie('imageWidth', vm.imageWidth, {expires: 365})
-        $.cookie('imageHeight', vm.imageHeight, {expires: 365})
-        $.cookie('whirl', vm.whirl, {expires: 365})
-        $.cookie('barrier', vm.barrier, {expires: 365})
+        localStorage.setItem('url', vm.url)
+        localStorage.setItem('leftSpace', vm.leftSpace)
+        localStorage.setItem('topSpace', vm.topSpace)
+        localStorage.setItem('imageWidth', vm.imageWidth)
+        localStorage.setItem('imageHeight', vm.imageHeight)
+        localStorage.setItem('whirl', vm.whirl)
+        localStorage.setItem('barrier', vm.barrier)
     }
 
+    function isNum(s) {
+        if (s != null && s != '') {
+            return !isNaN(s)
+        }
+        return false;
+    }
 </script>
 </html>
