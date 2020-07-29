@@ -19,22 +19,28 @@
         <b-form-input placeholder="imageHeight(100px)" v-model="imageHeight"></b-form-input>
         <b-form-input placeholder="whirl(0)" type="number" v-model="whirl"></b-form-input>
         <b-form-input placeholder="barrier(0)" type="number" v-model="barrier"></b-form-input>
+        <b-form-input placeholder="clientWidth(0)" v-model="clientWidth"></b-form-input>
+        <b-form-input placeholder="clientHeight(0)" v-model="clientHeight"></b-form-input>
+        <b-form-input placeholder="widthBarrierCount(0)" type="number" v-model="widthBarrierCount"></b-form-input>
+        <b-form-input placeholder="heightBarrierCount(0)" type="number" v-model="heightBarrierCount"></b-form-input>
     </b-input-group>
 
-    <div style="height: 100vh;background-color: black">
+    <div :style="{'height':clientHeight}" style="background-color: black">
         <div style="position:absolute;z-index:1">
             <img :src="url"
                  :style="{'height':imageHeight,'width':imageWidth,'margin-left':leftSpace,'margin-top':topSpace,'transform':'rotate('+whirl+'deg)'}"/>
         </div>
         <div style="position:absolute;z-index:2">
-            <div style="float:top;width:100vw;height:1px;background-color:rgba(255, 255, 255, 0.8);"
-                 :style="{'margin-top':barrier+'px','transform':'rotate('+whirl+'deg)'}"
-                 v-for="(item, index) in heightBarrierCount" :key="index"></div>
+            <div :key="index"
+                 :style="{'width':clientWidth,'margin-top':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+                 style="float:top;height:1px;background-color:rgba(255, 255, 255, 0.8);"
+                 v-for="(item, index) in heightBarrierList"></div>
         </div>
         <div style="position:absolute;z-index:3">
-            <div style="float:left;width: 1px;height:100vh;background-color:rgba(255, 255, 255, 0.8);"
-                 :style="{'margin-left':barrier+'px','transform':'rotate('+whirl+'deg)'}"
-                 v-for="(item, index) in widthBarrierCount" :key="index"></div>
+            <div :key="index"
+                 :style="{'height':clientHeight,'margin-left':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+                 style="float:left;width: 1px;background-color:rgba(255, 255, 255, 0.8);"
+                 v-for="(item, index) in widthBarrierList"></div>
         </div>
     </div>
 
@@ -54,14 +60,18 @@
             imageWidth: '100px',
             imageHeight: '100px',
             whirl: 0,
-            barrier: 100
+            barrier: 100,
+            clientWidth: '100vw',
+            clientHeight: '100vh',
+            widthBarrierCount: parseInt(getStorageNum('clientWidth', document.body.clientWidth) / getStorageNum('barrier', 100)) - 1,
+            heightBarrierCount: parseInt(getStorageNum('clientHeight', document.body.clientHeight) / getStorageNum('barrier', 100)) - 1,
         },
         computed: {
-            widthBarrierCount: function () {
-                return Array.from({length: (document.body.clientWidth / this.barrier) - 1})
+            widthBarrierList: function () {
+                return Array.from({length: this.widthBarrierCount})
             },
-            heightBarrierCount: function () {
-                return Array.from({length: (document.body.clientHeight / this.barrier) - 1})
+            heightBarrierList: function () {
+                return Array.from({length: this.heightBarrierCount})
             },
         },
         methods: {
@@ -76,31 +86,32 @@
     readConfig()
     window.onbeforeunload = saveConfig
 
+    function getStorage(key, defaultValue) {
+        const value = localStorage[key]
+        return value != undefined && value != null && value != '' ? value : defaultValue
+    }
+
+    function getStorageNum(key, defaultValue) {
+        const value = parseInt(localStorage[key])
+        if (isNum(value)) {
+            return value
+        }
+        return defaultValue
+    }
+
     function readConfig() {
-        const url = localStorage.url
-        vm.url = url != undefined && url != null && url != '' ? url : vm.url
+        vm.url = getStorage('url', vm.url)
+        vm.leftSpace = getStorage('leftSpace', vm.leftSpace)
+        vm.topSpace = getStorage('topSpace', vm.topSpace)
+        vm.imageWidth = getStorage('imageWidth', vm.imageWidth)
+        vm.imageHeight = getStorage('imageHeight', vm.imageHeight)
+        vm.clientWidth = getStorage('clientWidth', vm.clientWidth)
+        vm.clientHeight = getStorage('clientHeight', vm.clientHeight)
 
-        const leftSpace = localStorage.leftSpace
-        vm.leftSpace = leftSpace != undefined && leftSpace != null && leftSpace != '' ? leftSpace : vm.leftSpace
-
-        const topSpace = localStorage.topSpace
-        vm.topSpace = topSpace != undefined && topSpace != null && topSpace != '' ? topSpace : vm.topSpace
-
-        const imageWidth = localStorage.imageWidth
-        vm.imageWidth = imageWidth != undefined && imageWidth != null && imageWidth != '' ? imageWidth : vm.imageWidth
-
-        const imageHeight = localStorage.imageHeight
-        vm.imageHeight = imageHeight != undefined && imageHeight != null && imageHeight != '' ? imageHeight : vm.imageHeight
-
-        const whirl = parseInt(localStorage.whirl)
-        if (isNum(whirl)) {
-            vm.whirl = whirl
-        }
-
-        const barrier = parseInt(localStorage.barrier)
-        if (isNum(barrier)) {
-            vm.barrier = barrier
-        }
+        vm.whirl = getStorageNum('whirl', vm.whirl)
+        vm.barrier = getStorageNum('barrier', vm.barrier)
+        vm.widthBarrierCount = getStorageNum('widthBarrierCount', vm.widthBarrierCount)
+        vm.heightBarrierCount = getStorageNum('heightBarrierCount', vm.heightBarrierCount)
     }
 
     function saveConfig() {
@@ -111,6 +122,10 @@
         localStorage.setItem('imageHeight', vm.imageHeight)
         localStorage.setItem('whirl', vm.whirl)
         localStorage.setItem('barrier', vm.barrier)
+        localStorage.setItem('clientWidth', vm.clientWidth)
+        localStorage.setItem('clientHeight', vm.clientHeight)
+        localStorage.setItem('widthBarrierCount', vm.widthBarrierCount)
+        localStorage.setItem('heightBarrierCount', vm.heightBarrierCount)
     }
 
     function isNum(s) {
