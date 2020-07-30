@@ -15,35 +15,30 @@
     <b-input-group size="sm">
         <b-form-input placeholder="leftSpace(0px)" v-model="leftSpace"></b-form-input>
         <b-form-input placeholder="topSpace(0px)" v-model="topSpace"></b-form-input>
-        <b-form-input placeholder="imageWidth(100px)" v-model="imageWidth"></b-form-input>
-        <b-form-input placeholder="imageHeight(100px)" v-model="imageHeight"></b-form-input>
+        <b-form-input placeholder="imageWidth(200px)" v-model="imageWidth"></b-form-input>
+        <b-form-input placeholder="imageHeight(200px)" v-model="imageHeight"></b-form-input>
         <b-form-input placeholder="whirl(0)" type="number" v-model="whirl"></b-form-input>
-        <b-form-input placeholder="barrier(0)" type="number" v-model="barrier"></b-form-input>
-        <b-form-input placeholder="clientWidth(0)" v-model="clientWidth"></b-form-input>
-        <b-form-input placeholder="clientHeight(0)" v-model="clientHeight"></b-form-input>
+        <b-form-input placeholder="barrier(99)" type="number" v-model="barrier"></b-form-input>
+        <b-form-input placeholder="clientWidth(99vw)" v-model="clientWidth"></b-form-input>
+        <b-form-input placeholder="clientHeight(100vw)" v-model="clientHeight"></b-form-input>
         <b-form-input placeholder="widthBarrierCount(0)" type="number" v-model="widthBarrierCount"></b-form-input>
         <b-form-input placeholder="heightBarrierCount(0)" type="number" v-model="heightBarrierCount"></b-form-input>
     </b-input-group>
 
-    <div :style="{'height':clientHeight}" style="background-color: black">
-        <div style="position:absolute;z-index:1">
-            <img :src="url"
-                 :style="{'height':imageHeight,'width':imageWidth,'margin-left':leftSpace,'margin-top':topSpace,'transform':'rotate('+whirl+'deg)'}"/>
-        </div>
-        <div style="position:absolute;z-index:2">
-            <div :key="index"
-                 :style="{'width':clientWidth,'margin-top':barrier+'px','transform':'rotate('+whirl+'deg)'}"
-                 style="float:top;height:1px;background-color:rgba(255, 255, 255, 0.8);"
-                 v-for="(item, index) in heightBarrierList"></div>
-        </div>
-        <div style="position:absolute;z-index:3">
-            <div :key="index"
-                 :style="{'height':clientHeight,'margin-left':barrier+'px','transform':'rotate('+whirl+'deg)'}"
-                 style="float:left;width: 1px;background-color:rgba(255, 255, 255, 0.8);"
-                 v-for="(item, index) in widthBarrierList"></div>
-        </div>
+    <div style="position:absolute;z-index:1;">
+        <img :src="url"
+             :style="{'height':imageHeight,'width':imageWidth,'margin-left':leftSpace,'margin-top':topSpace,'transform':'rotate('+whirl+'deg)'}"/>
     </div>
-
+    <div style="position:absolute;z-index:2;">
+        <div :key="index" :style="{'width':clientWidth,'margin-top':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+             style="float:top;height:1px;background-color:rgba(255, 255, 255, 0.8);"
+             v-for="(item, index) in heightBarrierList"></div>
+    </div>
+    <div style="position:absolute;z-index:3;">
+        <div :key="index" :style="{'height':clientHeight,'margin-left':barrier+'px','transform':'rotate('+whirl+'deg)'}"
+             style="float:left;width: 1px;background-color:rgba(255, 255, 255, 0.8);"
+             v-for="(item, index) in widthBarrierList"></div>
+    </div>
 </div>
 </body>
 <script src="//unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
