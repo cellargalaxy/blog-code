@@ -132,7 +132,7 @@ https://github.com/ohmyzsh/ohmyzsh
 ```shell
 sudo vim /etc/default/grub
 
-GRUB_DEFAULT=1
+GRUB_DEFAULT=2
 GRUB_TIMEOUT_STYLE=hidden
 GRUB_TIMEOUT=3
 ```
