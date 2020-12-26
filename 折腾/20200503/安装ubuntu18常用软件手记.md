@@ -124,3 +124,6 @@ sudo ntpdate 0.cn.pool.ntp.org
 + 1.cn.pool.ntp.org
 + 2.cn.pool.ntp.org
 + 3.cn.pool.ntp.org
+
+# shell
+https://github.com/ohmyzsh/ohmyzsh
