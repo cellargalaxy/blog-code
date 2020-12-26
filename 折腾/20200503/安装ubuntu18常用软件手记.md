@@ -151,4 +151,7 @@ cd /usr/share/fonts/windows_font
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
+
+# 重启
+reboot
 ```
