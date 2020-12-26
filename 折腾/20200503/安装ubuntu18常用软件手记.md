@@ -135,4 +135,6 @@ sudo vim /etc/default/grub
 GRUB_DEFAULT=2
 GRUB_TIMEOUT_STYLE=hidden
 GRUB_TIMEOUT=3
+
+update-grub
 ```
