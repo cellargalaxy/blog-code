@@ -138,3 +138,17 @@ GRUB_TIMEOUT=3
 
 update-grub
 ```
+
+# 字体
+```shell
+# 新建一个目录，将字体文件复制到该文件夹下
+sudo mkdir /usr/share/fonts/windows_font
+cp xxx usr/share/fonts/windows_font
+sudo chmod -R 777 /usr/share/fonts/windows_font
+
+# 在该文件夹下执行
+cd /usr/share/fonts/windows_font
+sudo mkfontscale
+sudo mkfontdir
+sudo fc-cache -fv
+```
