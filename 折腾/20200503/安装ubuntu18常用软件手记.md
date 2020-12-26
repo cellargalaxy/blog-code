@@ -127,3 +127,12 @@ sudo ntpdate 0.cn.pool.ntp.org
 
 # shell
 https://github.com/ohmyzsh/ohmyzsh
+
+# grub启动
+```shell
+sudo vim /etc/default/grub
+
+GRUB_DEFAULT=1
+GRUB_TIMEOUT_STYLE=hidden
+GRUB_TIMEOUT=3
+```
