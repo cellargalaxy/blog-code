@@ -40,6 +40,9 @@ https://cn.bandisoft.com/honeyview/
 # Xshell
 https://www.microsoft.com/zh-CN/download/details.aspx?id=30679
 
+# raidrive
+https://www.raidrive.com/download
+
 # windows显示秒
 https://walker-a.com/archives/4096
 
