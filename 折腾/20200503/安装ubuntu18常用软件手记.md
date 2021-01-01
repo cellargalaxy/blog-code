@@ -71,15 +71,19 @@ sudo apt-get install chrome-gnome-shell
 
 # 字体
 ```shell script
+# 新建一个目录，将字体文件复制到该文件夹下
 sudo mkdir -p /usr/share/fonts/win
 sudo cp /media/meltsprout/C6BC4A30BC4A1B77/Windows/Fonts/*.ttf /usr/share/fonts/win
 sudo cp /media/meltsprout/C6BC4A30BC4A1B77/Windows/Fonts/*.ttc /usr/share/fonts/win
 
+# 在该文件夹下执行
 cd /usr/share/fonts/win
 sudo chmod -R 644 /usr/share/fonts/win
 sudo mkfontscale
 sudo mkfontdir
 sudo fc-cache -fv
+
+# 重启
 reboot
 ```
 
@@ -139,19 +143,13 @@ GRUB_TIMEOUT=3
 update-grub
 ```
 
-# 字体
+# zsh
+https://github.com/ohmyzsh/ohmyzsh
+
+字体乱码：https://e99net.github.io/2018/06/07/install_oh-my-zsh_of_ubuntu/
 ```shell
-# 新建一个目录，将字体文件复制到该文件夹下
-sudo mkdir /usr/share/fonts/windows_font
-cp xxx usr/share/fonts/windows_font
-sudo chmod -R 777 /usr/share/fonts/windows_font
-
-# 在该文件夹下执行
-cd /usr/share/fonts/windows_font
-sudo mkfontscale
-sudo mkfontdir
-sudo fc-cache -fv
-
-# 重启
-reboot
+git clone https://github.com/powerline/fonts
+cd ~/fonts
+./install.sh
 ```
+然后在配置终端，依次选择“编辑”->“配置文件首选项”，选择“自定义字体”，字体为“Ubuntu Mono derivative Powerline Regular”即可。
