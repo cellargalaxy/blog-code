@@ -5,6 +5,8 @@ RocketMQ是一个用java实现的队列模型消息中间件，由阿里开发�
 一般由多个生产者组成一个生产组，多个消费者组成消费组。主题由多个队列组成，可以给同一主题下的消息添加标签，进行更细颗粒度的区分。
 一个主题维护多个队列，以提高主题的并发能力。生产者可以给多个队列生产消息。
 
+![](/file/blog/code/20210427/cdn.jsdelivr.net-gh-piterjia-piterjia.github.io-images-posts-rocketmq-rocketmq-3.jpg.JPEG)
+
 # 架构模型
 RocketMQ架构由四部分组成
 
@@ -12,6 +14,10 @@ RocketMQ架构由四部分组成
 + Consumer：消费者
 + Broker：RocketMQ服务的实例
 + NameServer：用于Broker的服务发现
+
+![](/file/blog/code/20210427/img2018.cnblogs.com-blog-1090617-201906-1090617-20190626173042073-147043337.jpg.JPEG)
+
+![](/file/blog/code/20210427/cdn.jsdelivr.net-gh-piterjia-piterjia.github.io-images-posts-rocketmq-rocketmq-9.jpg.JPEG)
 
 # NameServer与Broker
 
