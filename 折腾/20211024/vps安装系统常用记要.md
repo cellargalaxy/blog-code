@@ -277,7 +277,7 @@ show global variables like '%ssl%';
 
 ## mysql主从配置
 
-[mysql的主从数据库设置.md](../20180515/mysql的主从数据库设置.md)
++ [mysql的主从数据库设置.md](../20180515/mysql的主从数据库设置.md)
 
 ```shell
 grant replication slave,replication client on *.* to 'user_name'@'%' identified by 'password' require ssl;
