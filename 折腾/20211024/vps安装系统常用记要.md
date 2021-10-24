@@ -2,7 +2,7 @@
 
 # DD系统
 
-https://www.cxthhhhh.com/network-reinstall-system-modify
++ https://www.cxthhhhh.com/network-reinstall-system-modify
 
 原系统推荐centos7，推荐优先级：C7 > U18 > D9 > U16 > D8 > 商家提供的其它系统。安装时间大约十几分钟到半个小时。如果时间太长就应该是出了什么bug。在控制面板重新安装系统后再重试DD。
 
@@ -26,7 +26,7 @@ yum install vim -y
 
 # centos关闭SELinux
 
-https://www.jianshu.com/p/a7900dbf893c
++ https://www.jianshu.com/p/a7900dbf893c
 
 ```shell
 #查看SELinux状态
@@ -58,7 +58,7 @@ systemctl restart sshd
 
 ## 修改SSH端口出错
 
-https://laowangblog.com/fix-centos-modify-ssh-port-error-bind-to-port-1024-on-0-0-0-0-failed-permission-denied.html
++ https://laowangblog.com/fix-centos-modify-ssh-port-error-bind-to-port-1024-on-0-0-0-0-failed-permission-denied.html
 
 `error: Bind to port 1024 on 0.0.0.0 failed: Permission denied.`
 
@@ -102,7 +102,7 @@ systemctl status firewalld
 
 # 安装zsh
 
-https://ohmyz.sh/
++ https://ohmyz.sh/
 
 ```shell
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -110,9 +110,9 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 
 # 修改时区
 
-https://majing.io/posts/10000021081212
-https://www.cnblogs.com/comexchan/p/10781522.html
-https://www.jianshu.com/p/6907aa71cb84
++ https://majing.io/posts/10000021081212
++ https://www.cnblogs.com/comexchan/p/10781522.html
++ https://www.jianshu.com/p/6907aa71cb84
 
 ```shell
 #同步时间
@@ -136,9 +136,9 @@ reboot
 
 ## 安装v2ray测试
 
-https://github.com/v2fly/v2ray-core/releases
-https://www.speedtest.net/
-https://94ish.me/1635.html
++ https://github.com/v2fly/v2ray-core/releases
++ https://www.speedtest.net/
++ https://94ish.me/1635.html
 
 ```shell
 wget -N --no-check-certificate "https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh"
@@ -156,7 +156,7 @@ BBR ：
 
 # 创建swap
 
-https://www.cnblogs.com/EasonJim/p/7487596.html
++ https://www.cnblogs.com/EasonJim/p/7487596.html
 
 ```shell
 #创建文件
@@ -178,7 +178,7 @@ swapoff /swapfile
 
 # 安装docker
 
-https://yeasy.gitbook.io/docker_practice/install/centos
++ https://yeasy.gitbook.io/docker_practice/install/centos
 
 ```shell
 #卸载旧版本
@@ -267,9 +267,9 @@ mariadb \
 
 ## mariadb启用ssl
 
-https://caibaoz.com/blog/2013/08/13/generate_ssl_certificates_and_keys_for_mysql/
-https://mariadb.com/kb/en/securing-connections-for-client-and-server/
-https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
++ https://caibaoz.com/blog/2013/08/13/generate_ssl_certificates_and_keys_for_mysql/
++ https://mariadb.com/kb/en/securing-connections-for-client-and-server/
++ https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
 
 ```shell
 show global variables like '%ssl%';
