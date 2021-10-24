@@ -4,7 +4,7 @@
 
 https://www.cxthhhhh.com/network-reinstall-system-modify
 
-原系统推荐centos7，推荐优先级：C7 > U18 > D9 > U16 > D8 > 商家提供的其它系统 安装时间大约十几分钟到半个小时。如果时间太长就应该是出了什么bug。在控制面板重新安装系统后再重试DD。
+原系统推荐centos7，推荐优先级：C7 > U18 > D9 > U16 > D8 > 商家提供的其它系统。安装时间大约十几分钟到半个小时。如果时间太长就应该是出了什么bug。在控制面板重新安装系统后再重试DD。
 
 + 默认的用户名是：`root`
 + 默认的密码是：`cxthhhhh.com`
@@ -60,6 +60,8 @@ systemctl restart sshd
 
 https://laowangblog.com/fix-centos-modify-ssh-port-error-bind-to-port-1024-on-0-0-0-0-failed-permission-denied.html
 
+`error: Bind to port 1024 on 0.0.0.0 failed: Permission denied.`
+
 ```shell
 #安装修改工具
 yum -y install policycoreutils-python
@@ -72,8 +74,6 @@ semanage port --delete -t ssh_port_t -p tcp 22
 systemctl restart sshd
 
 ```
-
-`error: Bind to port 1024 on 0.0.0.0 failed: Permission denied.`
 
 # 防火墙
 
