@@ -153,3 +153,11 @@ cd ~/fonts
 ./install.sh
 ```
 然后在配置终端，依次选择“编辑”->“配置文件首选项”，选择“自定义字体”，字体为“Ubuntu Mono derivative Powerline Regular”即可。
+
+# 截图
+```shell
+sudo apt install flameshot
+
+# 快捷键启动截图
+flameshot gui
+```
