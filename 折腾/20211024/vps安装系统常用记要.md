@@ -105,6 +105,8 @@ systemctl status firewalld
 + https://ohmyz.sh/
 
 ```shell
+yum install zsh -y
+yum install git -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
@@ -203,6 +205,8 @@ $ sudo sed -i 's/download.docker.com/mirrors.aliyun.com\/docker-ce/g' /etc/yum.r
 sudo yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo
+#安装
+sudo yum install docker-ce docker-ce-cli containerd.io
 #启动 Docker
 sudo systemctl enable docker
 sudo systemctl start docker
@@ -232,6 +236,12 @@ sudo docker run -d \
 -v caddy_data:/data \
 caddy
 
+sudo docker run -d \
+--name filebrowser \
+--restart always \
+-p 80:9900 \
+-v /file:/srv \
+filebrowser/filebrowser
 sudo docker volume create filebrowser_data
 sudo docker run -d \
 --name filebrowser \
