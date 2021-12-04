@@ -228,18 +228,20 @@ sudo docker run -d \
 portainer/portainer
 
 sudo docker volume create caddy_data
+sudo docker volume create caddy_config
 sudo docker run -d \
 --name caddy \
 --restart=always \
 --net=host \
 -v /Caddyfile:/etc/caddy/Caddyfile \
 -v caddy_data:/data \
+-v caddy_config:/config \
 caddy
 
 sudo docker run -d \
 --name filebrowser \
 --restart always \
--p 80:9900 \
+-p 9900:80 \
 -v /file:/srv \
 filebrowser/filebrowser
 sudo docker volume create filebrowser_data
