@@ -275,6 +275,93 @@ sudo docker run -d \
 mariadb \
 --character-set-server=utf8mb4 \
 --collation-server=utf8mb4_unicode_ci
+
+
+sudo docker run -d \
+--name samba \
+--restart=always \
+--net=host \
+-e PUID=1000 \
+-e PGID=1000 \
+-e TZ=Asia/Shanghai \
+-p 139:139 \
+-p 455:455 \
+-p 137:137/udp \
+-p 138:138/udp \
+-v /path:/path \
+dperson/samba -n -s "path;/path"
+
+
+sudo docker run -d \
+--name webdav_j \
+-p 80:80 \
+-v /path:/media/path \
+-e USERNAME=admin \
+-e PASSWORD=admin?admin \
+-e TZ=Asia/Shanghai  \
+-e UDI=1000 \
+-e GID=1000 \
+ugeek/webdav:arm
+
+
+sudo docker run -d \
+--name v2ray \
+--restart=always \
+--net macnet \
+v2ray
+
+
+sudo docker volume create syncthing_data
+sudo docker run -d \
+--name=syncthing \
+--restart=always \
+-e TZ=Asia/Shanghai \
+-e PUID=0 \
+-e PGID=0 \
+-p 8384:8384 \
+-p 22000:22000 \
+-p 21027:21027/udp \
+-v syncthing_data:/config \
+-v /path:/data \
+linuxserver/syncthing
+
+
+sudo docker volume create qbittorrent_data
+sudo docker run -d \
+--name=qbittorrent \
+--restart=always \
+-e PUID=1000 \
+-e PGID=1000 \
+-e WEBUIPORT=9092 \
+-p 6881:6881 \
+-p 6881:6881/udp  \
+-p 9092:9092  \
+-v qbittorrent_data:/config \
+-v /path:/Downloads \
+johngong/qbittorrent:qee-latest
+
+
+sudo docker volume create aria2_data
+sudo docker run -d \
+--name aria2 \
+--restart=always \
+-e RPC_SECRET=token \
+-e RPC_PORT=6800 \
+-p 6800:6800 \
+-e LISTEN_PORT=6888 \
+-p 6888:6888 \
+-p 6888:6888/udp \
+-v aria2_data:/config \
+-v /path:/downloads \
+p3terx/aria2-pro
+
+
+sudo docker run -d \
+--name openwrt \
+--restart always \
+--network macnet \
+--privileged \
+kanshudj/n1-openwrtgateway:r9.10.1 /sbin/init
 ```
 
 ## mariadb启用ssl
