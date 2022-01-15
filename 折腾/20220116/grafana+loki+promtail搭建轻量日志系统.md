@@ -132,7 +132,7 @@ scrape_configs:
           - localhost
         labels:
           job: log
-          __path__: /log/*log
+          __path__: /log/**/*.log
 ```
 
 安装
