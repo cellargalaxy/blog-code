@@ -178,6 +178,22 @@ free -h
 swapoff /swapfile
 ```
 
+# journal日志大小限制
+```shell
+#检查当前journal使用磁盘量
+journalctl --disk-usage
+
+vim /etc/systemd/journald.conf
+SystemMaxUse=16M
+ForwardToSyslog=no
+
+#重启
+systemctl restart systemd-journald.service
+
+#检查journal是否运行正常以及日志文件是否完整无损坏
+journalctl --verify
+```
+
 # 安装docker
 
 + https://yeasy.gitbook.io/docker_practice/install/centos
@@ -212,6 +228,19 @@ sudo systemctl enable docker
 sudo systemctl start docker
 #测试
 docker run --rm hello-world
+```
+
+```shell
+#docker日志大小限制
+vim /etc/docker/daemon.json
+{
+  "log-driver":"json-file",
+  "log-opts": {"max-size":"32m", "max-file":"3"}
+}
+
+#重启docker
+systemctl daemon-reload
+systemctl restart docker
 ```
 
 ## 常用docker镜像

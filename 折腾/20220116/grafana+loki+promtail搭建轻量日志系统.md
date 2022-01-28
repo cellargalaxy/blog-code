@@ -161,8 +161,8 @@ sudo docker run -d \
 
 参考文章
 
-[官方安装教程](https://grafana.com/docs/loki/latest/installation/docker/)
-[轻量级的日志系统Loki体验](https://joelei.com/2021/06/lightweight-log-system-loki-experience/)
-[Loki 轻量级日志收集系统](https://xiaosongs.com/operation/loki/)
-[生产环境中Loki的优化](https://www.feiyiblog.com/2021/09/16/生产环境中Loki的优化/)
-[Loki、promtail、Grafana、Prometheus日志监控安装与配置](https://www.yoyoask.com/?p=4436)
++ [官方安装教程](https://grafana.com/docs/loki/latest/installation/docker/)
++ [轻量级的日志系统Loki体验](https://joelei.com/2021/06/lightweight-log-system-loki-experience/)
++ [Loki 轻量级日志收集系统](https://xiaosongs.com/operation/loki/)
++ [生产环境中Loki的优化](https://www.feiyiblog.com/2021/09/16/生产环境中Loki的优化/)
++ [Loki、promtail、Grafana、Prometheus日志监控安装与配置](https://www.yoyoask.com/?p=4436)
