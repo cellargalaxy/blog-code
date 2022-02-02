@@ -1,3 +1,10 @@
+---
+createdAt: '2018-05-15'
+updatedAt: '2018-05-15'
+---
+
+<!--more-->
+
 # mysql与mariadb
 mariadb是mysql的一个分支，其为了使用和api上兼容mysql。mysql卖给了Sun，Sun被Oracle收购之后，为了避免mysql封源收费而出现的。
 

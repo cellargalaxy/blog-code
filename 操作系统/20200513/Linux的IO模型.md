@@ -1,4 +1,10 @@
+---
+createdAt: '2020-05-13'
+updatedAt: '2020-05-13'
+---
 本文主要是[聊聊 Linux 中的五种 IO 模型](https://mp.weixin.qq.com/s/RkncXcZT4nDQgdLeUcFaxQ)的概括。
+
+<!--more-->
 
 对于32位的计算机，操作系统最多给每个进程分配4G的内存。针对linux而言，linux会把其中1G分配为内核空间，另外3G分配为用户空间。
 

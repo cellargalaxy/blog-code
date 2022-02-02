@@ -1,4 +1,10 @@
+---
+createdAt: '2018-10-24'
+updatedAt: '2018-10-24'
+---
 我们需要Quartz框架执行任务，就需要告诉Quartz所需的JobDetail和Trigger。在单机里，Quartz会把JobDetail和Trigger保存在内存里，如果重启，JobDetail和Trigger的数据都会全部丢失（虽然会在代码里重新添加）。显然，需要集群执行，把JobDetail和Trigger保存在内存里是没有办法在各个节点之间进行同步的，而Quartz利用数据库的锁来进行实现。
+
+<!--more-->
 
 # JobStore
 

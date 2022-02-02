@@ -1,3 +1,10 @@
+---
+createdAt: '2018-04-06'
+updatedAt: '2018-04-06'
+---
+
+<!--more-->
+
 论如何两天学会java操作mongodb并且写个文件床管理系统出来。~~只是还没写界面，赶不及了~~，晚安～
 
 欢迎围观https://github.com/cellargalaxy/mycloud-mongodb

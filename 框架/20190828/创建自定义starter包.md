@@ -1,3 +1,10 @@
+---
+createdAt: '2019-08-28'
+updatedAt: '2019-08-28'
+---
+
+<!--more-->
+
 # 一个先行问题
 
 在创建自定义starter包中，让我思考了一个我认为是先行的问题：满足什么特性，实际上才是一个starter包？当然这个问题我思考的不算透彻，但也有了一个简单的答案。我们可以建立一个任意的spring项目，用上所需要的注解，改个starter名字，打成一个包作为依赖引入springboot项目里，依照spring的特性，我们让springboot扫描依赖包的包名，自然就能自动注入依赖里的bean。但我认为这不是一个starter包。starter包是springboot的包，需要体现springboot的自动配置特性。举个例子，springboot的jdcb的starter包，能根据导入的数据库驱动类型来自动配置，这绝不是一个普通的spring应用包会做的。然后还有次要的，当然也是很重要的一点，就是导入的starter包从来都不需要使用者显式配置扫包，这点的实现是利用了springboot的一些特性。因此，会被springboot触发，根据环境来进行自动配置，完成bean的装配与控制反转的包，才是一个starter包。

@@ -1,3 +1,10 @@
+---
+createdAt: '2019-09-12'
+updatedAt: '2019-09-12'
+---
+
+<!--more-->
+
 用习惯了搜狗输入法，已用Gboard，感觉Gboard好像智障一样，都识别不出我要的词的。后来才知道Gboard莫得官方词库，是通过记录用户输入，训练常用词，但还真是tmd难用，变打算起把搜狗输入法的词库导入Gboard里。
 
 1. 下载搜狗的词库文件：[https://pinyin.sogou.com/dict/](https://pinyin.sogou.com/dict/)，格式是`scel`。没有必要写个爬虫去抓，如果只把官方推荐的词库下载下来，也就几十个，如果导入的词库多了，Gboard也吃不消。

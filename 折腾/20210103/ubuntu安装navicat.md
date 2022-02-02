@@ -1,3 +1,10 @@
+---
+createdAt: '2021-01-03'
+updatedAt: '2021-01-03'
+---
+
+<!--more-->
+
 # 安装依赖
 ```shell
 sudo apt install libcapstone-dev

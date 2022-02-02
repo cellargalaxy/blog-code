@@ -1,7 +1,13 @@
+---
+createdAt: '2018-01-29'
+updatedAt: '2018-01-29'
+---
 先不说废话，看了再说
 b站连接https://www.bilibili.com/video/av8042104/ (没办法，b站的播放器矫情，不知道为什么报403加载失败，只好请你异步去b站看了)
 
 <embed width="100%" height="500" src="https://www.youtube.com/embed/fzQ6gRAEoy0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></embed>
+
+<!--more-->
 
 估计你已经看完了，如果没看完赶快去看，接下来就要讲故事内容了，防剧透贴个官方大图。
 

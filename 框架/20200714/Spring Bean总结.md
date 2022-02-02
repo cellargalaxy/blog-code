@@ -1,3 +1,10 @@
+---
+createdAt: '2020-07-14'
+updatedAt: '2020-07-14'
+---
+
+<!--more-->
+
 # Spring Bean Scope
 
 spring bean的作用域范围最常用的是单例和原型，使用`@Scope("prototype")`指定即可。

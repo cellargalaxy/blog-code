@@ -1,3 +1,10 @@
+---
+createdAt: '2020-03-19'
+updatedAt: '2020-03-19'
+---
+
+<!--more-->
+
 # 配置文件加载优先级
 
 SpringBoot对于所加载的多个配置文件，会进行合并共存。如果配置文件之间有冲突，规则是冲突部分高优先级的配置覆盖低优先级的配置。而加载的地方有多个，常见的地方，优先级从高到低有（[spring官网文档](https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/htmlsingle/#boot-features-external-config)）：

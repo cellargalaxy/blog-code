@@ -1,3 +1,10 @@
+---
+createdAt: '2018-05-15'
+updatedAt: '2018-05-15'
+---
+
+<!--more-->
+
 # 配置
 mongodb有两种主从配置，一种是master/slave模式，另一种是Replica Set模式。由于Replica Set有故障自动切换功能，而master/slave没有，所以master/slave已经不被推荐使用。
 

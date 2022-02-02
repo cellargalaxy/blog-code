@@ -1,3 +1,10 @@
+---
+createdAt: '2018-05-08'
+updatedAt: '2018-05-08'
+---
+
+<!--more-->
+
 之前我写的[临急抱佛脚之ConcurrentHashMap源码](http://119.23.235.95:83/article/138240 "临急抱佛脚之ConcurrentHashMap源码")是java7的实现。面试的时候被问到ConcurrentHashMap在java7和java8的实现上有什么区别，我就只知道个会链表变红黑树。至于java8中新的并发机制却没有了解。为此补这篇文章。
 
 # Java7的ConcurrentHashMap

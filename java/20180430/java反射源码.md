@@ -1,7 +1,13 @@
+---
+createdAt: '2018-04-30'
+updatedAt: '2018-04-30'
+---
 # Method对象
 既然是java的反射，就躲不开class对象。class对象保存着对应的Method，Field，Constructor。接下来以Method为例~~（因为我只看了Method）~~。
 
 不知为何，可能是为了安全把，class并不会直接暴露Method，这个Method对象叫做root对象。而是当需要获取这个rootMethod时，再new一个Method代理这个rootMethod。因此每次获取的Method对象都是新的对象。
+
+<!--more-->
 
 ```java
 //例如class的getDeclaredMethod方法

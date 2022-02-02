@@ -1,7 +1,13 @@
+---
+createdAt: '2018-03-12'
+updatedAt: '2018-03-12'
+---
 Executor框架是自带的线程池框架。
 
 # Executor
 Executor是一个接口，只有`void execute(Runnable command);`方法。
+
+<!--more-->
 
 # ExecutorService
 ExecutorService也是一个接口，继承Executor。但是比Executor多了些方法，例如：

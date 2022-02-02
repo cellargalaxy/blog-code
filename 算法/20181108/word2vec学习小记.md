@@ -1,3 +1,10 @@
+---
+createdAt: '2018-11-08'
+updatedAt: '2018-11-08'
+---
+
+<!--more-->
+
 # 词向量
 
 在机器学习中，为了让计算机能够处理自然语言，我们需要用数字来表示自然语言中的词。如果使用一个向量来表示一个词，那这个向量就叫做词向量。把一个词转换为一个向量的方式有很多，例如`one hot Representation`，以及`word2vec`。`one hot Representation`比较简单，通过一个长度为词表大小的（高维）二进制向量来表示，但只能给词编个号，无法表示词之间的关系。另外一种叫做`Distributed Representation`，使用稠密、低维的实数向量，以“具有相似上下文的词，应该具有相似的语义”的假说提起词义特征，能描述词之间的关系。而`word2vec`属于`Distributed Representation`类型。
