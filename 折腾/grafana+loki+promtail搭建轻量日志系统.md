@@ -132,13 +132,25 @@ client:
     password: password
 
 scrape_configs:
-  - job_name: system
+  - job_name: log
     static_configs:
       - targets:
           - localhost
         labels:
           job: log
           __path__: /log/**/*.log
+    pipeline_stages:
+      - regex: #https://regex101.com/
+          expression: '(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}).+\[(?P<level>[A-Z]{4})\].+\[logid:(?P<logid>[0-9]+)\].+\[sn:(?P<sn>.+)\].+\[ip:(?P<ip>[0-9.]+)\].+\[caller:"(?P<caller>.+)"\]'
+      - labels:
+          level:
+          logid:
+          sn:
+          ip:
+          caller:
+      - timestamp:
+          source: timestamp
+          format: RFC3339
 ```
 
 安装
