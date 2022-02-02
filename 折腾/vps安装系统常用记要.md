@@ -2,7 +2,7 @@
 createdAt: '2021-10-24'
 updatedAt: '2021-10-24'
 ---
-对VPS安装新系统的常用配置的记要，延伸自[vps重装系统的习惯性操作.md](../20180412/vps重装系统的习惯性操作.md)
+对VPS安装新系统的常用配置的记要，延伸自[vps重装系统的习惯性操作.md](vps重装系统的习惯性操作.md)
 
 <!--more-->
 
@@ -411,7 +411,7 @@ show global variables like '%ssl%';
 
 ## mysql主从配置
 
-+ [mysql的主从数据库设置.md](../20180515/mysql的主从数据库设置.md)
++ [mysql的主从数据库设置.md](mysql的主从数据库设置.md)
 
 ```shell
 grant replication slave,replication client on *.* to 'user_name'@'%' identified by 'password' require ssl;
