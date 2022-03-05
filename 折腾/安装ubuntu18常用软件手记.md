@@ -137,7 +137,8 @@ sudo ntpdate 0.cn.pool.ntp.org
 + 3.cn.pool.ntp.org
 
 # Host
-https://github.com/oldj/SwitchHosts/blob/master/README_cn.md
++ https://github.com/oldj/SwitchHosts/blob/master/README_cn.md
++ https://github.com/521xueweihan/GitHub520
 
 # shell
 https://github.com/ohmyzsh/ohmyzsh
