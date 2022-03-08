@@ -10,6 +10,47 @@ LSM树对KV的持久化，保持较高性能的读的基础上，实现了追加
 
 <!--more-->
 
+# RocksDB的LSM树的实现
+
+RocksDB的LSM树的存储结构有三种：WAL+mentable+SSTable
+
+## WAL
+
+WAL(write-ahead log)(预写式日志)，WAL本质是一个追加写入的硬盘文件，是数据库技术中实现事务的一种标准方法，可以实现单机事务的原子性和持久性，同时提高写入的性能。
+在修改数据时为了实现事务的原子性和持久性，并不会直接修改数据文件，因为一个事务中可能会随机修改多个字段，导致需要修改数据文件的位置也是随机的。
+一是随机IO会影响性能，二是多次的随机IO写入显然无法保证原子性。
+而使用WAL的话，并不会直接去修改数据文件，而是把数据修改的情况都写入WAL里。往WAL里写入的类型有两种，redo执行写操作，undo回滚写操作。
+接下来可能会有五种情况：
+
++ 往WAL写入redo前崩溃了，重启后WAL并没有相关日志：事务无执行，数据文件无影响
++ 往WAL写入redo时崩溃了，重启后WAL的日志并不完整：事务取消执行，数据文件无影响
++ 往WAL写入redo后崩溃了，重启后WAL的日志写入完整：从WAL中读出所需修改的数据，修改数据文件
++ 修改数据文件时崩溃了：从WAL中读出所需修改的数据，继续修改数据文件
++ 修改数据文件无法进行：往WAL里写入undo，回滚写操作，事务执行失败
+
+使用WAL支持并发读读和读写，由于都是追加写入，不支持并发写写。
+如果需要读最新的数据，则需要往WAL里查询。如果WAL没查到，那数据文件里的就是最新的数据。
+需要注意，写入WAL与修改数据文件并不一定是同步的。往往会合并WAL多个写操作，批量刷入硬盘里。
+
+## mentable
+
+mentable是RocksDB的内存数据结构，使用跳表实现，分为active memtable和immutable memtable两种。
+RocksDB在写入WAL之后，会把数据写到active mentable里。
+如果active mentable被写满，会新建一个active mentable，旧的会变成immutable memtable，等待被异步刷入硬盘里。
+
+## SSTable
+
+
+除了WAL以外，mentable的数据是最新的，所以查询数据
+
+
+
+参考文章
+
 [从 RocksDB 看 LSM-Tree 算法设计](https://segmentfault.com/a/1190000041198407)
 
 [一个项目的诞生(三)：RocksDB的价值](https://flynx.dev/rocksdb/)
+
+[WAL(预写式日志)简介](https://lessisbetter.site/2020/01/02/wal-introduction/)
+
+[你常听说的WAL到底是什么](https://cloud.tencent.com/developer/article/1623123)
