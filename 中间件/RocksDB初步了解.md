@@ -40,8 +40,22 @@ RocksDB在写入WAL之后，会把数据写到active mentable里。
 
 ## SSTable
 
+SSTable，SST文件，全称Sorted String Table，是持久化的，不可改的，有序的数据文件。
+SSTable的文件分为多个区域，内部有索引信息能加快数据查询速度。
+mentable被刷到硬盘里的数据去向就是生成SSTable。
+SST文件都属于某一个层，从L0到Ln，层级越小，数据越新。新生成的SST文件首先会在L0层，但每一层的SST文件数量会有限制。
+当数据达到上限时，后对该层SST文件进行合并，生成新的SST文件，放到下一层里。
 
-除了WAL以外，mentable的数据是最新的，所以查询数据
+### Compaction
+
+## 读操作
+
+## 写操作
+
+## Column Family
+kv存储时需要指定列族(Column Family)，且允许创建多个列族。列族直接使用不同的mentable和SST文件，但是公用一个WAL。
+好处是可以对不同列族的mentable和SST进行不同的配置，提高读写性能。
+
 
 
 
