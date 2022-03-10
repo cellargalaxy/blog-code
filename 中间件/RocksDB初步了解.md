@@ -10,7 +10,7 @@ LSM树对KV的持久化，保持较高性能的读的基础上，实现了追加
 
 <!--more-->
 
-# RocksDB的LSM树的实现
+# LSM树的实现
 
 RocksDB的LSM树的存储结构有三种：WAL+mentable+SSTable
 
@@ -43,21 +43,49 @@ RocksDB在写入WAL之后，会把数据写到active mentable里。
 SSTable，SST文件，全称Sorted String Table，是持久化的，不可改的，有序的数据文件。
 SSTable的文件分为多个区域，内部有索引信息能加快数据查询速度。
 mentable被刷到硬盘里的数据去向就是生成SSTable。
-SST文件都属于某一个层，从L0到Ln，层级越小，数据越新。新生成的SST文件首先会在L0层，但每一层的SST文件数量会有限制。
-当数据达到上限时，后对该层SST文件进行合并，生成新的SST文件，放到下一层里。
+SST文件都属于某一个层，从L0到Ln，层级越小，数据越新。新生成的SST文件首先会在L0层，但每一层的SST文件数量会有限制。在一定的条件下，会对SST文件进行合并。
 
 ### Compaction
 
+由于RocksDB通过增量写写入mentable，而SST文件数据来源于mentable，所以SST文件的数据的冗余的。
+为了减少冗余，会对SST文件进行合并，删除重复或者过期的key。
+而RocksDB默认是使用Level Style Compaction作为合并策略。
+
+首先L0的SST文件是从mentable生成的，所以L0的SST文件直接会有重复的key。
+当进行合并时，会选择Ln层的一个文件，与Ln+1的多个文件进行合并，合并相同的key，删除失效key。
+合并后，每一层的SST文件直接都是有顺序的。
+
 ## 读操作
 
+1. 在active mentable里查询
+2. 在immutable memtable里查询
+3. 在L0里查询。由于L0可能有重复key，所以才有遍历查询
+4. 在Ln里查询，由于Ln没有重复key，所以使用二分法查询
+5. 如果到Lmax都还查不到，那就是查不到
+
 ## 写操作
+
+1. 数据写入active mentable
+2. active mentable到达一定大小，会转变成immutable memtable，创建新的active mentable继续提供读写
+3. 满足一定会把immutable memtable刷为硬盘的SST文件。先写入系统缓存页，再异步写入硬盘，考虑到系统奔溃丢缓存页可能性较低，异步写还是可靠的
 
 ## Column Family
 kv存储时需要指定列族(Column Family)，且允许创建多个列族。列族直接使用不同的mentable和SST文件，但是公用一个WAL。
 好处是可以对不同列族的mentable和SST进行不同的配置，提高读写性能。
 
+# LSM树总结
 
+相比于B+树来说，要在B+树写入随机的数据，写入的节点位置是随机的，随机写入影响着B+树的写入性能。
+而LSM树通过使用WAL，mentable和SST文件，将随机写转换为顺序写，大大提高了写入的性能。
+但顺序写的所带来的代价的空间放大，写放大和读放大。
 
++ 由于SST文件的冗余性，存储空间被放大
++ 同样由于冗余性而需要进行合并，每次合并都进行一次写操作，实际是把每次只需写入一次的数据放大操作了多次写
++ LSM树读取数据需要分层读取多次，读取次数的放大会影响读性能
+
+空间放大，写放大和读放大三种需要平衡，RocksDB提供了许多配置来进行微调设置。
+跟B+树相比，B+树对事物支持更好，因为B+树能原地更新数据，并且数据只有一份。而LSM树的key在L0里会重复，只有在进行合并的时候才算完成事物。
+LSM树支持O(1)的写，O(n)的读。而B+树的读写都是O(logN)。通常来说，LSM树的写性能由于B+树，B+树的读性能优于LSM树。
 
 参考文章
 
