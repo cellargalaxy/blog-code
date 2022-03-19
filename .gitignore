@@ -3,6 +3,9 @@ file
 config.ini
 go-file-bed
 go-file-bed.exe
+node_modules
+dist
+blog-code
 
 ### STS ###
 .apt_generated
