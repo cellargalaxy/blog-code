@@ -1,62 +1,62 @@
 {
   "site": {
-    "siteUrl": "https://code.cellargalaxy.top",
     "siteName": "无名の窝",
-    "faviconUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
-    "avatarUrl": "https://i.loli.net/2019/07/09/5d2484e68fddd81209.jpg",
-    "description": "无名の窝",
-    "staticCssUrl": "/css/static.css",
-    "staticJsUrl": "/js/static.js",
+    "siteHost": "https://cellargalaxy.github.io/blog-code/",
+    "basePath": "/blog-code/",
+    "pageSize": 10,
+    "urlReplace": {
+      "^/file/blog/code": "http://123.207.79.108/file/file/blog/code"
+    },
     "backgroundImage": {
       "duration": 10000,
       "fade": 1000,
       "images": [
         {
+          "url": "https://i.loli.net/2020/01/25/cofTzDQXitjeVZ6.jpg",
           "description": "青春猪头-牧之原翔子-江之岛",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/01/25/cofTzDQXitjeVZ6.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/01/25/sfaRJ2lVeM3NDbE.jpg",
           "description": "青春猪头-牧之原翔子-江之岛",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/01/25/sfaRJ2lVeM3NDbE.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/01/26/KybiTdftam5Su7x.jpg",
           "description": "青春猪头-双葉理央",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/01/26/KybiTdftam5Su7x.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/09/08/xdX73nfs24qgOYk.jpg",
           "description": "京吹-明日香,久美子",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/09/08/xdX73nfs24qgOYk.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/02/14/MAiruNcEFW2HYtg.jpg",
           "description": "终将成为你-七海灯子,小糸侑",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/02/14/MAiruNcEFW2HYtg.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/02/05/EojdAxTDJsFpbPw.jpg",
           "description": "玉子市场-北白川玉子",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/02/05/EojdAxTDJsFpbPw.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/01/31/AXxwJDRS9fmN2uU.jpg",
           "description": "fate_hf-弓道馆",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/01/31/AXxwJDRS9fmN2uU.jpg"
+          "type": "wide"
         },
         {
+          "url": "https://i.loli.net/2020/02/01/aHhVObpJus6dnM4.jpg",
           "description": "fate_hf-樱花树",
-          "isPc": true,
-          "url": "https://i.loli.net/2020/02/01/aHhVObpJus6dnM4.jpg"
+          "type": "wide"
         }
       ]
     }
   },
   "navbar": {
-    "brandText": "无名の窝",
-    "brandUrl": "/",
+    "brandText": "",
+    "brandUrl": "",
     "navs": [
       {
         "text": "文章",
@@ -64,15 +64,7 @@
       },
       {
         "text": "归档",
-        "url": "/archives/1/"
-      },
-      {
-        "text": "关于我",
-        "url": "/article/README/"
-      },
-      {
-        "text": "写作",
-        "url": "/preview/"
+        "url": "/archive/0/"
       },
       {
         "text": "画画",
@@ -104,45 +96,26 @@
         ]
       }
     ],
-    "navs": []
-  },
-  "file": {
-    "pathDateRegular": "/\\d{8}/",
-    "pathDateFormat": "YYYYMMDD",
-    "pageSize": 10,
-    "summaryRow": 6,
-    "dateStringFormat": "YYYY-MM-DD",
-    "fileConfigs": [
+    "navs": [
       {
-        "urlPath": "article",
-        "folderPath": "",
-        "extension": ".md"
+        "text": "Github",
+        "url": "https://github.com/cellargalaxy/"
       }
     ]
   },
   "pageFoot": {
-    "buildTimeFormat": "YYYY-MM-DD HH:mm",
-    "rowContents": [
+    "lines": [
       [
         {
-          "text": "Copyright © 2017-2020 ."
+          "text": "Copyright © 2017-? ."
         },
         {
           "text": "备案？不存在的"
         },
         {
-          "text": "Powered by Nuxt.js & Github",
-          "url": "https://github.com/"
+          "text": "Powered by Nuxt.js & Github"
         }
       ]
     ]
-  },
-  "errorPage": {
-    "404": {
-      "statusCode": "404",
-      "message": "一个页面的命运啊，当然要靠自我奋斗，但是也要考虑到历史的行程！",
-      "text": "回去首页溜达",
-      "url": "/"
-    }
   }
 }
