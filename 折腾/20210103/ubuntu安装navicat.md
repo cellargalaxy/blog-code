@@ -7,6 +7,7 @@ updatedAt: '2021-01-03'
 
 # 安装依赖
 ```shell
+sudo apt-get install build-essential
 sudo apt install libcapstone-dev
 sudo apt install cmake
 sudo apt install rapidjson-dev
@@ -27,7 +28,7 @@ sudo ldconfig
 # 编译补丁
 ```shell
 git clone -b linux --single-branch https://github.com/HeQuanX/navicat-keygen-tools.git
-cd avicat-keygen-tools
+cd navicat-keygen-tools
 make all
 
 # 检查bin目录下是否有navicat-keygen和navicat-patcher
@@ -35,24 +36,24 @@ cd bin
 ls
 ```
 
-# 破解
+# 解包官方软件
 ```shell
 # 在navicat-keygen-tools/bin下
 # 下载官方navicat15
 wget https://www.navicat.com.cn/download/direct-download?product=navicat15-premium-cs.AppImage&location=1
 
+mkdir navicat15
+sudo mount -o loop navicat15-premium-cs.AppImage navicat15
+cp -r navicat15 navicat15-patched
+sudo umount navicat15
+```
+
+# 破解
+```shell
 # 赋予执行权限
 chmod +x appimagetool-x86_64.AppImage
 chmod +x navicat-patcher
 chmod +x navicat-keygen
-```
-
-# 解包官方软件
-```shell
-mkdir navicat15
-sudo mount -o loop navicat15-premium-cs.AppImage navicat15
-cp -r navicat15 navicat15-patched
-unmount navicat15
 ```
 
 # 运行补丁
@@ -93,6 +94,12 @@ CKrwYGzMf0OZgZCE***==
 ```
 
 得到一个注册成功的`navicat15-premium-cs-pathed.AppImage`，拷贝到喜欢的地方使用
+
+# 清理
+```shell
+rm -rf navicat15
+rm -rf navicat15-patched
+```
 
 参考文章
 
