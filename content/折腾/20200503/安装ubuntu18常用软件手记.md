@@ -172,3 +172,39 @@ sudo apt install flameshot
 # 快捷键启动截图
 flameshot gui
 ```
+
+# 微信QQ
+```shell
+# 微信里的net="host"，本来是为了能进行聊天记录备份。但发现备份会导致卡死
+sudo docker run -d \
+  --name wechat \
+  --device /dev/snd \
+  --ipc="host" \
+  --net="host" \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v ~/wechat/WeChatFiles:/WeChatFiles \
+  -e DISPLAY=unix$DISPLAY \
+  -e XMODIFIERS=@im=fcitx \
+  -e QT_IM_MODULE=fcitx \
+  -e GTK_IM_MODULE=fcitx \
+  -e AUDIO_GID=$(getent group audio | cut -d: -f3) \
+  -e GID=$(id -g) \
+  -e UID=$(id -u) \
+  bestwu/wechat
+  
+sudo docker run -d \
+  --name qq \
+  --device /dev/snd \
+  --ipc="host" \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v ~/qq/TencentFiles:/TencentFiles \
+  -e DISPLAY=unix$DISPLAY \
+  -e XMODIFIERS=@im=fcitx \
+  -e QT_IM_MODULE=fcitx \
+  -e GTK_IM_MODULE=fcitx \
+  -e AUDIO_GID=$(getent group audio | cut -d: -f3) \
+  -e VIDEO_GID=$(getent group video | cut -d: -f3) \
+  -e GID=$(id -g) \
+  -e UID=$(id -u) \
+  bestwu/qq
+```
