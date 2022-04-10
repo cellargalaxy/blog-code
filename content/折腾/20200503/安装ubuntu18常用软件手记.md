@@ -206,5 +206,5 @@ sudo docker run -d \
   -e VIDEO_GID=$(getent group video | cut -d: -f3) \
   -e GID=$(id -g) \
   -e UID=$(id -u) \
-  bestwu/qq
+  bestwu/qq:im
 ```
