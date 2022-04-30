@@ -10,6 +10,10 @@ twrp刷入并不成功，目前不晓得啥原因。 但由于没有太需要twr
 
 https://developers.google.com/android/images#taimen
 
+lineageos还有更新
+
+https://download.lineageos.org/taimen
+
 ```
 taimen-rp1a.201005.004.a1-factory-2f5c4987.zip
 ```
@@ -58,6 +62,12 @@ https://developer.android.com/studio/releases/platform-tools
 6. `fastboot devices`检查设备列表
 7. 直接`flash-all.sh`
 
+或者
+
+```
+adb sideload taimen-rp1a.201005.004.a1-factory-2f5c4987.zip
+```
+
 # 刷入永久twrp
 
 选择高级 > sideload进入sideload
@@ -65,6 +75,11 @@ https://developer.android.com/studio/releases/platform-tools
 ```
 adb sideload twrp-installer-3.6.1_9-0-taimen.zip
 ```
+
+其他
+
+这里主要说下进入recovery的方式：首先进入fastboot，然后通过音量键进入recovery，首次进入会看到一个"no command"的界面，当出现这个界面后需要长按power键，然后按一下音量up键，这样才能进入recovery模式；
+
 
 参考文献
 
