@@ -46,7 +46,7 @@
 
 # 书签解析
 
-书签的xml没有id和class，还需要递归解析，添加了不少难度。
+书签的xml没有id和class，不能直接映射为结构体，书签也不闭合，还需要递归解析，添加了不少难度。
 经过了两天折腾，解析思路是把xml导到`github.com/PuerkitoBio/goquery`当html解析。
 `goquery`会给xml外面自动包和html、head和body。
 然后`goquery`的选择器都以body绝对的开始标签，往后加定位标签。相当于用“绝对路径”而不是“相对路径”。
