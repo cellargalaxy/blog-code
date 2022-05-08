@@ -1,0 +1,39 @@
+[
+  {
+    "name": "test",
+    "path": "/test",
+    "component": "/home/meltsprout/code/blog-code/pages/test.vue",
+    "chunkName": "pages/test",
+    "url": "/test",
+    "_name": "_d4d810e2"
+  },
+  {
+    "name": "archive-date",
+    "path": "/archive/:date?",
+    "component": "/home/meltsprout/code/blog-code/pages/archive/_date.vue",
+    "chunkName": "pages/archive/_date",
+    "_name": "_27418fd3"
+  },
+  {
+    "name": "view-all",
+    "path": "/view/*",
+    "component": "/home/meltsprout/code/blog-code/pages/view/_.vue",
+    "chunkName": "pages/view/_",
+    "_name": "_aa68209c"
+  },
+  {
+    "name": "page-all",
+    "path": "/page/*",
+    "component": "/home/meltsprout/code/blog-code/pages/page/_.vue",
+    "chunkName": "pages/page/_",
+    "_name": "_6682001c"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/home/meltsprout/code/blog-code/pages/index.vue",
+    "chunkName": "pages/index",
+    "url": "/",
+    "_name": "_35c0b5a5"
+  }
+]
