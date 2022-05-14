@@ -1,12 +1,12 @@
 <template>
   <div>
-    <navbar :config="navbarConfig"/>
+    <navbar :config="siteConfig"/>
 
     <b-container>
       <br/>
       <page-head :config="homeConfig"/>
       <br/>
-      <file-list-and-page :basePath="basePath" :folderPath="folderPath" :files="files"
+      <file-list-and-page :rootPath="rootPath" :crumbs="crumbs" :files="files"
                           :currentPage="currentPage" :pageSize="pageSize" :total="total"/>
     </b-container>
 
@@ -22,16 +22,16 @@ import pageFoot from '../../components/pageFoot'
 import backtop from '../../components/backtop'
 import fileListAndPage from '../../components/fileListAndPage'
 
+import path from 'path'
 import service from '../../middleware/service'
 import model from '../../middleware/model'
 
 export default {
   name: "page",
   async asyncData({params, $content}) {
-    const navbarConfig = service.getNavbarConfig()
+    const siteConfig = service.getSiteConfig()
     const homeConfig = service.getHomeConfig()
     const pageFootConfig = service.getPageFootConfig()
-    const siteConfig = service.getSiteConfig()
 
     const {folderPath, currentPage} = service.parsePath(params.pathMatch)
 
@@ -42,13 +42,15 @@ export default {
 
     const filePage = service.page(files, currentPage, siteConfig.pageSize)
 
+    const {rootPath, crumbs} = service.listCrumb(folderPath)
+
     return {
-      navbarConfig: navbarConfig,
+      siteConfig: siteConfig,
       homeConfig: homeConfig,
       pageFootConfig: pageFootConfig,
       buildTime: new Date(),
-      basePath: '/page',
-      folderPath: folderPath,
+      rootPath: rootPath,
+      crumbs: crumbs,
       pageSize: siteConfig.pageSize,
       total: files.length,
       currentPage: currentPage,

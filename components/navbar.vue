@@ -3,9 +3,9 @@
             style="transition: background-color 1000ms"
             toggleable="md" @mouseenter.native="show=true" @mouseleave.native="show=false">
 
-    <b-navbar-brand :class="show?'transparent':'white-background-6'" :href="config.brandUrl"
+    <b-navbar-brand :class="show?'transparent':'white-background-6'" :href="config.basePath"
                     style="border-radius: 0.5em;padding: 0.2em;transition: background-color 1000ms;" tag="h1">
-      <b style="color: rgba(51, 51, 51, 0.7);">{{ config.brandText }}</b>
+      <b style="color: rgba(51, 51, 51, 0.7);">{{ config.siteName }}</b>
     </b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -21,9 +21,10 @@
       <b-navbar-nav align="right">
 <!--        <b-nav-form>-->
 <!--          <b-input-group size="sm">-->
-<!--            <b-form-input placeholder="Search" style="background-color: rgba(0, 0, 0, 0);"/>-->
+<!--            <b-form-input placeholder="Search" style="background-color: rgba(0, 0, 0, 0);"-->
+<!--                          v-model="key" @keyup.enter.native="search"/>-->
 <!--            <b-input-group-append>-->
-<!--              <b-button variant="outline-secondary">Search</b-button>-->
+<!--              <b-button variant="outline-secondary" @click="search">Search</b-button>-->
 <!--            </b-input-group-append>-->
 <!--          </b-input-group>-->
 <!--        </b-nav-form>-->
@@ -35,14 +36,16 @@
 <navbar :config="config"/>
 
 <script>
+import path from 'path'
+
 export default {
   name: "navbar", //导航
   props: {
     config: {
       default() {
         return {
-          "brandText": "主页の名",
-          "brandUrl": "#",
+          "siteName": "主页の名",
+          "basePath": "#",
           "navs": [
             {"text": "导航-1", "url": "#"},
             {"text": "导航-2", "url": "#"},
@@ -62,7 +65,16 @@ export default {
   data() {
     return {
       show: false,
+      key: '',
     }
+  },
+  methods: {
+    search() {
+      if (this.key === undefined || this.key == null || this.key === '') {
+        return
+      }
+      window.location.href = path.join(this.config.basePath, '/search/?key=' + this.key)
+    },
   },
 }
 </script>
@@ -73,13 +85,4 @@ export default {
   width: 100%;
   text-align: center;
 }
-
-/*导航栏居中*/
-.navbar-nav li {
-  float: none;
-  display: inline-block;
-  text-align: center;
-}
-
-
 </style>

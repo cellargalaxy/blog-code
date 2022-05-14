@@ -4,6 +4,7 @@ import config from "./config"
 import path from "path"
 
 function initPath(path) {
+  path = model.decodeUrl(path)
   //-> a/b/1/
   if (util.endWith(path, '/')) {
     path = path.substring(0, path.length - 1) //-> a/b/1
@@ -70,10 +71,8 @@ function initImg(body, replaceMap) {
       const regex = new RegExp(old)
       url = url.replace(regex, replaceMap[old])
     }
-    // body.props['src'] = url
     delete body.props['src']
     body.props['data-src'] = url
-    body.props['loading'] = 'lazy'
     return body
   }
   if (body.children === undefined || body.children == null) {
@@ -100,6 +99,25 @@ function page(list, currentPage, pageSize) {
   return page
 }
 
+function listCrumb(folderPath) {
+  let rootPath = path.join(getSiteConfig().basePath, '/page')
+  const crumbs = []
+  const paths = folderPath.split('/')
+  let url = rootPath
+  for (let i = 0; i < paths.length; i++) {
+    if (paths[i] === undefined || paths[i] == null || paths[i] === '') {
+      continue
+    }
+    url = path.join(url, paths[i])
+    crumbs.push({text: paths[i], url: url + '/1/'})
+  }
+  for (let i = 0; i < crumbs.length; i++) {
+    crumbs[i].url = model.encodeUrl(crumbs[i].url)
+  }
+  rootPath = rootPath + '/1/'
+  return {rootPath, crumbs}
+}
+
 function getSiteConfig() {
   const conf = config.getSiteConfig()
 
@@ -112,6 +130,12 @@ function getSiteConfig() {
   if (conf.basePath === undefined || conf.basePath == null || conf.basePath === '') {
     conf.basePath = '/'
   }
+  for (let i = 0; i < conf.navs.length; i++) {
+    if (util.startWith(conf.navs[i].url, conf.basePath)) {
+      continue
+    }
+    conf.navs[i].url = path.join(conf.basePath, conf.navs[i].url)
+  }
   if (conf.pageSize === undefined || conf.pageSize == null || conf.pageSize === '' || conf.pageSize <= 0) {
     conf.pageSize = 10
   }
@@ -121,26 +145,6 @@ function getSiteConfig() {
   if (conf.backgroundImage === undefined || conf.backgroundImage == null) {
     conf.backgroundImage = {}
   }
-  return conf
-}
-
-function getNavbarConfig() {
-  const site = getSiteConfig()
-  const conf = config.getNavbarConfig()
-
-  if (conf.brandText === undefined || conf.brandText == null || conf.brandText === '') {
-    conf.brandText = site.siteName
-  }
-  if (conf.brandUrl === undefined || conf.brandUrl == null || conf.brandUrl === '') {
-    conf.brandUrl = site.basePath
-  }
-  for (let i = 0; i < conf.navs.length; i++) {
-    if (util.startWith(conf.navs[i].url, site.basePath)) {
-      continue
-    }
-    conf.navs[i].url = path.join(site.basePath, conf.navs[i].url)
-  }
-
   return conf
 }
 
@@ -191,11 +195,18 @@ async function listRoute(files) {
 
   const routes = []
   for (let route in routeMap) {
-    if (route === undefined || route == null) {
+    if (route === undefined || route == null || route === '') {
       continue
     }
+    route = model.encodeUrl(route)
     routes.push(route)
   }
+
+  const siteConfig = getSiteConfig()
+  if (util.contain(siteConfig.siteHost, 'cellargalaxy.github.io') && util.contain(siteConfig.basePath, 'blog-vue')) {
+    routes.push('/view/标题_markdown') //todo
+  }
+
   return routes
 }
 
@@ -213,7 +224,8 @@ function listSortRoute(files, sort) {
   }
   const routes = []
   for (let i = 1; i <= page; i++) {
-    routes.push(path.join('/page', sort, i + ''))
+    let url = path.join('/page', sort, i + '')
+    routes.push(url)
   }
   return routes
 }
@@ -223,8 +235,8 @@ export default {
   parsePath: parsePath,
   content2Files: content2Files,
   page: page,
+  listCrumb: listCrumb,
   getSiteConfig: getSiteConfig,
-  getNavbarConfig: getNavbarConfig,
   getHomeConfig: getHomeConfig,
   getPageFootConfig: getPageFootConfig,
   listRoute: listRoute,
