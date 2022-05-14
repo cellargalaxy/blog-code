@@ -1,10 +1,10 @@
 function init() {
   const script = `<script type="module" src="https://unpkg.com/giscus?module"></script>`
   const html = `<giscus-widget id="comments"
-        repo="cellargalaxy/blog-vue"
-        repoid="MDEwOlJlcG9zaXRvcnkxNTA3MzE2NzU="
+        repo="cellargalaxy/blog-code"
+        repoid="MDEwOlJlcG9zaXRvcnkyMDEwNDQ2MDc="
         category="Announcements"
-        categoryid="DIC_kwDOCPv7m84CPANS"
+        categoryid="DIC_kwDOC_uyf84CPGgz"
         mapping="pathname"
         reactionsenabled="1"
         emitmetadata="1"
