@@ -1,8 +1,26 @@
 {
   "site": {
     "siteName": "无名の窝",
-    "siteHost": "https://cellargalaxy.github.io/blog-code/",
+    "siteHost": "https://cellargalaxy.github.io",
     "basePath": "/blog-code/",
+    "navs": [
+      {
+        "text": "文章",
+        "url": "/page/1/"
+      },
+      {
+        "text": "归档",
+        "url": "/archive/0/"
+      },
+      {
+        "text": "画画",
+        "url": "/html/hua.html"
+      },
+      {
+        "text": "开源",
+        "url": "https://github.com/cellargalaxy/blog-vue"
+      }
+    ],
     "pageSize": 10,
     "urlReplace": {
       "^/file/blog/code": "http://123.207.79.108/file/file/blog/code"
@@ -53,28 +71,6 @@
         }
       ]
     }
-  },
-  "navbar": {
-    "brandText": "",
-    "brandUrl": "",
-    "navs": [
-      {
-        "text": "文章",
-        "url": "/page/1/"
-      },
-      {
-        "text": "归档",
-        "url": "/archive/0/"
-      },
-      {
-        "text": "画画",
-        "url": "/html/hua.html"
-      },
-      {
-        "text": "开源",
-        "url": "https://github.com/cellargalaxy/blog-vue"
-      }
-    ]
   },
   "home": {
     "brandInterval": 10000,
