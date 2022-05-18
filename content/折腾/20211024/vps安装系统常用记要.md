@@ -23,6 +23,18 @@ wget --no-check-certificate -qO ~/Network-Reinstall-System-Modify.sh 'https://ww
 bash ~/Network-Reinstall-System-Modify.sh -CentOS_7
 ```
 
++ https://hostloc.com/thread-882460-1-1.html
+```shell
+# 示例:
+bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/MoeClub/Note/master/InstallNET.sh') -d 10 -v 64 -p "自定义root密码" -port "自定义ssh端口"
+
+# 开机改密
+echo root:买卖 |sudo chpasswd root
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo reboot
+```
+
 # 允许使用root登录
 
 ```shell
@@ -37,6 +49,10 @@ sudo service sshd restart
 ```shell
 yum update -y
 yum install vim -y
+
+apt update -y
+apt upgrade -y
+apt install vim -y
 ```
 
 # centos关闭SELinux
@@ -71,15 +87,38 @@ firewall-cmd --list-all
 systemctl restart firewalld
 #检查防火墙状态
 firewall-cmd --state
-firewall-cmd --list-all
 #Disable firewall
 systemctl disable firewalld
 systemctl stop firewalld
-systemctl status firewalld
 #Enable firewall
 systemctl enable firewalld
 systemctl start firewalld
-systemctl status firewalld
+
+# 安装ufw
+apt install ufw -y
+# 启动服务
+systemctl enable ufw --now
+# 检查状态
+systemctl status ufw
+# 卸载ufw
+apt remove ufw --purge
+
+# 启动防火墙
+ufw enable
+# 启动状态
+ufw status verbose
+# 暂时关闭防火墙
+ufw disable
+
+# 查看规则
+ufw status numbered
+# 删除规则，按照编号删除
+ufw delete 3
+# 端口控制
+ufw allow 3541/tcp
+ufw deny 3541/tcp
+# 重置规则
+ufw reset
 ```
 
 # 修改ssh端口
@@ -120,8 +159,8 @@ systemctl restart sshd
 + https://ohmyz.sh/
 
 ```shell
-yum install zsh -y
-yum install git -y
+yum install zsh git -y
+apt install zsh git -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
@@ -134,6 +173,7 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ```shell
 #同步时间
 yum install -y ntpdate
+apt install -y ntpdate
 ntpdate -u cn.pool.ntp.org
 
 #查看时区
@@ -158,6 +198,12 @@ reboot
 + https://94ish.me/1635.html
 
 ```shell
+# 秋水逸冰:https://teddysun.com/489.html
+wgwget -N --no-check-certificate "https://github.com/teddysun/across/raw/master/bbr.sh"
+chmod 755 bbr.sh
+./bbr.sh
+
+# 千影,cx9208（不再维护）
 wget -N --no-check-certificate "https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/tcp.sh"
 chmod +x tcp.sh
 ./tcp.sh
