@@ -23,6 +23,15 @@ wget --no-check-certificate -qO ~/Network-Reinstall-System-Modify.sh 'https://ww
 bash ~/Network-Reinstall-System-Modify.sh -CentOS_7
 ```
 
+# 允许使用root登录
+
+```shell
+echo root:你设置的密码 |sudo chpasswd root
+sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
+sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
+sudo service sshd restart
+```
+
 # 更新软件
 
 ```shell
@@ -46,6 +55,31 @@ setenforce 0
 vim /etc/selinux/config
 #将SELINUX=enforcing改为SELINUX=disabled
 reboot
+```
+
+# 防火墙
+
+```shell
+#永久的开放需要的端口
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+sudo firewall-cmd --reload
+
+#检查新的防火墙规则
+firewall-cmd --list-all
+
+#临时关闭防火墙,重启后会重新自动打开
+systemctl restart firewalld
+#检查防火墙状态
+firewall-cmd --state
+firewall-cmd --list-all
+#Disable firewall
+systemctl disable firewalld
+systemctl stop firewalld
+systemctl status firewalld
+#Enable firewall
+systemctl enable firewalld
+systemctl start firewalld
+systemctl status firewalld
 ```
 
 # 修改ssh端口
@@ -79,31 +113,6 @@ semanage port --delete -t ssh_port_t -p tcp 22
 #重启 SSH 服务
 systemctl restart sshd
 
-```
-
-# 防火墙
-
-```shell
-#永久的开放需要的端口
-sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
-sudo firewall-cmd --reload
-
-#检查新的防火墙规则
-firewall-cmd --list-all
-
-#临时关闭防火墙,重启后会重新自动打开
-systemctl restart firewalld
-#检查防火墙状态
-firewall-cmd --state
-firewall-cmd --list-all
-#Disable firewall
-systemctl disable firewalld
-systemctl stop firewalld
-systemctl status firewalld
-#Enable firewall
-systemctl enable firewalld
-systemctl start firewalld
-systemctl status firewalld
 ```
 
 # 安装zsh
