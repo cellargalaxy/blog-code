@@ -159,9 +159,17 @@ systemctl restart sshd
 + https://ohmyz.sh/
 
 ```shell
-yum install zsh git -y
-apt install zsh git -y
+yum install zsh git curl -y
+apt install zsh git curl -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+# debian终端乱码
+```shell
+apt install locales
+dpkg-reconfigure locales
+#选择en_US.UTF-8 UTF-8，zh_CN GB2312，zh_CN.GBK GBK，zh_CN.UTF-8 UTF-8
+#最后回车
 ```
 
 # 修改时区
@@ -199,7 +207,7 @@ reboot
 
 ```shell
 # 秋水逸冰:https://teddysun.com/489.html
-wgwget -N --no-check-certificate "https://github.com/teddysun/across/raw/master/bbr.sh"
+wget -N --no-check-certificate "https://github.com/teddysun/across/raw/master/bbr.sh"
 chmod 755 bbr.sh
 ./bbr.sh
 
