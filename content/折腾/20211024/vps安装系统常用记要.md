@@ -115,6 +115,17 @@ systemctl restart sshd
 
 ```
 
+# 修改主机名
+
+```shell
+hostnamectl set-hostname arya.example.com
+#或者修改127.0.0.1 arya.example.com
+vim /etc/hosts
+#查询主机名
+hostnamectl
+#如果zsh主机名没有更新可以exit再登录
+```
+
 # 安装zsh
 
 + https://ohmyz.sh/
