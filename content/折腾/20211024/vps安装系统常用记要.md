@@ -131,6 +131,7 @@ source ~/.zshrc
 cd ~/.oh-my-zsh/themes
 cp robbyrussell.zsh-theme myrobbyrussell.zsh-theme
 vim myrobbyrussell.zsh-theme
+vim ~/.zshrc
 PROMPT='%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~#'
 ZSH_THEME="myrobbyrussell"
 source ~/.zshrc
