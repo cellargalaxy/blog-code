@@ -123,7 +123,13 @@ systemctl restart sshd
 yum install zsh -y
 yum install git -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+vim ~/.zshrc
+ZSH_THEME="gentoo"
+source ~/.zshrc
 ```
+
+# 修改
 
 # 修改时区
 
