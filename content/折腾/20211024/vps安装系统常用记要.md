@@ -127,6 +127,13 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 vim ~/.zshrc
 ZSH_THEME="gentoo"
 source ~/.zshrc
+
+cd ~/.oh-my-zsh/themes
+cp robbyrussell.zsh-theme myrobbyrussell.zsh-theme
+vim myrobbyrussell.zsh-theme
+PROMPT='%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~#'
+ZSH_THEME="myrobbyrussell"
+source ~/.zshrc
 ```
 
 # 修改
