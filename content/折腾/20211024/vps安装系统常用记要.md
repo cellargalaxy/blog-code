@@ -29,7 +29,7 @@ bash ~/Network-Reinstall-System-Modify.sh -CentOS_7
 bash <(wget --no-check-certificate -qO- 'https://raw.githubusercontent.com/MoeClub/Note/master/InstallNET.sh') -d 10 -v 64 -p "自定义root密码" -port "自定义ssh端口"
 
 # 开机改密
-echo root:买卖 |sudo chpasswd root
+echo root:密码 |sudo chpasswd root
 sudo sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin yes/g' /etc/ssh/sshd_config;
 sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/ssh/sshd_config;
 sudo reboot
@@ -154,6 +154,17 @@ systemctl restart sshd
 
 ```
 
+# 修改主机名
+
+```shell
+hostnamectl set-hostname arya.example.com
+#或者修改127.0.0.1 arya.example.com
+vim /etc/hosts
+#查询主机名
+hostnamectl
+#如果zsh主机名没有更新可以exit再登录
+```
+
 # 安装zsh
 
 + https://ohmyz.sh/
@@ -162,6 +173,18 @@ systemctl restart sshd
 yum install zsh git curl -y
 apt install zsh git curl -y
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+vim ~/.zshrc
+ZSH_THEME="gentoo"
+source ~/.zshrc
+
+cd ~/.oh-my-zsh/themes
+cp robbyrussell.zsh-theme myrobbyrussell.zsh-theme
+vim myrobbyrussell.zsh-theme
+vim ~/.zshrc
+PROMPT='%{$fg[green]%}%m@%{$fg[magenta]%}%(?..%?%1v)%n:%{$reset_color%}%{$fg[cyan]%}%~#'
+ZSH_THEME="myrobbyrussell"
+source ~/.zshrc
 ```
 
 # debian终端乱码
