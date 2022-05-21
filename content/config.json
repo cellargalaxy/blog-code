@@ -23,7 +23,7 @@
     ],
     "pageSize": 10,
     "urlReplace": {
-      "^/file/blog/code": "http://123.207.79.108/file/file/blog/code"
+      "^/file/blog/code": "https://oracleamd1.dynv6.net/file/file/blog/code"
     },
     "backgroundImage": {
       "duration": 10000,
