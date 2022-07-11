@@ -4,7 +4,7 @@
 + prometheus：会去每台主机的node-exporter拉取收集数据
 + grafana：查询prometheus的数据用于展示
 
-## 安装node-exporter
+## 安装exporter
 
 运行起来大约只会消耗10M左右的内存
 
@@ -12,6 +12,7 @@
 + https://hub.docker.com/r/prom/node-exporter
 
 ```shell
+#port=9100
 sudo docker run -d \
 --restart=always \
 --name node-exporter \
@@ -20,6 +21,22 @@ sudo docker run -d \
 -v "/:/host:ro,rslave" \
 prom/node-exporter \
 --path.rootfs=/host
+
+sudo docker run -d \
+--restart=always \
+--name mysqld-exporter \
+-p 9104:9104 \
+-e DATA_SOURCE_NAME="user:pw@(ip:port)/" \
+prom/mysqld-exporter
+
+sudo docker run -d \
+--restart=always \
+--name redis-exporter \
+-p 9121:9121 \
+-v "/:/host:ro,rslave" \
+bitnami/redis-exporter \
+--redis.addr redis://ip:port \
+--redis.password 'pw'
 ```
 
 浏览器打开`http://ip:9100/metrics` ，如果有东西就算安装完了
