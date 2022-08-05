@@ -103,8 +103,7 @@ sudo systemctl start docker
 sudo vim /etc/docker/daemon.json
 {
   "registry-mirrors": [
-    "https://hub-mirror.c.163.com",
-    "https://mirror.baidubce.com"
+    "https://docker.mirrors.ustc.edu.cn"
   ],
   "log-driver":"json-file",
   "log-opts": {"max-size":"5m", "max-file":"3"}

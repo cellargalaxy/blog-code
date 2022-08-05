@@ -321,6 +321,9 @@ sudo apt-get install firefox-locale-zh-hans
 sudo vim /etc/docker/daemon.json
 
 {
+  "registry-mirrors": [
+    "https://docker.mirrors.ustc.edu.cn"
+  ],
   "log-driver":"json-file",
   "log-opts": {"max-size":"5m", "max-file":"3"}
 }

@@ -326,6 +326,9 @@ docker run --rm hello-world
 #docker日志大小限制
 vim /etc/docker/daemon.json
 {
+  "registry-mirrors": [
+    "https://docker.mirrors.ustc.edu.cn"
+  ],
   "log-driver":"json-file",
   "log-opts": {"max-size":"32m", "max-file":"3"}
 }
