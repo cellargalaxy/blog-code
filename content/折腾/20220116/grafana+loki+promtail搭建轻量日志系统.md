@@ -41,6 +41,8 @@ sudo docker volume create grafana_data
 sudo docker run -d \
   --restart=always \
   --name grafana \
+  -e GF_SERVER_ROOT_URL=https://example.com/grafana/ \
+  -e GF_SERVER_SERVE_FROM_SUB_PATH=true \
   -p 3000:3000 \
   -v grafana_data:/var/lib/grafana \
   grafana/grafana
