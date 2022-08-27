@@ -525,8 +525,21 @@ start slave;
 
 ## mysql常用命令
 
-```shell
-#创建用户与授权
-CREATE USER 'user_name'@'%' IDENTIFIED BY 'password';
-GRANT ALL ON db_name.* TO 'user_name'@'%';
+```sql
+# 查询用户
+select user, host from mysql.user;
+
+# 创建用户与授权
+create user 'user_name'@'%' identified by 'password';
+grant all on db_name.* to 'user_name'@'%';
+flush privileges;
+
+# 创建mysqldump用户与授权
+create user 'user_name'@'%' identified by 'password';
+grant select,lock tables,show databases on *.* to 'user_name'@'%';
+flush privileges;
+    
+# 删除用户
+delete from user where user='xxx' and host='yyy';
+flush privileges;
 ```
