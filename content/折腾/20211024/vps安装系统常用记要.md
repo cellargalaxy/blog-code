@@ -400,55 +400,17 @@ mariadb \
 --character-set-server=utf8mb4 \
 --collation-server=utf8mb4_unicode_ci
 
-
 sudo docker run -d \
---name samba \
+--name webdav \
 --restart=always \
---net=host \
--e PUID=1000 \
--e PGID=1000 \
--e TZ=Asia/Shanghai \
--p 139:139 \
--p 455:455 \
--p 137:137/udp \
--p 138:138/udp \
--v /path:/path \
-dperson/samba -n -s "path;/path"
-
-
-sudo docker run -d \
---name webdav_j \
 -p 80:80 \
--v /path:/media/path \
+-v /data:/data \
 -e USERNAME=admin \
--e PASSWORD=admin?admin \
+-e PASSWORD=password \
 -e TZ=Asia/Shanghai  \
--e UDI=1000 \
--e GID=1000 \
-ugeek/webdav:arm
-
-
-sudo docker run -d \
---name v2ray \
---restart=always \
---net macnet \
-v2ray
-
-
-sudo docker volume create syncthing_data
-sudo docker run -d \
---name=syncthing \
---restart=always \
--e TZ=Asia/Shanghai \
--e PUID=0 \
--e PGID=0 \
--p 8384:8384 \
--p 22000:22000 \
--p 21027:21027/udp \
--v syncthing_data:/config \
--v /path:/data \
-linuxserver/syncthing
-
+ugeek/webdav:amd64-alpine
+ugeek/webdav:arm-alpine
+ugeek/webdav:i386-alpine
 
 sudo docker volume create qbittorrent_data
 sudo docker run -d \
@@ -461,9 +423,8 @@ sudo docker run -d \
 -p 6881:6881/udp  \
 -p 9092:9092  \
 -v qbittorrent_data:/config \
--v /path:/Downloads \
+-v /Downloads:/Downloads \
 johngong/qbittorrent:qee-latest
-
 
 sudo docker volume create aria2_data
 sudo docker run -d \
@@ -476,9 +437,22 @@ sudo docker run -d \
 -p 6888:6888 \
 -p 6888:6888/udp \
 -v aria2_data:/config \
--v /path:/downloads \
+-v /downloads:/downloads \
 p3terx/aria2-pro
 
+#https://v2raya.org/docs/prologue/installation/docker/
+sudo docker volume create v2raya_v2ray
+sudo docker volume create v2raya_v2raya
+sudo docker run -d \
+--name v2raya \
+--restart=always \
+--privileged \
+--network=host \
+-v /lib/modules:/lib/modules:ro \
+-v /etc/resolv.conf:/etc/resolv.conf \
+-v v2raya_v2ray:/etc/v2ray \
+-v v2raya_v2raya:/etc/v2raya \
+mzz2017/v2raya
 
 sudo docker run -d \
 --name openwrt \
