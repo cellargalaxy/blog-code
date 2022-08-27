@@ -538,7 +538,7 @@ flush privileges;
 
 # 创建mysqldump用户与授权
 create user 'user_name'@'%' identified by 'password';
-grant select,lock tables,show databases on *.* to 'user_name'@'%';
+grant select,lock tables,show databases,reload on *.* to 'user_name'@'%';
 flush privileges;
     
 # 删除用户
