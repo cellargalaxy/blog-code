@@ -528,6 +528,8 @@ start slave;
 ```sql
 # 查询用户
 select user, host from mysql.user;
+# 查询用户权限
+show grants for user_name;
 
 # 创建用户与授权
 create user 'user_name'@'%' identified by 'password';
