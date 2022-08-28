@@ -89,8 +89,11 @@ sudo docker run -d \
 --name vaultwarden_backup \
 --volumes-from=vaultwarden \
 --mount type=volume,source=vaultwarden-rclone-data,target=/config/ \
+-e TIMEZONE="Asia/Shanghai" \
 -e DATA_DIR="/data" \
 -e CRON="5 * * * *" \
+-e ZIP_PASSWORD="WHEREISMYPASSWORD?" \
+-e BACKUP_KEEP_DAYS="30" \
 ttionya/vaultwarden-backup
 ```
 
