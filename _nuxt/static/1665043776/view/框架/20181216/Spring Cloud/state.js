@@ -1,0 +1,1 @@
+window.__NUXT__=(function(a){return {staticAssetsBase:"\u002Fblog-code\u002F_nuxt\u002Fstatic\u002F1665043776",layout:"default",error:a,serverRendered:true,routePath:"\u002Fview\u002F%E6%A1%86%E6%9E%B6\u002F20181216\u002FSpring%20Cloud",config:{_app:{basePath:"\u002Fblog-code\u002F",assetsPath:"\u002Fblog-code\u002F_nuxt\u002F",cdnURL:a},content:{dbHash:"ca0140d7"}}}}(null));
