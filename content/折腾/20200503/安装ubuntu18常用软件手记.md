@@ -27,7 +27,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted
 sudo apt update -y
 ```
 
-# 搜狗输入法
+# 输入法
 安装
 ```shell script
 sudo apt-get install -y fcitx-bin
@@ -35,8 +35,14 @@ sudo apt-get install -y fcitx-table
 im-config -n fcitx
 reboot
 
+# 谷歌
+sudo apt-get install -y fcitx-googlepinyin fcitx-module-cloudpinyin
+
+# 搜狗
 sudo dpkg -i 软件包名.deb
 sudo apt-get install -f
+
+# 配置输入法
 fcitx-config-gtk3
 ```
 候选框乱码
