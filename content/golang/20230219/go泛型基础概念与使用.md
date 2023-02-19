@@ -147,3 +147,4 @@ type Float interface {
 参考文章
 
 https://www.liwenzhou.com/posts/Go/generics/
+
