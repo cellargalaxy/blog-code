@@ -1,3 +1,16 @@
+# 2023-02-18
+
+手痒又刷了一下。这次把twrp刷成功了，再简单记录一下。
+
+1. 进bootloader，刷ROM，操作跟下面写的一样。先刷ROM是因为我发现刷ROM会覆盖掉twrp
+   1. 解压ROM的zip包，进bootloader，用最新版fastboot，改改脚本里的fastboot路径，执行脚本
+2. 进bootloader，刷twrp。操作跟twrp官网里写的一样
+   1. `fastboot boot twrp-3.6.1_9-0-taimen.img`，临时启动twrp
+   2. 把twrp的zip文件传到手机里，在twrp安装zip，完成永久刷入
+3. 之前刷twrp不成功的表现，是boot临时启动twrp后，手机卡在谷歌logo里，进不去twrp
+   1. 这次先用reallysnow的SHRP，永久刷入SHRP
+   2. 之后再刷twrp就能成功启动了
+
 # 前期准备
 
 twrp刷入并不成功，目前不晓得啥原因。 但由于没有太需要twrp，所以就先放弃了。 可以直接调到刷rom那步。
