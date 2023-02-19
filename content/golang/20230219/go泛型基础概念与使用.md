@@ -9,7 +9,7 @@
 ```go
 package main
 
-func MinInt(a, b int) int {
+func MinInt32(a, b int32) int32 {
 	if a < b {
 		return a
 	}
@@ -22,8 +22,8 @@ func MinFloat64(a, b float64) float64 {
 	return b
 }
 
-//也可以简写为：func MinIntOrFloat64[T int | float64](a, b T) T {
-func MinIntOrFloat64[T interface{ int | float64 }](a, b T) T {
+// 也可以简写为：func MinInt32OrFloat64[T int | float64](a, b T) T {
+func MinInt32OrFloat64[T interface{ int32 | float64 }](a, b T) T {
 	if a < b {
 		return a
 	}
@@ -31,13 +31,16 @@ func MinIntOrFloat64[T interface{ int | float64 }](a, b T) T {
 }
 
 func main() {
-	MinInt(1, 2)
+	MinInt32(1, 2)
 	MinFloat64(1.1, 2.2)
 
-	MinIntOrFloat64[int](1, 2) //使用中括号指定类型实参
-	MinIntOrFloat64(1.1, 2.2)  //自动进行类型推导
+	MinInt32OrFloat64[int32](1, 2) //使用中括号指定类型实参
+	MinInt32OrFloat64(1.1, 2.2)    //自动进行类型推导
+	//MinInt32OrFloat64(1, 2.2)      //default type float64 of 2.2 does not match inferred type int for T
+	//MinInt32OrFloat64(1, 2)        //int does not implement interface{int32|float64} (int missing in int32 | float64)
+	MinInt32OrFloat64(1, int32(2)) //显式指定其中一个入参的类型
 
-	minIntFunc := MinIntOrFloat64[int] //类型实例化
+	minIntFunc := MinInt32OrFloat64[int32] //类型实例化
 	minIntFunc(1, 2)
 }
 
@@ -58,14 +61,14 @@ func (t *Tree[T]) Find(x T) *Tree[T] {
 ```
 
 使用泛型的话，需要在入参前，使用中括号定义一个泛型类型`T`。
-后面的`interface{ int | float64 }`，表示`T`可以是`int`或者`float64`。
+后面的`interface{ int32 | float64 }`，表示`T`可以是`int32`或者`float64`。
 调用函数的时候，使用中括号指定泛型的实际类型，称之为**实例化**。
 其中，实例化的过程分为两步进行。
 
 1. 编译器会将泛型函数或者类型里的类型形参，替换为类型实参
 2. 编译器会检查类型实参是不是满足约束
 
-例如经过实例化后的`minIntFunc`，能像`MinInt`一样使用。
+例如经过实例化后的`minIntFunc`，能像`MinInt32`一样使用。
 
 ## 类型集
 
@@ -79,8 +82,8 @@ type Value interface {
 	int | float64
 }
 
-//func MinIntOrFloat64[T interface{ int | float64 }](a, b T) T {
-func MinIntOrFloat64[T Value](a, b T) T {
+//func MinInt32OrFloat64[T interface{ int | float64 }](a, b T) T {
+func MinInt32OrFloat64[T Value](a, b T) T {
 	if a <= b {
 		return a
 	}
