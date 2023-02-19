@@ -10,38 +10,38 @@
 package main
 
 func MinInt32(a, b int32) int32 {
-	if a < b {
-		return a
-	}
-	return b
+  if a < b {
+    return a
+  }
+  return b
 }
 func MinFloat64(a, b float64) float64 {
-	if a < b {
-		return a
-	}
-	return b
+  if a < b {
+    return a
+  }
+  return b
 }
 
 // 也可以简写为：func MinInt32OrFloat64[T int | float64](a, b T) T {
 func MinInt32OrFloat64[T interface{ int32 | float64 }](a, b T) T {
-	if a < b {
-		return a
-	}
-	return b
+  if a < b {
+    return a
+  }
+  return b
 }
 
 func main() {
-	MinInt32(1, 2)
-	MinFloat64(1.1, 2.2)
+  MinInt32(1, 2)
+  MinFloat64(1.1, 2.2)
 
-	MinInt32OrFloat64[int32](1, 2) //使用中括号指定类型实参
-	MinInt32OrFloat64(1.1, 2.2)    //自动进行类型推导
-	//MinInt32OrFloat64(1, 2.2)      //default type float64 of 2.2 does not match inferred type int for T
-	//MinInt32OrFloat64(1, 2)        //int does not implement interface{int32|float64} (int missing in int32 | float64)
-	MinInt32OrFloat64(1, int32(2)) //显式指定其中一个入参的类型
+  MinInt32OrFloat64[int32](1, 2) //使用中括号指定类型实参
+  MinInt32OrFloat64(1.1, 2.2)    //自动进行类型推导
+  //MinInt32OrFloat64(1, 2.2)      //default type float64 of 2.2 does not match inferred type int for T
+  //MinInt32OrFloat64(1, 2)        //int does not implement interface{int32|float64} (int missing in int32 | float64)
+  MinInt32OrFloat64(1, int32(2)) //显式指定其中一个入参的类型
 
-	minIntFunc := MinInt32OrFloat64[int32] //类型实例化
-	minIntFunc(1, 2)
+  minIntFunc := MinInt32OrFloat64[int32] //类型实例化
+  minIntFunc(1, 2)
 }
 
 //泛型的使用不仅可以用在函数里，也可以用在其他类型和方法里。
@@ -50,13 +50,13 @@ type Slice[T int | string] []T
 type Map[K int | string, V float32 | float64] map[K]V
 
 type Tree[T interface{}] struct {
-	left, right *Tree[T]
-	value       T
+  left, right *Tree[T]
+  value       T
 }
 
 func (t *Tree[T]) Find(x T) *Tree[T] {
-	//...
-	return nil
+  //...
+  return nil
 }
 ```
 
@@ -79,15 +79,15 @@ func (t *Tree[T]) Find(x T) *Tree[T] {
 package main
 
 type Value interface {
-	int | float64
+  int | float64
 }
 
 //func MinInt32OrFloat64[T interface{ int | float64 }](a, b T) T {
 func MinInt32OrFloat64[T Value](a, b T) T {
-	if a <= b {
-		return a
-	}
-	return b
+  if a <= b {
+    return a
+  }
+  return b
 }
 ```
 
@@ -102,7 +102,7 @@ func MinInt32OrFloat64[T Value](a, b T) T {
 package main
 
 type X interface {
-	a()
+  a()
 }
 
 type Q struct{}
@@ -114,6 +114,19 @@ type P struct{}
 
 func (this P) a() {}
 func (this P) c() {}
+
+type Value interface {
+  X
+}
+
+func MinInt32OrFloat64[T Value](a T) {
+  //...
+}
+
+func main() {
+  MinInt32OrFloat64(Q{})
+  MinInt32OrFloat64(P{})
+}
 ```
 
 ### 类型集的语法
@@ -127,21 +140,21 @@ func (this P) c() {}
 package main
 
 import (
-	"golang.org/x/exp/constraints"
+  "golang.org/x/exp/constraints"
 )
 
 func Min[T constraints.Ordered](a, b T) T {
-	if a < b {
-		return a
-	}
-	return b
+  if a < b {
+    return a
+  }
+  return b
 }
 
 type Ordered interface {
-	Integer | Float | ~string
+  Integer | Float | ~string
 }
 type Float interface {
-	~float32 | ~float64
+  ~float32 | ~float64
 }
 ```
 
