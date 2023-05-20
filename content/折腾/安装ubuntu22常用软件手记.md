@@ -37,3 +37,24 @@ sudo apt-get install chrome-gnome-shell
 天气：https://extensions.gnome.org/extension/750/openweather/
 系统监控：https://extensions.gnome.org/extension/120/system-monitor/
 系统监控依赖：sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor
+
+## docker
+
+curl -fsSL get.docker.com -o get-docker.sh
+sudo sh get-docker.sh --mirror Aliyun
+sudo systemctl enable docker
+sudo systemctl start docker
+
+sudo vim /etc/docker/daemon.json
+{
+  "registry-mirrors": [
+    "https://dockerproxy.com"
+  ],
+  "log-driver":"json-file",
+  "log-opts": {"max-size":"5m", "max-file":"3"}
+}
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+注销/重启
+docker run --rm hello-world
