@@ -54,7 +54,29 @@ sudo vim /etc/docker/daemon.json
   "log-opts": {"max-size":"5m", "max-file":"3"}
 }
 
-sudo groupadd docker
-sudo usermod -aG docker $USER
-注销/重启
+sudo groupadd docker #添加docker用户组
+sudo gpasswd -a $USER docker #将登陆用户加入到docker用户组中
+newgrp docker #更新用户组
 docker run --rm hello-world
+
+## 主题
+
+sudo apt install -y arc-theme
+
+sudo add-apt-repository ppa:numix/ppa
+sudo apt update
+sudo apt install -y numix-icon-theme-circle
+
+## shell
+
+https://github.com/ohmyzsh/ohmyzsh
+
+sudo apt install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+## 截图
+
+sudo apt install flameshot
+
+# 快捷键启动截图
+flameshot gui
