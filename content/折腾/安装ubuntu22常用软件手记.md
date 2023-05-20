@@ -18,3 +18,13 @@ sudo apt-get install -y fcitx-googlepinyin fcitx-module-cloudpinyin
 
 # 配置输入法
 fcitx-config-gtk3
+
+## 谷歌浏览器
+
+https://www.google.com/intl/zh-CN/chrome/
+
+## 其他软件
+
+sudo apt-get install -y guake
+sudo apt install -y mpv
+sudo apt-get install -y htop
