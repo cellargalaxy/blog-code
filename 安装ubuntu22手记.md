@@ -8,8 +8,8 @@ sudo apt upgrade -y
 sudo apt install -y vim wget curl git guake mpv htop flameshot
 ```
 
-[ ] guake
-[ ] flameshot gui
++ [ ] guake
++ [ ] flameshot gui
 
 ## 输入法
 
@@ -41,9 +41,9 @@ https://www.google.com/intl/zh-CN/chrome/
 sudo apt-get install -y gnome-tweaks chrome-gnome-shell
 ```
 
-天气：https://extensions.gnome.org/extension/750/openweather/
-系统监控：https://extensions.gnome.org/extension/120/system-monitor/
-系统监控依赖：`sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor`
++ 天气：https://extensions.gnome.org/extension/750/openweather/
++ 系统监控：https://extensions.gnome.org/extension/120/system-monitor/
+  + 系统监控依赖：`sudo apt install gir1.2-gtop-2.0 gir1.2-nm-1.0 gir1.2-clutter-1.0 gnome-system-monitor`
 
 ## docker
 
