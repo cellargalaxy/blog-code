@@ -92,3 +92,10 @@ docker run -d \
   -v /etc/resolv.conf:/etc/resolv.conf \
   -v /etc/v2raya:/etc/v2raya \
   mzz2017/v2raya
+
+## 谷歌浏览器
+
+sudo pacman -Syu #更新软件包数据库和系统
+sudo pacman -S base-devel
+yay -Ss google-chrome #搜索Google Chrome
+yay -S google-chrome #安装Google Chrome
