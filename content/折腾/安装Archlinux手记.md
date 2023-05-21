@@ -1,6 +1,5 @@
-## 更新源
+https://arch.icekylin.online/
 
-https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 
 sudo apt update -y
 sudo apt upgrade -y
@@ -21,7 +20,7 @@ fcitx-config-gtk3
 
 ## 谷歌浏览器
 
-https://www.google.com/intl/zh-CN/chrome/
+https://www.google.com/intl/zh-CN/chrome/](https://arch.icekylin.online/)
 
 ## 其他软件
 
@@ -40,8 +39,7 @@ sudo apt-get install chrome-gnome-shell
 
 ## docker
 
-curl -fsSL get.docker.com -o get-docker.sh
-sudo sh get-docker.sh --mirror Aliyun
+sudo pacman -S docker
 sudo systemctl enable docker
 sudo systemctl start docker
 
@@ -53,6 +51,10 @@ sudo vim /etc/docker/daemon.json
   "log-driver":"json-file",
   "log-opts": {"max-size":"5m", "max-file":"3"}
 }
+
+sudo systemctl enable docker
+sudo systemctl start docker
+docker info
 
 sudo groupadd docker #添加docker用户组
 sudo gpasswd -a $USER docker #将登陆用户加入到docker用户组中
@@ -80,3 +82,13 @@ sudo apt install flameshot
 
 # 快捷键启动截图
 flameshot gui
+
+docker run -d \
+  --restart=always \
+  --privileged \
+  --network=host \
+  --name v2raya \
+  -v /lib/modules:/lib/modules:ro \
+  -v /etc/resolv.conf:/etc/resolv.conf \
+  -v /etc/v2raya:/etc/v2raya \
+  mzz2017/v2raya
