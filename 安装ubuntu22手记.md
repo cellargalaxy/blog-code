@@ -31,6 +31,9 @@ sudo apt-get install -y fcitx-googlepinyin fcitx-module-cloudpinyin
 fcitx-config-gtk3
 ```
 
++ [ ] 选择输入法
++ [ ] `全局配置`-`切换激活/非激活输入法`：左右shift
+
 ## 谷歌浏览器
 
 https://www.google.com/intl/zh-CN/chrome/
@@ -61,9 +64,8 @@ sudo vim /etc/docker/daemon.json
   "log-driver":"json-file",
   "log-opts": {"max-size":"5m", "max-file":"3"}
 }
-sudo systemctl enable docker
-sudo systemctl start docker
-docker info
+sudo systemctl restart docker
+sudo docker info
 
 sudo groupadd docker #添加docker用户组
 sudo gpasswd -a $USER docker #将登陆用户加入到docker用户组中
@@ -98,6 +100,6 @@ sudo apt install -y numix-icon-theme-circle
 https://github.com/ohmyzsh/ohmyzsh
 
 ```shell
-sudo apt install zsh
+sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
