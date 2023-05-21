@@ -74,6 +74,16 @@ docker run --rm hello-world
 ```
 
 ```shell
+docker volume create portainer_data
+docker run -d \
+--name portainer \
+--restart=always \
+-p 8000:8000 \
+-p 9000:9000 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v portainer_data:/data \
+portainer/portainer
+
 docker run -d \
   --restart=always \
   --privileged \
@@ -83,6 +93,22 @@ docker run -d \
   -v /etc/resolv.conf:/etc/resolv.conf \
   -v /etc/v2raya:/etc/v2raya \
   mzz2017/v2raya
+
+docker run -d \
+  --name wechat \
+  --device /dev/snd \
+  --ipc="host" \
+  --net="host" \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v ~/wechat/WeChatFiles:/WeChatFiles \
+  -e DISPLAY=unix$DISPLAY \
+  -e XMODIFIERS=@im=fcitx \
+  -e QT_IM_MODULE=fcitx \
+  -e GTK_IM_MODULE=fcitx \
+  -e AUDIO_GID=$(getent group audio | cut -d: -f3) \
+  -e GID=$(id -g) \
+  -e UID=$(id -u) \
+  bestwu/wechat
 ```
 
 ## 主题
