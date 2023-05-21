@@ -1,10 +1,12 @@
-## 更新源
+## 更新源与软件
 
 https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 
+```shell
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install vim -y
+sudo apt install -y vim wget curl git
+```
 
 ## 输入法
 
