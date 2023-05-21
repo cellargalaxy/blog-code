@@ -102,4 +102,8 @@ https://github.com/ohmyzsh/ohmyzsh
 ```shell
 sudo apt install -y zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+vim ~/.zshrc
+ZSH_THEME="gentoo"
+source ~/.zshrc
 ```
