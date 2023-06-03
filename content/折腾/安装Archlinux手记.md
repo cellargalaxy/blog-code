@@ -623,3 +623,21 @@ PREFIX,https://account.jetbrains.com/lservice/rpc/validateKey.action
 8. 下载Consolas字体
 9. [JetBrainsRuntime-for-Linux-x64](https://github.com/RikudouPatrickstar/JetBrainsRuntime-for-Linux-x64)
 
+## 参考资料
+
++ [archlinux 简明指南](https://arch.icekylin.online/)
++ [archlinuxstudio.github.io](archlinuxstudio.github.io)
++ [【Linux使用】之--Arch Linux安装记录 – v林羽](https://blog.vlinyu.com/archives/arch-linux-installation-guide)
++ [Arch Linux 中文维基](https://wiki.archlinuxcn.org/wiki/%E9%A6%96%E9%A1%B5)
++ [Arch Linux 快速安装 - April's blog](https://aprilzz.com/archives/archlinux-an-zhuang)
++ [Arch Linux中使用Timeshift保系统平安 - April's blog](https://aprilzz.com/archives/%E5%9C%A8arch%E4%B8%AD%E4%BD%BF%E7%94%A8timeshift%E4%BF%9D%E7%B3%BB%E7%BB%9F%E5%B9%B3%E5%AE%89)
++ [Arch Linux&Linux引导教程](https://stvsl.github.io/)
++ [以官方Wiki的方式安装ArchLinux](https://www.viseator.com/2017/05/17/arch_install/)
++ [Arch Linux 手册](https://www.freecodecamp.org/chinese/news/how-to-install-arch-linux/)
++ [Arch Linux 安装篇 | Arch Linux 使用小记 - 方寸间](https://www.10101.io/2021/07/04/arch-linux-installation)
++ [archlinux安装图形界面教程 GNOME篇](https://www.notevm.com/a/5898.html)
++ [Arch安装和Gnome配置教程](https://hanielxx.com/Linux/2019-07-20-archLinux-gnome-install.html)
++ [在 Arch Linux 中安装 GNOME 桌面 - Linux迷](https://www.linuxmi.com/arch-linux-install-gnome-desktop.html)
++ [如何在Arch Linux中安装GNOME?分步操作指南](https://www.lsbin.com/9541.html)
++ [ArchLinux安装GNOME图形桌面环境 - 喵喵的灿烂星空](https://starrycat.me/archlinux-install-gnome-desktop.html)
++ []()
