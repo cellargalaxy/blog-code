@@ -538,6 +538,24 @@ yay -S ttf-wps-fonts wps-office-mui-zh-cn wps-office-mime-cn wps-office-cn ttf-m
 ### 微信
 
 ```shell
+sudo pacman -S xorg-xhost
+xhost +
+
+docker run -d \
+  --name wechat \
+  --device /dev/snd \
+  --ipc="host" \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -v "$HOME/software/WeChatFiles":/WeChatFiles \
+  -e DISPLAY=unix$DISPLAY \
+  -e XMODIFIERS=@im=fcitx \
+  -e QT_IM_MODULE=fcitx \
+  -e GTK_IM_MODULE=fcitx \
+  -e AUDIO_GID=$(getent group audio | cut -d: -f3) \
+  -e GID=$(id -g) \
+  -e UID=$(id -u) \
+bestwu/wechat
+
 docker run \
   --name DoChat \
   --privileged \
