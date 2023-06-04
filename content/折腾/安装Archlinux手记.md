@@ -356,6 +356,7 @@ yay -S google-chrome
 
 + [ ] [AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列](https://greasyfork.org/zh-CN/scripts/14178-ac-baidu-%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E5%BF%85%E5%BA%94%E6%90%9C%E7%B4%A2-favicon-%E5%8F%8C%E5%88%97)
 + [ ] [夜间模式-shift快捷键版](https://greasyfork.org/zh-CN/scripts/437290-%E5%A4%9C%E9%97%B4%E6%A8%A1%E5%BC%8F-shift%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%89%88)
++ [ ] [文本选中复制](https://greasyfork.org/zh-CN/scripts/405130-%E6%96%87%E6%9C%AC%E9%80%89%E4%B8%AD%E5%A4%8D%E5%88%B6)
 
 ### 截图
 
