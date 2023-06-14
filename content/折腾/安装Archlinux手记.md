@@ -326,6 +326,8 @@ sudo groupadd docker          #创建docker用户组
 sudo gpasswd -a $USER docker  #将用户加入到docker用户组
 newgrp docker                 #更新用户组
 docker run --rm hello-world   #检查docker能否正常运行
+
+sudo pacman -S docker-compose
 ```
 
 ```shell
