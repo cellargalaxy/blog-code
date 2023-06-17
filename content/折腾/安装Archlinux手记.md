@@ -238,14 +238,16 @@ export EDITOR='vim'
 ### 安装基础软件
 
 ```shell
+sudo pacman -Syyu #刷新 pacman 数据库并更新
+
 sudo pacman -S firefox #火狐
 sudo pacman -S ntfs-3g #识别NTFS格式的硬盘
 sudo pacman -S adobe-source-han-serif-cn-fonts wqy-zenhei                     #几个开源中文字体。一般装上文泉驿就能解决大多 wine 应用中文方块的问题
 sudo pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra    #谷歌开源字体及表情
 sudo pacman -S sof-firmware alsa-firmware alsa-ucm-conf                       #一些可能需要的声音固件
 sudo pacman -S git wget curl guake mpv vlc htop                               #一些我的常用软件
-sudo pacman -S okular gwenview kolourpaint rhythmbox baobab file-roller gedit #一些我的常用软件
-#             查看文档 查看图片 画画        播放音乐 磁盘占用统计 压缩解压 编辑文本 
+sudo pacman -S okular gwenview kolourpaint rhythmbox baobab file-roller gedit remmina #一些我的常用软件
+#             查看文档 查看图片 画画        播放音乐 磁盘占用统计 压缩解压 编辑文本 远程桌面
 yay -S gnome-session-properties #管理开机启动项
 ```
 
