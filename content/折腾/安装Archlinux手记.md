@@ -296,6 +296,25 @@ sudo pacman -S xf86-input-synaptics
 sudo pacman -S xf86-input-libinput
 ```
 
+### 电源管理
+
+```shell
+sudo pacman -S tlp
+sudo pacman -S tlp-rdw 			          // tlp 无线设备省电
+sudo pacman -S x86_energy_perf_policy //CPU性能与节能策略
+sudo pacman -S ethtool 			          //可用于禁用 Linux 的网络唤醒
+
+#开机启动
+sudo systemctl start tlp.service
+sudo systemctl enable tlp.service
+sudo systemctl start NetworkManager-dispatcher
+sudo systemctl enable NetworkManager-dispatcher
+
+#屏蔽 systemd 服务 systemd-rfkill.service 以及 套接字 systemd-rfkill.socket 来防止冲突
+sudo systemctl mask systemd-rfkill.service
+sudo systemctl mask systemd-rfkill.socket
+```
+
 ### 初步完成
 
 ```shell
@@ -645,4 +664,5 @@ PREFIX,https://account.jetbrains.com/lservice/rpc/validateKey.action
 + [在 Arch Linux 中安装 GNOME 桌面 - Linux迷](https://www.linuxmi.com/arch-linux-install-gnome-desktop.html)
 + [如何在Arch Linux中安装GNOME?分步操作指南](https://www.lsbin.com/9541.html)
 + [ArchLinux安装GNOME图形桌面环境 - 喵喵的灿烂星空](https://starrycat.me/archlinux-install-gnome-desktop.html)
-+ []()
++ [使用 tlp 来为 linux 省电](https://fly.meow-2.com/post/records/tlp-for-power-saving.html)
++ [使用tlp优化电池消耗](http://blog.lujun9972.win/blog/2018/04/24/%E4%BD%BF%E7%94%A8tlp%E4%BC%98%E5%8C%96%E7%94%B5%E6%B1%A0%E6%B6%88%E8%80%97/index.html)
