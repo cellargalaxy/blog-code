@@ -239,7 +239,7 @@ export EDITOR='vim'
 
 ```shell
 sudo pacman -Syyu #刷新 pacman 数据库并更新
-sudo yay -Sua
+yay -Sua
 
 sudo pacman -S firefox #火狐
 sudo pacman -S ntfs-3g #识别NTFS格式的硬盘
