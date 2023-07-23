@@ -252,6 +252,23 @@ sudo pacman -S okular gwenview kolourpaint rhythmbox baobab file-roller gedit re
 yay -S gnome-session-properties #管理开机启动项
 ```
 
+### 防火墙
+
+```shell
+sudo pacman -S firewalld
+
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
+
+#列出全部规则
+sudo firewall-cmd --list-all
+
+#开放端口并规则生效
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+sudo firewall-cmd --reload
+```
+
 ### 开启 32 位支持库与 Arch Linux 中文社区仓库
 
 ```shell
