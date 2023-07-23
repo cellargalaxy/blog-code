@@ -241,6 +241,9 @@ export EDITOR='vim'
 sudo pacman -Syyu #刷新 pacman 数据库并更新
 yay -Sua
 
+#删除指定软件包，及其所有没有被其他已安装软件包使用的依赖关系
+sudo pacman -Rs package_name
+
 sudo pacman -S firefox #火狐
 sudo pacman -S ntfs-3g #识别NTFS格式的硬盘
 sudo pacman -S adobe-source-han-serif-cn-fonts wqy-zenhei                     #几个开源中文字体。一般装上文泉驿就能解决大多 wine 应用中文方块的问题
@@ -479,7 +482,6 @@ sudo pacman -S gnome-shell chrome-gnome-shell gnome-tweak-tool
   + [ ] 网路-数字
   + [ ] 硬盘-数字
   + [ ] 温度-数字
-+ [ ] [gsconnect](https://extensions.gnome.org/extension/1319/gsconnect/)
 
 ### 鼠标滚轮速度
 
