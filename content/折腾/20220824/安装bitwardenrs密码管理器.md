@@ -24,7 +24,7 @@ sudo docker run -d \
 --name vaultwarden \
 -v vaultwarden_data:/data \
 -p 7808:80 \
-vaultwarden/server:alpine
+vaultwarden/server:1.28.1-alpine
 
 
 ```
@@ -42,7 +42,7 @@ sudo docker run -d \
 -e INVITATIONS_ALLOWED=false \
 -v vaultwarden_data:/data/ \
 -p 7808:80 \
-vaultwarden/server:alpine
+vaultwarden/server:1.28.1-alpine
 ```
 
 ## 客户端使用
