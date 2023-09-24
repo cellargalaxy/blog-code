@@ -239,6 +239,10 @@ export EDITOR='vim'
 
 ```shell
 sudo pacman -Syyu #刷新 pacman 数据库并更新
+yay -Sua
+
+#删除指定软件包，及其所有没有被其他已安装软件包使用的依赖关系
+sudo pacman -Rs package_name
 
 sudo pacman -S firefox #火狐
 sudo pacman -S ntfs-3g #识别NTFS格式的硬盘
@@ -249,6 +253,23 @@ sudo pacman -S git wget curl guake mpv vlc htop                               #�
 sudo pacman -S okular gwenview kolourpaint rhythmbox baobab file-roller gedit remmina #一些我的常用软件
 #             查看文档 查看图片 画画        播放音乐 磁盘占用统计 压缩解压 编辑文本 远程桌面
 yay -S gnome-session-properties #管理开机启动项
+```
+
+### 防火墙
+
+```shell
+sudo pacman -S firewalld
+
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
+sudo systemctl status firewalld
+
+#列出全部规则
+sudo firewall-cmd --list-all
+
+#开放端口并规则生效
+sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
+sudo firewall-cmd --reload
 ```
 
 ### 开启 32 位支持库与 Arch Linux 中文社区仓库
@@ -380,6 +401,7 @@ yay -S google-chrome
 + [ ] [AC-baidu-重定向优化百度搜狗谷歌必应搜索_favicon_双列](https://greasyfork.org/zh-CN/scripts/14178-ac-baidu-%E9%87%8D%E5%AE%9A%E5%90%91%E4%BC%98%E5%8C%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%8B%97%E8%B0%B7%E6%AD%8C%E5%BF%85%E5%BA%94%E6%90%9C%E7%B4%A2-favicon-%E5%8F%8C%E5%88%97)
 + [ ] [夜间模式-shift快捷键版](https://greasyfork.org/zh-CN/scripts/437290-%E5%A4%9C%E9%97%B4%E6%A8%A1%E5%BC%8F-shift%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%89%88)
 + [ ] [文本选中复制](https://greasyfork.org/zh-CN/scripts/405130-%E6%96%87%E6%9C%AC%E9%80%89%E4%B8%AD%E5%A4%8D%E5%88%B6)
++ [ ] [破解飞书的复制限制](https://greasyfork.org/zh-CN/scripts/452651-%E8%AE%A9%E4%BD%A0%E7%9A%84%E9%A3%9E%E4%B9%A6%E6%9B%B4%E5%A5%BD%E7%94%A8)
 
 ### 截图
 
