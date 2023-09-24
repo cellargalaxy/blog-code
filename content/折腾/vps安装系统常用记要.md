@@ -16,12 +16,12 @@ apt install sudo vim curl wget git htop -y
 
 ```shell
 #创建用户test
-sudo adduser test
+adduser test
 #给test添加sudo权限
-sudo usermod -aG sudo test
+usermod -aG sudo test
 #检查test的sudo权限：(ALL : ALL) ALL
-sudo -l -U test
 su test
+sudo -l -U test
 
 #删除用户
 sudo deluser --remove-home test
@@ -138,7 +138,7 @@ sudo sysctl net.ipv4.tcp_congestion_control
 
 ```shell
 #检查当前journal使用磁盘量
-journalctl --disk-usage
+sudo journalctl --disk-usage
 
 sudo vim /etc/systemd/journald.conf
 SystemMaxUse=16M
@@ -148,7 +148,7 @@ ForwardToSyslog=no
 sudo systemctl restart systemd-journald.service
 
 #检查journal是否运行正常以及日志文件是否完整无损坏
-journalctl --verify
+sudo journalctl --verify
 ```
 
 ## 安装docker
@@ -185,7 +185,7 @@ sudo vim /etc/docker/daemon.json
     "https://dockerproxy.com"
   ],
   "log-driver":"json-file",
-  "log-opts": {"max-size":"32m", "max-file":"3"}
+  "log-opts": {"max-size":"16m", "max-file":"3"}
 }
 
 #重启docker
