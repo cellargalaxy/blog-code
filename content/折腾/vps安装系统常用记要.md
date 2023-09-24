@@ -122,6 +122,18 @@ reboot
 
 ## 安装BBR
 
+```shell
+#在最后加上这两句
+sudo vim /etc/sysctl.conf
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbr
+#保存
+sudo sysctl -p
+#验证是否开启成功
+sudo sysctl net.ipv4.tcp_congestion_control
+#如果成功开启，那么会看到以下输出bbr
+```
+
 ## journal日志大小限制
 
 ```shell
