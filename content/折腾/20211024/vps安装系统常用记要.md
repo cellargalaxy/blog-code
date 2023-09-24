@@ -6,7 +6,7 @@ updatedAt: '2021-10-24'
 
 <!--more-->
 
-# DD系统
+## DD系统
 
 + https://www.cxthhhhh.com/network-reinstall-system-modify
 
@@ -35,7 +35,7 @@ sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/s
 sudo reboot
 ```
 
-# 允许使用root登录
+## 允许使用root登录
 
 ```shell
 echo root:你设置的密码 |sudo chpasswd root
@@ -44,7 +44,7 @@ sudo sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/g' /etc/s
 sudo service sshd restart
 ```
 
-# 更新软件
+##   更新软件
 
 ```shell
 yum update -y
