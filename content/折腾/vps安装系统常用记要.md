@@ -4,6 +4,14 @@
 passwd
 ```
 
+## 更新软件
+
+```shell
+apt update -y
+apt upgrade -y
+apt install sudo vim curl wget git htop -y
+```
+
 ## 创建用户
 
 ```shell
@@ -13,17 +21,10 @@ sudo adduser test
 sudo usermod -aG sudo test
 #检查test的sudo权限：(ALL : ALL) ALL
 sudo -l -U test
+su test
 
 #删除用户
 sudo deluser --remove-home test
-```
-
-## 更新软件
-
-```shell
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt install vim curl wget git htop -y
 ```
 
 ## 防火墙
@@ -40,6 +41,8 @@ sudo apt remove ufw --purge
 
 # 启动防火墙
 sudo ufw enable
+# 默认关闭进站
+sudo ufw default deny
 # 启动状态
 sudo ufw status verbose
 # 暂时关闭防火墙
@@ -77,7 +80,7 @@ sudo systemctl restart sshd
 ```shell
 sudo hostnamectl set-hostname example.com
 
-#或者修改127.0.0.1 example.com
+#修改127.0.0.1 example.com
 sudo vim /etc/hosts
 
 #查询主机名
@@ -138,8 +141,6 @@ journalctl --verify
 
 ## 安装docker
 
-+ https://yeasy.gitbook.io/docker_practice/install/centos
-
 ```shell
 #卸载旧版本
 sudo apt-get remove docker docker-engine docker.io
@@ -159,7 +160,8 @@ sudo systemctl enable docker
 sudo systemctl start docker
 
 sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo gpasswd -a $USER docker
+newgrp docker
 docker run --rm hello-world
 ```
 
