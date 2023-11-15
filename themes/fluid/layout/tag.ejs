@@ -1,0 +1,21 @@
+<%
+page.layout = "tag"
+page.title = [__('tag.title'), page.tag].join(" - ")
+page.subtitle = [__('tag.subtitle'), page.tag].join(" - ")
+page.banner_img = theme.tag.banner_img
+page.banner_img_height = theme.tag.banner_img_height
+page.banner_mask_alpha = theme.tag.banner_mask_alpha
+
+var tag = site.tags.find({name: page.tag}).filter(tag => tag.length).data[0]
+
+page.banner_group = page.banner_group || theme.tag.banner_group || theme.index.banner_group
+if (Array.isArray(page.banner_group) && page.banner_group.length) {
+    var index = (page.subtitle || page.title).length % page.banner_group.length
+    page.banner_img = page.banner_group[index].img || page.banner_img
+    page.banner_text = page.banner_group[index].text || page.subtitle || page.title
+    page.banner_img_height = parseFloat(page.banner_group[index].height || 50)
+    page.banner_mask_alpha = parseFloat(page.banner_group[index].mask_alpha || 0)
+}
+%>
+
+<%- partial('_partials/archive-list.ejs', { params: { key: page.layout, postTotal: tag ? tag.posts.length : 0 } }) %>
