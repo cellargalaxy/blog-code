@@ -1,0 +1,21 @@
+<%
+page.layout = "category"
+page.title = [__('category.title'), page.category].join(" - ")
+page.subtitle = [__('category.subtitle'), page.category].join(" - ")
+page.banner_img = theme.category.banner_img
+page.banner_img_height = theme.category.banner_img_height
+page.banner_mask_alpha = theme.category.banner_mask_alpha
+
+var cat = site.categories.find({name: page.category}).filter(cat => cat.length).data[0]
+
+page.banner_group = page.banner_group || theme.category.banner_group || theme.index.banner_group
+if (Array.isArray(page.banner_group) && page.banner_group.length) {
+    var index = (page.subtitle || page.title).length % page.banner_group.length
+    page.banner_img = page.banner_group[index].img || page.banner_img
+    page.banner_text = page.banner_group[index].text || page.subtitle || page.title
+    page.banner_img_height = parseFloat(page.banner_group[index].height || 50)
+    page.banner_mask_alpha = parseFloat(page.banner_group[index].mask_alpha || 0)
+}
+%>
+
+<%- partial('_partials/archive-list.ejs', { params: { key: page.layout, postTotal: cat ? cat.posts.length : 0 } }) %>

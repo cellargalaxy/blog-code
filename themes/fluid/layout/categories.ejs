@@ -1,0 +1,28 @@
+<%
+page.layout = 'categories'
+page.title = theme.category.title || __('category.title')
+page.subtitle = theme.category.subtitle || __('category.subtitle')
+page.banner_img = theme.category.banner_img
+page.banner_img_height = theme.category.banner_img_height
+page.banner_mask_alpha = theme.category.banner_mask_alpha
+var orderBy = theme.category.order_by || 'name'
+var curCats = site.categories.find({ parent: { $exists: false } }).sort(orderBy).filter(cat => cat.length)
+
+page.banner_group = page.banner_group || theme.category.banner_group || theme.index.banner_group
+if (Array.isArray(page.banner_group) && page.banner_group.length) {
+    var index = (page.subtitle || page.title).length % page.banner_group.length
+    page.banner_img = page.banner_group[index].img || page.banner_img
+    page.banner_text = page.banner_group[index].text || page.subtitle || page.title
+    page.banner_img_height = parseFloat(page.banner_group[index].height || 50)
+    page.banner_mask_alpha = parseFloat(page.banner_group[index].mask_alpha || 0)
+}
+%>
+
+<%- partial('_partials/category-list', {
+  curCats: curCats,
+  params: {
+    orderBy: orderBy,
+    postLimit  : theme.category.post_limit,
+    postOrderBy: theme.category.post_order_by || config.index_generator.order_by
+  }
+}) %>
