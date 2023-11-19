@@ -1,10 +1,3 @@
----
-createdAt: '2020-05-03'
-updatedAt: '2020-05-03'
----
-
-<!--more-->
-
 # 更新源
 ```shell script
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.back

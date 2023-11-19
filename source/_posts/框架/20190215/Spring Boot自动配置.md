@@ -1,10 +1,3 @@
----
-createdAt: '2019-02-15'
-updatedAt: '2019-02-15'
----
-
-<!--more-->
-
 # 条件化配置
 spring4开始提供了一个新注解`@Conditional`，使得spring能够根据条件，决定是否要初始化某一个bean。`@Conditional`注解需要传入一个实现了`Condition`接口的class对象。`Condition`接口也很简单，只有一个方法，返回boolean表示是否要初始化这个bean。
 ```java

@@ -1,12 +1,6 @@
----
-createdAt: '2018-03-13'
-updatedAt: '2018-03-13'
----
 Apache Commons FileUpload是用来处理二进制表单的包，[官网](http://commons.apache.org/ "官网")
 
 FileUpload只能处理`multipart/form-data`类型的表单。如果不是则会抛`FileUploadException`异常。
-
-<!--more-->
 
 判断表单是否是`multipart/form-data`类型，可以通过一下静态方法判断：
 

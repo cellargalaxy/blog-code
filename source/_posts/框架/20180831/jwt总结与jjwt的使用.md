@@ -1,10 +1,3 @@
----
-createdAt: '2018-08-31'
-updatedAt: '2018-08-31'
----
-
-<!--more-->
-
 jwt是一种无状态的token授权技术，通过签名算法防止token被篡改。因此jwt其实就是字符串，可以看到小圆点将整个jwt分为三部分，这三部分的名字分别叫做头部(header)、载荷(payload)与签名。
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NSIsIm5hbWUiOiJjZWxsYXJnYWxheHkiLCJleHAiOjE1MTYyMzkwMjJ9.zvVtSIOklnCWPKRTskzTb4vJY4OnhmgS0ngXzfkJRpg

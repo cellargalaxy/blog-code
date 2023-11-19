@@ -1,10 +1,3 @@
----
-createdAt: '2018-04-06'
-updatedAt: '2018-04-06'
----
-
-<!--more-->
-
 linux下mongodb的安装很简单，下载个压缩包解压就能用。在https://www.mongodb.com/download-center#community ，下载最新版的压缩包，下载速度好慢，可以挂个代理下载。解压到一个合适的文件里。
 
 ```shell

@@ -1,10 +1,3 @@
----
-createdAt: '2018-02-28'
-updatedAt: '2018-02-28'
----
-
-<!--more-->
-
 先上图吧，图说的最清楚，侵删。HashMap的组成单位是Node，Node储存这key-value。最普通的hash存储法，用对象的hashCode方法算出hash，hash对数组长度求余便是这个对象的索引。但是这样会导致hash冲突，所以当hash冲突时，通过链表来解决。但是，如果这个不巧，大部分的key都冲突在一起，那么就会HashMap退化成链表。所以在java8之后，当链表太长时，会把链表装换成红黑树来提高查找效率。如图，左边那一列的Node数组，这个数组名字叫`table`，上面的是链表，中间的是红黑树。`table`数组的每一个元素及其链表/红黑树叫`桶`。
 
 ![](/file/blog/code/20180228/ww3.sinaimg.cn-large-b10d1ea5gw1f76vq82kzqj20f70dddgl.jpg.1.jpg)

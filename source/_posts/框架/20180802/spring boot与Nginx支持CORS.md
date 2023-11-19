@@ -1,12 +1,6 @@
----
-createdAt: '2018-08-02'
-updatedAt: '2018-08-02'
----
 让spring boot支持CORS非常简单，不用做任何配置，只需要在controller里使用`@CrossOrigin`注解即可。
 
 @CrossOrigin注解可以使用在类或者方法上，其参数主要有origins和maxAge，用来指定允许跨域的域默认是\*，和OPTIONS响应的有效时间，默认是1800。当类和方法都使用@CrossOrigin注解时，会自动合并两个注解的参数。
-
-<!--more-->
 
 例如官方文档的一个例子：
 

@@ -1,10 +1,3 @@
----
-createdAt: '2018-03-19'
-updatedAt: '2018-03-19'
----
-
-<!--more-->
-
 # jstack
 
 jstack用于查看java的某个进程的线程的堆栈信息，先来个死循环。

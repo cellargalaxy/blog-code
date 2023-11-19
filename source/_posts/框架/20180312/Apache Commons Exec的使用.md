@@ -1,12 +1,6 @@
----
-createdAt: '2018-03-12'
-updatedAt: '2018-03-12'
----
 Apache Commons Exec是用来执行系统命令的，用来代替`Runtime.exec()`的包。[官方首页](https://commons.apache.org/proper/commons-exec/index.html "官方首页")
 
 假设我们需要在java中使用`AcroRd32.exe`来打印出一个pdf文件。
-
-<!--more-->
 
 # 简单使用
 ```java

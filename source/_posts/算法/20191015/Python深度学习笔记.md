@@ -1,10 +1,3 @@
----
-createdAt: '2019-10-15'
-updatedAt: '2019-10-15'
----
-
-<!--more-->
-
 ```python
 import numpy as np
 from keras import layers

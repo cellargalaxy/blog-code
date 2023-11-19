@@ -1,10 +1,3 @@
----
-createdAt: '2018-03-02'
-updatedAt: '2018-03-02'
----
-
-<!--more-->
-
 HashMap是线程不安全的，在并发下容易导致Entry构成环状结构导致死循环。而HashTable虽然是线程安全的，但是他的方法都用synchronize同步。当竞争激烈时，就只有一个线程能进行操作，效率低下。HashTable的问题在于全部线程都竞争同一个锁，但是实际上各个线程所操作的数据却不一定是同一个。既然这样，那就把不同的额数据设置不同的锁，那么操作不同数据的线程之间就不会产生竞争了。这边是分段锁。
 
 回顾一下HashMap，HashMap的核心数据变量是Entry/Node数组。既然是分段，一个长为100的Entry[]可以例如每十个一段，一共十段。但是为了代码编写方便，有必要对每“十个”Entry进行一下封装。所以，在ConcurrentHashMap里多了一个内部类叫Segment，Segment类的核心数据变量是Entry[]。这个Segment继承了ReentrantLock，方便加锁解锁。因此，ConcurrentHashMap由Segment[]组成，而Segment又由Entry[]组成，存储key-value的依然是Entry，每个桶有四种状态，为空，只有一个Entry，链表和红黑树。而到达Entry过程大致是先进行第一次hash找到对应的那个Segment。操作Segment的数据前按需获取锁。获取锁之后操作Segment，Segment内部基本上就跟HashMap一样了。

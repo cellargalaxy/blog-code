@@ -1,7 +1,3 @@
----
-createdAt: '2021-04-19'
-updatedAt: '2021-04-19'
----
 Protocol Buffers(简称Protobuf) 是Google的一个序列化框架，与开发语言、平台无关。
 
 支持Java、Python、C++、Go、JavaNano、Ruby、C#。
@@ -9,8 +5,6 @@ Protocol Buffers(简称Protobuf) 是Google的一个序列化框架，与开发�
 Portobuf的序列化体积比XML和JSON小，并且序列化和反序列化的速度更快。
 
 使用Portobuf需要先安装Portobuf的命令行工具protoc，编写protobuf文件，使用protoc生成对应语言的代码。
-
-<!--more-->
 
 # 安装protobuf
 安装protobuf库文件

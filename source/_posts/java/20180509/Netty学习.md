@@ -1,11 +1,4 @@
----
-createdAt: '2018-05-09'
-updatedAt: '2018-05-09'
----
-
 简单明了入门Netty，还是看官方文档来的好：[Netty.docs: User guide for 4.x](https://netty.io/wiki/user-guide-for-4.x.html "Netty.docs: User guide for 4.x")。接下来是我看我这篇文档之后的加工，想看的深一点可以看[Netty的那点事儿](https://sylvanassun.github.io/2017/11/30/2017-11-30-netty_introduction/ "Netty的那点事儿")。最好是有些NIO的概念和基础。依照官方文档进行改进，下面代码是要实现一个时间服务器。功能为客户端连接到服务端时，服务端主动发送一个long时间戳给客户端，客户端收到这个时间后打印出来。并且客户端向服务端发送自己的long时间戳后关闭连接，服务器打印收到客户端的时间后也关闭连接。
-
-<!--more-->
 
 # ChannelInboundHandlerAdapter与ChannelOutboundHandlerAdapter
 对于一个连接，数据的收发就是对于入站和出站。对于入站和出站，有不同的两个类进行逻辑处理：ChannelInboundHandlerAdapter与ChannelOutboundHandlerAdapter。一般而言，一个连接来了，就会创建一个ChannelInboundHandlerAdapter和ChannelOutboundHandlerAdapter对象，连接的创建，接收数据，发送数据，断开等整个生命周期都会调用ChannelInboundHandlerAdapter和ChannelOutboundHandlerAdapter对于的方法。就像servlet的init，servire和destroy方法那样。

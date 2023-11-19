@@ -1,10 +1,3 @@
----
-createdAt: '2018-07-18'
-updatedAt: '2018-07-18'
----
-
-<!--more-->
-
 背景：select出一个结果集之后，需要利用结果的每一行数据再进行操作，可以利用sql的游标来实现。
 
 需求：有两个表：my_table和my_table2。获取my_table的id和name字段，更新到my_table2里。

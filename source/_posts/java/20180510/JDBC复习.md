@@ -1,10 +1,4 @@
----
-createdAt: '2018-05-10'
-updatedAt: '2018-05-10'
----
 JDBC是通过`Class.forName(String)`反射加载所需的驱动类。然后就可以通过jdk自带的`DriverManager`的静态方法获取一个数据库连接：`Connection`。通过这个Connection我们就可以对数据库进行增删查改了。要对数据库进行增删查改还是离不开sql。需要使用sql，调用Connection的方法创建一个`Statement`或者`PreparedStatement`对象。创建Statement就利用一句完整的sql就好了，但是不防止注入。而PreparedStatement的sql在参数上用问号代替，作为占位符。之后再填充这些占位符，其占位符是用下标指定，下标从1开始，是防止注入的。创建好PreparedStatement执行。在这里可以设置事务。如果是select，执行后返回一个`ResultSet`对象作为返回结果。可以通过这个结果获取列名，元组的数据等。如果是insert，delete或者update，会返回一个int，表示受此命令影响的行数。
-
-<!--more-->
 
 # JDBC的优化
 1. Connection对象是线程不安全的，要不然就不会有说一个请求创建一个Connection对象，就不需要数据库连接池了。

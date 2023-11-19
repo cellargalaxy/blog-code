@@ -1,15 +1,8 @@
----
-createdAt: '2020-04-30'
-updatedAt: '2020-04-30'
----
 自己用keras写了个VAE自编码器，用的是mnist数据集。参考了《Python深度学习》_2018中文版.pdf和[深度学习第52讲：变分自编码器VAE原理以及keras实现](https://zhuanlan.zhihu.com/p/54032548)里的实现
 
 用CPU跑真是慢死了，人生苦短，莫得N卡.
 
 调参调了一整天，噫吁嚱。
-
-
-<!--more-->
 
 ```python
 import keras

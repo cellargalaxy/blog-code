@@ -1,10 +1,3 @@
----
-createdAt: '2018-12-15'
-updatedAt: '2018-12-15'
----
-
-<!--more-->
-
 # Timer
 ## Timer的使用
 TimerTask是单线程的，与系统时间有关，报异常后无法自动恢复的。

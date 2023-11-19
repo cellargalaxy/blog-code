@@ -1,7 +1,3 @@
----
-createdAt: '2019-09-14'
-updatedAt: '2019-09-14'
----
 # 步骤
 
 1. lottie是一种视频格式，数据会保存为一个json，所以lottie文件是一个json文件，可以在进行[https://svgsprite.com/tools/lottie-player/](https://svgsprite.com/tools/lottie-player/)播放。
@@ -11,8 +7,6 @@ updatedAt: '2019-09-14'
 4. 使用puppeteer-lottie对lottie转gif，会在`/tmp`生成一个临时目录，文件夹名字形似一个md5，保存全部帧的png，拷贝出来待用
 5. 使用ffmpeg将png压成mp4
 6. 使用ffmpeg将mp4压成gif
-
-<!--more-->
 
 # 使用puppeteer-lottie对lottie转gif获取png
 

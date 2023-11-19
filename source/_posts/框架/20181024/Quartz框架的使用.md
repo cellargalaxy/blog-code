@@ -1,10 +1,3 @@
----
-createdAt: '2018-10-24'
-updatedAt: '2018-10-24'
----
-
-<!--more-->
-
 # Quartz框架的主要类
 
 Quartz框架有四个主要类/接口：Scheduler(任务调度器)、Job(任务)、JobDetail和Trigger(触发器)。分别用于调度任务，定义业务逻辑，业务逻辑执行实例和触发条件。这里可能搞不清的是Job和JobDetail。Job用于定义与框架和执行方式无关业务逻辑。而JobDetail除了保护Job的业务逻辑以外，还保护这个业务逻辑所处理的数据。因此，一个Job的业务逻辑可以被用于不同数据的JobDetail上，即Job和JobDetail是一对多的关系。而JobDetail与Trigger一一对应。Scheduler监控全部的Trigger来决定是否要执行某个JobDetail。

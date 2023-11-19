@@ -1,10 +1,3 @@
----
-createdAt: '2018-07-28'
-updatedAt: '2018-07-28'
----
-
-<!--more-->
-
 [Spring Security与Shiro的学习Demo](https://github.com/cellargalaxy/securityAndShiroDemo "Spring Security与Shiro的学习Demo")，没有使用默认的cookie-session，替换为jwt认证
 
 1. 用于存储账号密码与权限的接口为SecurityUser

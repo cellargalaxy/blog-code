@@ -1,10 +1,3 @@
----
-createdAt: '2018-01-27'
-updatedAt: '2018-01-27'
----
-
-<!--more-->
-
 第一章主要是介绍java的发展史，java虚拟机的发展史以及如何编译jdk。
 # jvm发展历程
 Sun Classic VM是第一代jvm，通过纯解释来执行java代码。
