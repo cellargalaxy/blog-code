@@ -31,8 +31,7 @@
 
 <p align="center">
   <span>预览：</span>
-  <a href="https://hexo.fluid-dev.com/">Fluid's blog</a> | 
-  <a href="https://zkqiang.cn">zkqiang's blog</a>
+  <a href="https://cellargalaxy.github.io/hexo-theme-fluid/">Fluid's demo</a>
 </p>
 
 ## 快速开始
