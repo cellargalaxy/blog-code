@@ -20,7 +20,7 @@ function hash(text) {
 }
 page.banner_group = page.banner_group || theme.tag.banner_group || theme.index.banner_group
 if (Array.isArray(page.banner_group) && page.banner_group.length) {
-    var index = hash(page.subtitle || page.title) % page.banner_group.length
+    var index = Math.abs(hash(page.subtitle || page.title)) % page.banner_group.length
     page.banner_img = page.banner_group[index].img || page.banner_img
     page.banner_text = page.banner_group[index].text || page.subtitle || page.title
     page.banner_img_height = parseFloat(page.banner_group[index].height || 50)
