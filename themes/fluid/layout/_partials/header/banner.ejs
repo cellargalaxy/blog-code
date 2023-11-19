@@ -5,7 +5,7 @@ var banner_mask_alpha = parseFloat(page.banner_mask_alpha || theme.index.banner_
 var subtitle = page.subtitle || page.title
 %>
 
-<div id="banner" class="banner fence" <%- theme.banner && theme.banner.parallax && 'parallax=true' %>
+<div id="banner" class="banner fence" style="background-image: url('<%- url_for('/img/fence.svg') %>')" <%- theme.banner && theme.banner.parallax && 'parallax=true' %>
   >
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, <%= parseFloat(banner_mask_alpha) %>)">
