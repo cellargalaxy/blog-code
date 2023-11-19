@@ -62,7 +62,7 @@
             var index_title = -1;
             var index_content = -1;
             var first_occur = -1;
-            // Skip matching when source is included in search and source is empty
+            // Skip matching when content is included in search and content is empty
             if (CONFIG.include_content_in_search && data_content === '') {
               isMatch = false;
             } else {
@@ -111,7 +111,7 @@
                   match_content = match_content.replace(regS, '<span class="search-word">' + keyword + '</span>');
                 });
 
-                resultHTML += '<p class=\'search-list-source\'>' + match_content + '...</p>';
+                resultHTML += '<p class=\'search-list-content\'>' + match_content + '...</p>';
               }
             }
           });

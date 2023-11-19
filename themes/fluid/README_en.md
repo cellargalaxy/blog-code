@@ -30,8 +30,7 @@
 
 <p align="center">
   <span>Preview: </span>
-  <a href="https://hexo.fluid-dev.com/">Fluid's blog</a>&nbsp&nbsp&nbsp&nbsp
-  <a href="https://zkqiang.cn">zkqiang's blog</a>
+  <a href="https://cellargalaxy.github.io/hexo-theme-fluid/">Fluid's demo</a>
 </p>
 
 ## Quick Start
@@ -82,7 +81,7 @@ title: about
 layout: about
 ---
 
-About source
+About content
 ```
 
 ## How to Upgrade

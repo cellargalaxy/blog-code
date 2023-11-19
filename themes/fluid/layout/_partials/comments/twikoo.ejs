@@ -10,7 +10,7 @@
             path: '<%= theme.twikoo.path %>',
             onCommentLoaded: function() {
               Fluid.utils.listenDOMLoaded(function() {
-                var imgSelector = '#twikoo .tk-source img:not(.tk-owo-emotion)';
+                var imgSelector = '#twikoo .tk-content img:not(.tk-owo-emotion)';
                 Fluid.plugins.imageCaption(imgSelector);
                 Fluid.plugins.fancyBox(imgSelector);
               });

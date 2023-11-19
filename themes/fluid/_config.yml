@@ -367,7 +367,7 @@ search:
   field: post
 
   # 搜索是否扫描正文
-  # If true, search will scan the post source
+  # If true, search will scan the post content
   content: true
 
 # 首屏图片的相关配置
@@ -495,8 +495,8 @@ index:
       # Request headers
       headers: {}
 
-      # 从请求结果获取字符串的取值字段，最终必须是一个字符串，例如返回结果为 {"data": {"author": "fluid", "source": "An elegant theme"}}, 则取值字段为 ['data', 'source']；如果返回是列表则自动选择第一项
-      # The value field of the string obtained from the response. For example, the response source is {"data": {"author": "fluid", "source": "An elegant theme"}}, the expected `keys: ['data','source']`; if the return is a list, the first item is automatically selected
+      # 从请求结果获取字符串的取值字段，最终必须是一个字符串，例如返回结果为 {"data": {"author": "fluid", "content": "An elegant theme"}}, 则取值字段为 ['data', 'content']；如果返回是列表则自动选择第一项
+      # The value field of the string obtained from the response. For example, the response content is {"data": {"author": "fluid", "content": "An elegant theme"}}, the expected `keys: ['data','content']`; if the return is a list, the first item is automatically selected
       keys: []
 
   # 自动截取文章摘要
@@ -1025,7 +1025,7 @@ links:
   onerror_avatar: /img/avatar.png
 
   # 友链下方自定义区域，支持 HTML，可插入例如申请友链的文字
-  # Custom source at the bottom of the links
+  # Custom content at the bottom of the links
   custom:
     enable: false
     content: '<hr><p>在下方留言申请加入我的友链，按如下格式提供信息：</p><ul><li>博客名：Fluid</li><li>简介：Fluid 主题官方博客</li><li>链接：https://hexo.fluid-dev.com</li><li>图片：https://hexo.fluid-dev.com/img/favicon.png</li></ul>'

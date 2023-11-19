@@ -44,7 +44,7 @@ module.exports = (hexo) => {
         index  : index,
         content: content ? content.trim() : ''
       });
-      // remove source of inline footnote
+      // remove content of inline footnote
       return '[^' + index + ']';
     });
 
@@ -54,7 +54,7 @@ module.exports = (hexo) => {
         index  : index,
         content: content ? content.trim() : ''
       });
-      // remove footnote source
+      // remove footnote content
       return '';
     });
 
@@ -98,7 +98,7 @@ module.exports = (hexo) => {
       html += '<a href="#fnref:' + item.index + '" rev="footnote" class="footnote-backref"> ↩</a></span></span></li>';
     });
 
-    // add footnotes at the end of the source
+    // add footnotes at the end of the content
     if (footnotes.length) {
       text += '<section class="footnotes">';
       text += header || config.post.footnote.header || '';

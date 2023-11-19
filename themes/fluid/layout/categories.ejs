@@ -8,9 +8,19 @@ page.banner_mask_alpha = theme.category.banner_mask_alpha
 var orderBy = theme.category.order_by || 'name'
 var curCats = site.categories.find({ parent: { $exists: false } }).sort(orderBy).filter(cat => cat.length)
 
+function hash(text) {
+    var hash = 0, i, chr
+    if (text.length === 0) return hash
+    for (i = 0; i < text.length; i++) {
+        chr = text.charCodeAt(i)
+        hash = ((hash << 5) - hash) + chr
+        hash |= 0
+    }
+    return hash
+}
 page.banner_group = page.banner_group || theme.category.banner_group || theme.index.banner_group
 if (Array.isArray(page.banner_group) && page.banner_group.length) {
-    var index = (page.subtitle || page.title).length % page.banner_group.length
+    var index = hash(page.subtitle || page.title) % page.banner_group.length
     page.banner_img = page.banner_group[index].img || page.banner_img
     page.banner_text = page.banner_group[index].text || page.subtitle || page.title
     page.banner_img_height = parseFloat(page.banner_group[index].height || 50)
