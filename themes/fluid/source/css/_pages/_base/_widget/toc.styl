@@ -1,5 +1,13 @@
 #toc
   visibility hidden
+  padding 1rem
+  border-radius 0.5rem
+
+  &:hover
+    background-color var(--board-bg-color)
+    transition background-color 0.3s ease-in
+  &:not(:hover)
+    transition background-color 0.3s ease-in
 
 .toc-header
   margin-bottom .5rem
@@ -38,6 +46,9 @@
 .tocbot-active-link
   font-weight bold
   color var(--link-hover-color)
+  background-color var(--board-bg-color)
+  padding 0.15rem
+  border-radius 0.15rem
 
 .tocbot-is-collapsed
   max-height 0

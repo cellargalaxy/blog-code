@@ -1,4 +1,4 @@
-<% if(theme.post.toc.enable && theme.post.toc.placement === 'right' && page.toc !== false){ %>
+<% if(theme.post.toc.enable && theme.post.toc.placement !== 'left' && page.toc !== false){ %>
   <aside class="sidebar" style="margin-left: -1rem">
     <%- partial('_partials/post/toc') %>
   </aside>

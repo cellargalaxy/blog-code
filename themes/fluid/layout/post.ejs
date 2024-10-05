@@ -112,12 +112,6 @@ if (Array.isArray(page.banner_group) && page.banner_group.length) {
                   </article>
                 </div>
               <% } %>
-
-              <% if (theme.post.category_bar.enable && theme.post.category_bar.placement === 'center' && !page.hide &&
-                    (!theme.post.category_bar.specific || (theme.post.category_bar.specific && page.category_bar))) { %>
-                  <%- partial('_partials/post/category-bar') %>
-              <% } %>
-
             </div>
 
             <%- inject_point('postComments') %>
