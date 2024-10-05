@@ -37,7 +37,7 @@ if (Array.isArray(page.banner_group) && page.banner_group.length) {
         <% var isQr = each.qrcode %>
         <a <%= isQr ? '' : ('href=' + url_for(each.link)) %> class="<%= isQr ? 'qr-trigger' : '' %>
            <%= !isQr && each.tip ? 'hint--bottom hint--rounded' : '' %>"
-           <%= !isQr && each.tip ? 'aria-label=' + each.tip : '' %>
+           <% if (!isQr && each.tip) { %>aria-label="<%= each.tip %>"<% } %>
            target="<%= isQr ? '_self' : '_blank' %>"
         >
           <i class="<%= cls %>" aria-hidden="true"></i>
